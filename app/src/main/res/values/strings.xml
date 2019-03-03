@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MapsDemo</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_memory">MemoryActivity</string>
+    <string name="title_activity_card">CardActivity</string>
+    <string name="title_activity_maps2">Map</string>
+</resources>

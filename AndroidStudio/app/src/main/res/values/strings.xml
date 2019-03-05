@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TRIPS4DAYS</string>
+    <string name="Description_EditText">Description</string>
+    <string name="Save_button">Save</string>
+    <string name="upload_imageView">Upload_image</string>
+    <string name="shows_image">shows image</string>
+    <string name="Home_button">Home</string>
+    <string name="enter_your_title_here">Enter your Title here</string>
+    <string name="card_view">card view</string>
+    <string name="shows_first_image">shows first image</string>
+    <string name="shows_second_image">shows second image</string>
+</resources>

@@ -5,70 +5,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".second_activity">
-    <LinearLayout
+
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:id="@+id/sent_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/image_video_view2"
-        android:orientation="horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/image_to_upload"
+        android:src="@drawable/uploadimage"/>
 
-        >
-        <ImageView
-            android:id="@+id/Sent_image"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/shows_image"
-            tools:srcCompat="@android:drawable/ic_menu_camera"
-            android:layout_weight="1"/>
+    <VideoView
+        android:id="@+id/sent_video"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="@drawable/uploadvid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/nextbtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:text="@string/nextbtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="30sp"
+        android:textColor="#B3B3B3"/>
 
-        <VideoView
-            android:id="@+id/sent_video"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:contentDescription="@string/shows_second_image"
-            android:focusable="true"
-            android:keepScreenOn="false"
-            android:visibility="visible" />
-    </LinearLayout>
-
+    <Button
+        android:id="@+id/prevbtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:text="@string/prevbtn"
+        android:textColor="#B3B3B3"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
         android:id="@+id/title_description_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_video_view2">
+        app:layout_constraintTop_toBottomOf="@+id/sent_image">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/sent_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:textColor="@android:color/background_dark"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginStart="5dp"
-                />
+                android:textStyle="bold" />
+
             <TextView
+                android:id="@+id/sent_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/sent_date"
-                android:layout_marginStart="5dp"
-                />
+                android:layout_marginStart="5dp" />
         </LinearLayout>
 
 
@@ -76,17 +88,16 @@
             android:id="@+id/sent_text"
             android:layout_width="236dp"
             android:layout_height="30dp"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="25dp"
             android:textAlignment="textStart"
             android:textColor="@android:color/background_dark"
+            android:textSize="18sp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_video_view2"
-            android:textSize="18sp"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/sent_image" />
 
 
     </LinearLayout>
@@ -97,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="25dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="212dp"
         android:text="@string/Home_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

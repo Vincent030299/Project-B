@@ -5,49 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".second_activity">
-
-    <ImageView
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:id="@+id/sent_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/secondviewpager"
         app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:contentDescription="@string/image_to_upload"
-        android:src="@drawable/uploadimage"/>
-
-    <VideoView
-        android:id="@+id/sent_video"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="@drawable/uploadvid"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <Button
-        android:id="@+id/nextbtn2"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:text="@string/nextbtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="30sp"
-        android:textColor="#B3B3B3"/>
-
-    <Button
-        android:id="@+id/prevbtn2"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:text="@string/prevbtn"
-        android:textColor="#B3B3B3"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
 
     <LinearLayout
@@ -60,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sent_image">
+        app:layout_constraintTop_toBottomOf="@+id/secondviewpager">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,7 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sent_image" />
+            app:layout_constraintTop_toBottomOf="@+id/secondviewpager" />
 
 
     </LinearLayout>

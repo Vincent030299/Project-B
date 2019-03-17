@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -20,8 +22,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TabWidget;
+import android.widget.TableLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
@@ -47,10 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private  static String text;
     DatePicker chosen_date;
     EditText title;
-    ImageView mainimage;
-    VideoView mainvideo;
     int todaysdate,theMonth,year;
-    ImageButton choose_pic_gallery,choose_vid_gallery,take_pic,record_vid;
+    ImageButton choose_pic_gallery,choose_vid_gallery,taken_pic,record_vid;
     ViewPager mypager;
     swipeadapter myadapter;
     ArrayList<Fragment> mlist=new ArrayList<>();
@@ -60,17 +65,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CirclePageIndicator myindicator= findViewById(R.id.tabDots);
         Description= findViewById(R.id.Description);
         ImageButton save_button = findViewById(R.id.Save_button);
         chosen_date=findViewById(R.id.date);
         title= findViewById(R.id.title);
         choose_pic_gallery=findViewById(R.id.gallery_image);
         choose_vid_gallery=findViewById(R.id.upload_video);
-        take_pic=findViewById(R.id.take_pic);
+        taken_pic=findViewById(R.id.take_pic);
         record_vid=findViewById(R.id.record_vid);
         mypager=findViewById(R.id.myviewpager);
+        myindicator.setFillColor(Color.rgb(20,145,218));
+        myindicator.setRadius(12.0f);
+        myindicator.setStrokeColor(Color.rgb(20,145,218));
         myadapter=new swipeadapter(getSupportFragmentManager(),mlist);
         mypager.setAdapter(myadapter);
+        myindicator.setViewPager(mypager);
+
 
 
 
@@ -90,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 uploadvideo();
             }
         });
-        take_pic.setOnClickListener(new View.OnClickListener() {
+        taken_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 takepic();
@@ -199,6 +210,10 @@ public class MainActivity extends AppCompatActivity {
                 mlist.add(thefrag);
                 myadapter=new swipeadapter(getSupportFragmentManager(),mlist);
                 mypager.setAdapter(myadapter);
+
+
+
+
             }
         }
         else if (requestCode==take_pic_code && resultCode==Activity.RESULT_OK){
@@ -218,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
                 mlist.add(thefrag);
                 myadapter=new swipeadapter(getSupportFragmentManager(),mlist);
                 mypager.setAdapter(myadapter);
+
+
             }
 
         }
@@ -235,6 +252,9 @@ public class MainActivity extends AppCompatActivity {
                 mlist.add(thefrag);
                 myadapter=new swipeadapter(getSupportFragmentManager(),mlist);
                 mypager.setAdapter(myadapter);
+
+
+
             }
 
         }

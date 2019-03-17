@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class swipeadapter extends FragmentStatePagerAdapter {
         super(fm);
         myfragslist=myfrags;
     }
+
 
     public Fragment set(int index, Fragment element) {
         return myfragslist.set(index,element);

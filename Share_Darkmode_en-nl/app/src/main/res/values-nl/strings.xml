@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Donkere Mode</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Opties</string>
+    <string name="toggle_theme">Donkere Mode</string>
+    <string name="import1">Importeren</string>
+    <string name="gallery">Galerie</string>
+    <string name="slideshow">Diavoorstelling</string>
+    <string name="tools">Hulpmiddelen</string>
+    <string name="communicate">Communicatie</string>
+    <string name="send">Verzenden</string>
+    <string name="share">Delen</string>
+    <string name="share_popup_titel">Delen</string>
+    <string name="body_share">Tekst hier</string>
+</resources>

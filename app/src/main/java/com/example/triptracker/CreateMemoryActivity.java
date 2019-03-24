@@ -74,6 +74,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
         final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapfragview);
         Objects.requireNonNull(spmf).getMapAsync(this);
+
         //initialize the adapter for the chosen media files
         myviewsadapter= new swipeadapter(getSupportFragmentManager(),chosenviews);
         creatememoryslider=findViewById(R.id.creatememoryslider);
@@ -82,12 +83,10 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         taken_pic=findViewById(R.id.take_pic);
         choose_vid_gallery=findViewById(R.id.upload_video);
         record_vid=findViewById(R.id.record_vid);
-        
+
         creatememoryslider.setAdapter(myviewsadapter);
         maptoggle.setTextOn("Map");
-        
-        
-        
+
         choose_pic_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,9 +115,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         //toggling on and off between the map and the media files
         maptoggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
-
             android.support.v4.app.Fragment themapview = fragmentManager.findFragmentById(R.id.mapfragview);
-            
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (maptoggle.isChecked()){
@@ -138,18 +135,19 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
     }
 
-
 //starts the activity of choosing a pic from the gallery
     private void uploadpic() {
         Intent upload= new Intent(Intent.ACTION_GET_CONTENT);
         upload.setType("image/*");
         startActivityForResult(upload,pick_image_code);
     }
+
 //starts the activity of taking a pic
     private void takepic() {
         Intent takepic=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takepic,take_pic_code);
     }
+
 //starts the activity of choosing a video from the gallery
     private void uploadvid() {
         Intent upload_vid= new Intent(Intent.ACTION_GET_CONTENT);
@@ -163,6 +161,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         startActivityForResult(recordvid,record_vid_code);
     }
 
+    //handels all the data from the called intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode==pick_image_code && resultCode== Activity.RESULT_OK){
@@ -179,31 +178,24 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 chosenviews.add(thefrag);
                 myviewsadapter=new swipeadapter(getSupportFragmentManager(),chosenviews);
                 creatememoryslider.setAdapter(myviewsadapter);
-
             }
-
-
         }
-        else if (requestCode==pick_video_code && resultCode==Activity.RESULT_OK){
 
-            viduri=data.getData();
-            if (viduri==null){
-                Toast.makeText(getApplicationContext(),"please choose a video",Toast.LENGTH_LONG).show();
-            }
-            else{
-                Bundle args=new Bundle();
-                args.putString("the video",viduri.toString());
-                vidfragment thefrag= new vidfragment();
+        else if (requestCode==pick_video_code && resultCode==Activity.RESULT_OK) {
+            viduri = data.getData();
+            if (viduri == null) {
+                Toast.makeText(getApplicationContext(), "please choose a video", Toast.LENGTH_LONG).show();
+            } else {
+                Bundle args = new Bundle();
+                args.putString("the video", viduri.toString());
+                vidfragment thefrag = new vidfragment();
                 thefrag.setArguments(args);
                 chosenviews.add(thefrag);
-                myviewsadapter=new swipeadapter(getSupportFragmentManager(),chosenviews);
+                myviewsadapter = new swipeadapter(getSupportFragmentManager(), chosenviews);
                 creatememoryslider.setAdapter(myviewsadapter);
-
-
-
-
             }
         }
+
         else if (requestCode==take_pic_code && resultCode==Activity.RESULT_OK){
             Bitmap themap= (Bitmap) data.getExtras().get("data");
             if(themap==null){
@@ -221,13 +213,11 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 chosenviews.add(thefrag);
                 myviewsadapter=new swipeadapter(getSupportFragmentManager(),chosenviews);
                 creatememoryslider.setAdapter(myviewsadapter);
-
-
             }
 
         }
-        else if (requestCode==record_vid_code && resultCode== Activity.RESULT_OK){
 
+        else if (requestCode==record_vid_code && resultCode== Activity.RESULT_OK){
             viduri=data.getData();
             if (viduri==null){
                 Toast.makeText(getApplicationContext(),"please choose a video",Toast.LENGTH_LONG).show();
@@ -240,12 +230,10 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 chosenviews.add(thefrag);
                 myviewsadapter=new swipeadapter(getSupportFragmentManager(),chosenviews);
                 creatememoryslider.setAdapter(myviewsadapter);
-
-
-
             }
 
         }
+
         else {
             Toast.makeText(getApplicationContext(),"please choose a video or an image",Toast.LENGTH_LONG).show();
         }
@@ -277,22 +265,5 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
 
         });
-
     }
-
-//
-
-
 }
-
-
-
-
-
-
-
-
-//    public void onMapReady(GoogleMap googleMap) {
-//
-//
-//    }

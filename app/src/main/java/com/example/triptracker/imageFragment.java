@@ -2,29 +2,25 @@ package com.example.triptracker;
 
 import android.net.Uri;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class imagefragment extends Fragment {
-    Uri imageuri;
-    ImageView mychosenimageview;
+public class ImageFragment extends Fragment {
+    Uri chosenImageUri;
+    ImageView chosenImageView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View thechosenimage= inflater.inflate(R.layout.imagefragmentlayout,container,false);
-        mychosenimageview=thechosenimage.findViewById(R.id.fragimage);
-        imageuri=Uri.parse(getArguments().getString("the image"));
-        mychosenimageview.setImageURI(imageuri);
-        mychosenimageview.setAdjustViewBounds(true);
-        return thechosenimage;
+        View chosenImageLayout= inflater.inflate(R.layout.imagefragmentlayout,container,false);
+        chosenImageView =chosenImageLayout.findViewById(R.id.chosenImageFrag);
+        chosenImageUri =Uri.parse(getArguments().getString("the image"));
+        chosenImageView.setImageURI(chosenImageUri);
+        chosenImageView.setAdjustViewBounds(true);
+        return chosenImageLayout;
     }
 }

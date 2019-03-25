@@ -7,7 +7,7 @@
     tools:context=".CreateMemoryActivity">
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/creatememoryslider"
+        android:id="@+id/createMemorySlider"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/mapfragview"
+        android:id="@+id/mapFragView"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -25,26 +25,26 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Switch
-        android:id="@+id/mediaswitch"
+        android:id="@+id/mediaSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Media files"
         tools:layout_editor_absoluteX="303dp"
         tools:layout_editor_absoluteY="351dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/creatememoryslider"/>
+        app:layout_constraintTop_toBottomOf="@+id/createMemorySlider"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="97dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mediaswitch"
-        android:id="@+id/uploadbtns"
+        app:layout_constraintTop_toBottomOf="@+id/mediaSwitch"
+        android:id="@+id/uploadBtns"
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/gallery_image"
+            android:id="@+id/galleryImage"
             android:layout_width="55dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="23dp"
@@ -58,7 +58,7 @@
             android:src="@drawable/camera_icon"
             android:background="#00000000"
             android:layout_margin="10dp"
-            android:id="@+id/take_pic"
+            android:id="@+id/takePic"
 
             />
         <ImageButton
@@ -67,10 +67,10 @@
             android:src="@drawable/video_upload_icon"
             android:layout_margin="10dp"
             android:background="#00000000"
-            android:id="@+id/upload_video"/>
+            android:id="@+id/uploadVideo"/>
 
         <ImageButton
-            android:id="@+id/record_vid"
+            android:id="@+id/recordVid"
             android:layout_width="55dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"

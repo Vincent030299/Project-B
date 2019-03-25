@@ -12,19 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class capimagefragment extends Fragment {
-    ImageView takenimage;
-    Bitmap mybitmap;
+public class CapImageFragment extends Fragment {
+    ImageView takenImage;
+    Bitmap takenImageBitMap;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View capturedimage=inflater.inflate(R.layout.imagefragmentlayout,container,false);
-        takenimage=capturedimage.findViewById(R.id.fragimage);
+        View capturedImage=inflater.inflate(R.layout.imagefragmentlayout,container,false);
+        takenImage=capturedImage.findViewById(R.id.chosenImageFrag);
         String mymap= getArguments().getString("the cam");
         byte[] mybyte= Base64.decode(mymap,Base64.DEFAULT);
-        mybitmap= BitmapFactory.decodeByteArray(mybyte,0,mybyte.length);
-        takenimage.setImageBitmap(mybitmap);
-        return capturedimage;
+        takenImageBitMap= BitmapFactory.decodeByteArray(mybyte,0,mybyte.length);
+        takenImage.setImageBitmap(takenImageBitMap);
+        return capturedImage;
 
     }
 }

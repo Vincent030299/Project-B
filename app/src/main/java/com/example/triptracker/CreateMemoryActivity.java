@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -38,17 +37,17 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
     private GoogleMap mMap;
     private LatLng point;
-    ViewPager creatememoryslider;
-    private ArrayList<Fragment> chosenviews= new ArrayList<>();
-    private swipeadapter myviewsadapter;
-    private Switch maptoggle;
-    private final int  pick_image_code=10;
-    private final int pick_video_code=11;
-    private final int take_pic_code=12;
-    private final int record_vid_code=13;
-    private ImageButton choose_pic_gallery,choose_vid_gallery,taken_pic,record_vid;
-    private Uri imageuri;
-    private Uri viduri;
+    ViewPager createMemorySlider;
+    private ArrayList<Fragment> chosenViewsArrayList = new ArrayList<>();
+    private SwipeAdapter chosenViewsAdapter;
+    private Switch mapMediaToggle;
+    private final int  PICK_IMAGE_CODE=10;
+    private final int PICK_VIDEO_CODE=11;
+    private final int TAKE_PIC_CODE=12;
+    private final int RECORD_VIDEO_CODE=13;
+    private ImageButton choosePicGallery, chooseVidGallery, takePic, recordVid;
+    private Uri imageUri;
+    private Uri recordedVideoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,53 +71,53 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         params.y = 0;
         getWindow().setAttributes(params);
 
-        final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapfragview);
+        final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragView);
         Objects.requireNonNull(spmf).getMapAsync(this);
 
         //initialize the adapter for the chosen media files
-        myviewsadapter= new swipeadapter(getSupportFragmentManager(),chosenviews);
-        creatememoryslider=findViewById(R.id.creatememoryslider);
-        maptoggle=findViewById(R.id.mediaswitch);
-        choose_pic_gallery=findViewById(R.id.gallery_image);
-        taken_pic=findViewById(R.id.take_pic);
-        choose_vid_gallery=findViewById(R.id.upload_video);
-        record_vid=findViewById(R.id.record_vid);
+        chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+        createMemorySlider =findViewById(R.id.createMemorySlider);
+        mapMediaToggle =findViewById(R.id.mediaSwitch);
+        choosePicGallery =findViewById(R.id.galleryImage);
+        takePic =findViewById(R.id.takePic);
+        chooseVidGallery =findViewById(R.id.uploadVideo);
+        recordVid =findViewById(R.id.recordVid);
 
-        creatememoryslider.setAdapter(myviewsadapter);
-        maptoggle.setTextOn("Map");
+        createMemorySlider.setAdapter(chosenViewsAdapter);
+        mapMediaToggle.setTextOn("Map");
 
-        choose_pic_gallery.setOnClickListener(new View.OnClickListener() {
+        choosePicGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadpic();
+                uploadPic();
             }
         });
-        taken_pic.setOnClickListener(new View.OnClickListener() {
+        takePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takepic();
+                takePic();
             }
         });
-        choose_vid_gallery.setOnClickListener(new View.OnClickListener() {
+        chooseVidGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadvid();
+                uploadVid();
             }
         });
-        record_vid.setOnClickListener(new View.OnClickListener() {
+        recordVid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recordvid();
+                recordVid();
             }
         });
 
         //toggling on and off between the map and the media files
-        maptoggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mapMediaToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.Fragment themapview = fragmentManager.findFragmentById(R.id.mapfragview);
+            android.support.v4.app.Fragment themapview = fragmentManager.findFragmentById(R.id.mapFragView);
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (maptoggle.isChecked()){
+                if (mapMediaToggle.isChecked()){
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.hide(themapview);
                     fragmentTransaction.commit();
@@ -136,100 +135,99 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     }
 
 //starts the activity of choosing a pic from the gallery
-    private void uploadpic() {
+    private void uploadPic() {
         Intent upload= new Intent(Intent.ACTION_GET_CONTENT);
         upload.setType("image/*");
-        startActivityForResult(upload,pick_image_code);
+        startActivityForResult(upload,PICK_IMAGE_CODE);
     }
 
 //starts the activity of taking a pic
-    private void takepic() {
+    private void takePic() {
         Intent takepic=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takepic,take_pic_code);
+        startActivityForResult(takepic,TAKE_PIC_CODE);
     }
 
 //starts the activity of choosing a video from the gallery
-    private void uploadvid() {
+    private void uploadVid() {
         Intent upload_vid= new Intent(Intent.ACTION_GET_CONTENT);
         upload_vid.setType("video/*");
-        startActivityForResult(upload_vid,pick_video_code);
+        startActivityForResult(upload_vid,PICK_VIDEO_CODE);
     }
 
     //starts the activity of recording a video
-    private void recordvid() {
+    private void recordVid() {
         Intent recordvid= new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        startActivityForResult(recordvid,record_vid_code);
+        startActivityForResult(recordvid,RECORD_VIDEO_CODE);
     }
 
     //handels all the data from the called intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode==pick_image_code && resultCode== Activity.RESULT_OK){
-            imageuri=data.getData();
-            if (imageuri==null){
+        if (requestCode==PICK_IMAGE_CODE && resultCode== Activity.RESULT_OK){
+            imageUri =data.getData();
+            if (imageUri ==null){
 
                 Toast.makeText(getApplicationContext(),"please choose an image",Toast.LENGTH_LONG).show();
             }
             else{
                 Bundle args=new Bundle();
-                args.putString("the image",imageuri.toString());
-                imagefragment thefrag= new imagefragment();
-                thefrag.setArguments(args);
-                chosenviews.add(thefrag);
-                myviewsadapter=new swipeadapter(getSupportFragmentManager(),chosenviews);
-                creatememoryslider.setAdapter(myviewsadapter);
+                args.putString("the image", imageUri.toString());
+                ImageFragment chosenImageFragment= new ImageFragment();
+                chosenImageFragment.setArguments(args);
+                chosenViewsArrayList.add(chosenImageFragment);
+                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+                createMemorySlider.setAdapter(chosenViewsAdapter);
             }
         }
 
-        else if (requestCode==pick_video_code && resultCode==Activity.RESULT_OK) {
-            viduri = data.getData();
-            if (viduri == null) {
+        else if (requestCode==PICK_VIDEO_CODE && resultCode==Activity.RESULT_OK) {
+            recordedVideoUri = data.getData();
+            if (recordedVideoUri == null) {
                 Toast.makeText(getApplicationContext(), "please choose a video", Toast.LENGTH_LONG).show();
             } else {
                 Bundle args = new Bundle();
-                args.putString("the video", viduri.toString());
-                vidfragment thefrag = new vidfragment();
-                thefrag.setArguments(args);
-                chosenviews.add(thefrag);
-                myviewsadapter = new swipeadapter(getSupportFragmentManager(), chosenviews);
-                creatememoryslider.setAdapter(myviewsadapter);
+                args.putString("the video", recordedVideoUri.toString());
+                VidFragment chosenVideoFragment = new VidFragment();
+                chosenVideoFragment.setArguments(args);
+                chosenViewsArrayList.add(chosenVideoFragment);
+                chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+                createMemorySlider.setAdapter(chosenViewsAdapter);
             }
         }
 
-        else if (requestCode==take_pic_code && resultCode==Activity.RESULT_OK){
-            Bitmap themap= (Bitmap) data.getExtras().get("data");
-            if(themap==null){
+        else if (requestCode==TAKE_PIC_CODE && resultCode==Activity.RESULT_OK){
+            Bitmap takenImageBitMap= (Bitmap) data.getExtras().get("data");
+            if(takenImageBitMap==null){
                 Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
             }
             else{
                 Bundle args=new Bundle();
-                Bitmap mymap= (Bitmap) data.getExtras().get("data");
-                ByteArrayOutputStream mystream= new ByteArrayOutputStream();
-                mymap.compress(Bitmap.CompressFormat.JPEG,100,mystream);
-                byte[] mybytes= mystream.toByteArray();
-                args.putString("the cam", Base64.encodeToString(mybytes,Base64.DEFAULT));
-                capimagefragment thefrag= new capimagefragment();
-                thefrag.setArguments(args);
-                chosenviews.add(thefrag);
-                myviewsadapter=new swipeadapter(getSupportFragmentManager(),chosenviews);
-                creatememoryslider.setAdapter(myviewsadapter);
+                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
+                takenImageBitMap.compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
+                args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
+                CapImageFragment capturedImageFragment= new CapImageFragment();
+                capturedImageFragment.setArguments(args);
+                chosenViewsArrayList.add(capturedImageFragment);
+                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+                createMemorySlider.setAdapter(chosenViewsAdapter);
             }
 
         }
 
-        else if (requestCode==record_vid_code && resultCode== Activity.RESULT_OK){
-            viduri=data.getData();
-            if (viduri==null){
+        else if (requestCode==RECORD_VIDEO_CODE && resultCode== Activity.RESULT_OK){
+            recordedVideoUri =data.getData();
+            if (recordedVideoUri ==null){
                 Toast.makeText(getApplicationContext(),"please choose a video",Toast.LENGTH_LONG).show();
             }
             else{
                 Bundle args=new Bundle();
-                args.putString("the video",viduri.toString());
-                vidfragment thefrag= new vidfragment();
-                thefrag.setArguments(args);
-                chosenviews.add(thefrag);
-                myviewsadapter=new swipeadapter(getSupportFragmentManager(),chosenviews);
-                creatememoryslider.setAdapter(myviewsadapter);
+                args.putString("the video", recordedVideoUri.toString());
+                VidFragment recordedVideoFragment= new VidFragment();
+                recordedVideoFragment.setArguments(args);
+                chosenViewsArrayList.add(recordedVideoFragment);
+                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+                createMemorySlider.setAdapter(chosenViewsAdapter);
             }
 
         }

@@ -10,33 +10,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.VideoView;
 
-public class vidfragment extends Fragment {
-    VideoView thechosenvidview;
-    Uri chosenviduri;
+public class VidFragment extends Fragment {
+    VideoView chosenVideoView;
+    Uri chosenVideoUri;
     int clicks=0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View thechosenvid=inflater.inflate(R.layout.vidfragmentlayout,container,false);
-        thechosenvidview=thechosenvid.findViewById(R.id.fragvid);
-        chosenviduri= Uri.parse(getArguments().getString("the video"));
-        thechosenvidview.setVideoURI(chosenviduri);
-        thechosenvidview.seekTo(1);
-        thechosenvidview.setOnClickListener(new View.OnClickListener() {
+        View chosenVideoLayout=inflater.inflate(R.layout.vidfragmentlayout,container,false);
+        chosenVideoView =chosenVideoLayout.findViewById(R.id.chosenVideoFrag);
+        chosenVideoUri = Uri.parse(getArguments().getString("the video"));
+        chosenVideoView.setVideoURI(chosenVideoUri);
+        chosenVideoView.seekTo(1);
+        chosenVideoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (clicks==0){
-                    thechosenvidview.start();
+                    chosenVideoView.start();
                     clicks++;
                 }
                 else{
-                    thechosenvidview.pause();
+                    chosenVideoView.pause();
                     clicks=0;
                 }
 
             }
         });
-        return thechosenvid;
+        return chosenVideoLayout;
 
     }
 }

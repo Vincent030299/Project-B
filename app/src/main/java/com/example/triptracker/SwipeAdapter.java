@@ -6,37 +6,37 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
-public class swipeadapter extends FragmentStatePagerAdapter {
-    ArrayList<Fragment> myviews;
+public class SwipeAdapter extends FragmentStatePagerAdapter {
+    ArrayList<Fragment> chosenViews;
 
-    public swipeadapter(FragmentManager fm, ArrayList<Fragment> myviews1) {
+    public SwipeAdapter(FragmentManager fm, ArrayList<Fragment> passedChosenViews) {
         super(fm);
-        this.myviews = myviews1;
+        this.chosenViews = passedChosenViews;
     }
 
     public int size() {
-        return myviews.size();
+        return chosenViews.size();
     }
 
     public Fragment set(int index, Fragment element) {
-        return myviews.set(index, element);
+        return chosenViews.set(index, element);
     }
 
     public void add(Fragment element) {
-        myviews.add(element);
+        chosenViews.add(element);
     }
 
     public Fragment remove(int index) {
-        return myviews.remove(index);
+        return chosenViews.remove(index);
     }
 
     @Override
     public Fragment getItem(int i) {
-        return myviews.get(i);
+        return chosenViews.get(i);
     }
 
     @Override
     public int getCount() {
-        return myviews.size();
+        return chosenViews.size();
     }
 }

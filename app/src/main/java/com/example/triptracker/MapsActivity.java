@@ -53,20 +53,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
             @Override
             public void onMapClick(LatLng point) {
                 //placeholders until create marker window gets added
                 String title = "title";
                 String desc = "desc";
-
                 createMarker(point, title, desc);
                 createMemory();
             }
         });
-
     }
 
     public void createMemory() {

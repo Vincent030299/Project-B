@@ -28,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
             return false;
         }
     };
+    
     public void openActivity(Class className) {
         Intent intent = new Intent(this, className);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

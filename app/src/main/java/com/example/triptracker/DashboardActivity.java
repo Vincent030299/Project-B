@@ -45,5 +45,4 @@ public class DashboardActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
-
 }

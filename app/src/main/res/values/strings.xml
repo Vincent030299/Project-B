@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Trip Tracker</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_dashboard_activty">DashboardActivty</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>

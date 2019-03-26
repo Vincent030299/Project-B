@@ -35,6 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

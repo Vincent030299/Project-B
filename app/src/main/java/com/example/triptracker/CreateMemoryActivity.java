@@ -76,13 +76,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
         //initialize the adapter for the chosen media files
         chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+        //initialize the used components in the layout file
         createMemorySlider =findViewById(R.id.createMemorySlider);
         mapMediaToggle =findViewById(R.id.mediaSwitch);
         choosePicGallery =findViewById(R.id.galleryImage);
         takePic =findViewById(R.id.takePic);
         chooseVidGallery =findViewById(R.id.uploadVideo);
         recordVid =findViewById(R.id.recordVid);
-
+        //setting the adapter for the slider view
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");
 

@@ -79,5 +79,44 @@
             android:background="#00000000"
             android:src="@drawable/video_icon" />
     </LinearLayout>
+    <EditText
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/uploadBtns"
+        android:hint="@string/hint_memory_title"
+        android:id="@+id/memoryTitle"
+        android:inputType="text"/>
+    <EditText
+        android:layout_width="269dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memoryTitle"
+        android:id="@+id/memoryDescription"
+        android:hint="@string/hint_memory_description"
+        android:gravity="bottom"
+        android:inputType="textMultiLine"
+        />
 
+    <DatePicker
+        android:id="@+id/memoryDate"
+        style="@android:style/Widget.DatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="65dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="5dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/memoryDescription" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/memoryDescription"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/savememoryiconblue"
+        android:background="#00000000"/>
 </android.support.constraint.ConstraintLayout>

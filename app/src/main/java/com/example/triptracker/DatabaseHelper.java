@@ -11,14 +11,14 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
     private static final String TABLE_NAME = "Memory";
-    private static final String TABLE_NAME_VIDEOS = "Videos";
-    private static final String TABLE_NAME_PICTURE = "Picture";
-    private static final String COL_NAME = "Name";
-    private static final String COL_ID = "ID";
-    private static final String COL_DATE = "Date";
-    private static final String COL_DESCRIPTION = "Description";
-    private static final String COL_PATH = "path";
+    private static final String COL_MEMORY_NAME = "memory_name";
     private static final String COL_MEMORY_ID = "memory_id";
+    private static final String COL_MEMORY_DATE = "memory_date";
+    private static final String COL_MEMORY_DESCRIPTION = "memory_description";
+    private static final String COL_MEDIA_PATH = "media_path";
+    private static final String COL_MARKER_LAT = "marker_lat";
+    private static final String COL_MARKER_LONG = "marker_long";
+
 
     /*
     constructor is getting used when i implement the one to many relation thats why the error at super
@@ -30,15 +30,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_NAME +" TEXT,"+ COL_DESCRIPTION + "TEXT," + COL_DATE + "TEXT)";
-        String createVideos = "CREATE TABLE " + TABLE_NAME_PICTURE + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_PATH +" TEXT,"+ COL_MEMORY_ID + "INT,)";
-        String createPicture = "CREATE TABLE " + TABLE_NAME_VIDEOS + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_PATH +" TEXT,"+ COL_MEMORY_ID + "INT,)";
+                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + "TEXT," + COL_MEMORY_DATE + "TEXT," + COL_MEDIA_PATH + "TEXT," + COL_MARKER_LAT + "REAL," + COL_MARKER_LONG + "REAL)";
         db.execSQL(createTable);
-        db.execSQL(createPicture);
-        db.execSQL(createVideos);
-
     }
 
     @Override
@@ -50,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addData(String item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_NAME, item);
+        contentValues.put(COL_MEMORY_NAME, item);
         Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -80,8 +73,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public Cursor getItemID(String name){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + COL_ID + " FROM " + TABLE_NAME +
-                " WHERE " + COL_NAME + " = '" + name + "'";
+        String query = "SELECT " + COL_MEMORY_ID + " FROM " + TABLE_NAME +
+                " WHERE " + COL_MEMORY_NAME + " = '" + name + "'";
         Cursor data = db.rawQuery(query, null);
         return data;
     }
@@ -94,9 +87,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public void updateName(String newName, int id, String oldName){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + TABLE_NAME + " SET " + COL_NAME +
-                " = '" + newName + "' WHERE " + COL_ID + " = '" + id + "'" +
-                " AND " + COL_NAME + " = '" + oldName + "'";
+        String query = "UPDATE " + TABLE_NAME + " SET " + COL_MEMORY_NAME +
+                " = '" + newName + "' WHERE " + COL_MEMORY_ID + " = '" + id + "'" +
+                " AND " + COL_MEMORY_NAME + " = '" + oldName + "'";
         Log.d(TAG, "updateName: query: " + query);
         Log.d(TAG, "updateName: Setting name to " + newName);
         db.execSQL(query);
@@ -110,8 +103,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteName(int id, String name){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + TABLE_NAME + " WHERE "
-                + COL_ID + " = '" + id + "'" +
-                " AND " + COL_NAME + " = '" + name + "'";
+                + COL_MEMORY_ID + " = '" + id + "'" +
+                " AND " + COL_MEMORY_NAME + " = '" + name + "'";
         Log.d(TAG, "deleteName: query: " + query);
         Log.d(TAG, "deleteName: Deleting " + name + " from database.");
         db.execSQL(query);

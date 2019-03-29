@@ -18,8 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_MEDIA_PATH = "media_path";
     private static final String COL_MARKER_LAT = "marker_lat";
     private static final String COL_MARKER_LONG = "marker_long";
-
-
+    
     /*
     constructor is getting used when i implement the one to many relation thats why the error at super
     */

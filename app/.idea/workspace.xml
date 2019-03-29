@@ -13,11 +13,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="468c359b-a049-4d6d-9e81-65c641df45ec" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/../.gradle/" />
@@ -105,30 +101,30 @@
         <counts>
           <entry key="gradle" value="3" />
           <entry key="java" value="7" />
-          <entry key="xml" value="5" />
+          <entry key="xml" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Groovy" value="3" />
           <entry key="JAVA" value="7" />
-          <entry key="XML" value="5" />
+          <entry key="XML" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="1" />
           <entry key="java" value="98" />
-          <entry key="txt" value="146" />
-          <entry key="xml" value="695" />
+          <entry key="txt" value="194" />
+          <entry key="xml" value="786" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="1" />
           <entry key="JAVA" value="98" />
-          <entry key="PLAIN_TEXT" value="146" />
-          <entry key="XML" value="695" />
+          <entry key="PLAIN_TEXT" value="194" />
+          <entry key="XML" value="786" />
         </counts>
       </usages-collector>
     </session>
@@ -144,8 +140,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="108" column="37" selection-start-line="108" selection-start-column="37" selection-end-line="108" selection-end-column="37" />
+            <state relative-caret-position="184">
+              <caret line="107" column="37" selection-start-line="107" selection-start-column="37" selection-end-line="107" selection-end-column="37" />
             </state>
           </provider>
           <provider editor-type-id="android-designer2" />
@@ -218,7 +214,13 @@
             <path>
               <item name="Project-B" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+            </path>
+            <path>
+              <item name="Project-B" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
             <path>
               <item name="Project-B" type="1abcf292:AndroidViewProjectNode" />
@@ -366,12 +368,12 @@
       <option name="project" value="LOCAL" />
       <updated>1553893849433</updated>
     </task>
-    <task id="LOCAL-00005" summary="applied hotfixes of the class imageFragment.">
-      <created>1553527459285</created>
+    <task id="LOCAL-00005" summary="adjusted the position of the datepicker">
+      <created>1553896204485</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1553527459285</updated>
+      <updated>1553896204486</updated>
     </task>
     <task id="LOCAL-00006" summary="fixing ImageFragment">
       <created>1553529357792</created>
@@ -394,7 +396,7 @@
       <option name="project" value="LOCAL" />
       <updated>1553544434770</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -471,7 +473,8 @@
     <MESSAGE value="changed file name" />
     <MESSAGE value="added title and description text fields.&#10;added date picker and save memory button." />
     <MESSAGE value="fixed layout problem with other devices (samsung s9)" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed layout problem with other devices (samsung s9)" />
+    <MESSAGE value="adjusted the position of the datepicker" />
+    <option name="LAST_COMMIT_MESSAGE" value="adjusted the position of the datepicker" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../.idea/misc.xml">
@@ -558,10 +561,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="108" column="37" selection-start-line="108" selection-start-column="37" selection-end-line="108" selection-end-column="37" />
+        <state relative-caret-position="184">
+          <caret line="107" column="37" selection-start-line="107" selection-start-column="37" selection-end-line="107" selection-end-column="37" />
         </state>
       </provider>
       <provider editor-type-id="android-designer2" />

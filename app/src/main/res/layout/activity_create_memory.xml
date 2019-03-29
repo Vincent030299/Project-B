@@ -105,20 +105,19 @@
         style="@android:style/Widget.DatePicker"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
-
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="32dp"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/memoryDescription" />
+
     <ImageButton
+        android:id="@+id/saveMemoryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/memoryDescription"
-        android:layout_marginEnd="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/savememoryiconblue"
+        android:layout_marginLeft="15dp"
         android:background="#00000000"
-        />
+        android:src="@drawable/savememoryiconblue"
+        app:layout_constraintStart_toEndOf="@id/memoryDate"
+        app:layout_constraintTop_toBottomOf="@id/memoryDescription" />
 </android.support.constraint.ConstraintLayout>

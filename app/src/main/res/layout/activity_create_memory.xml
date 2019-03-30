@@ -14,6 +14,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.viewpagerindicator.CirclePageIndicator
+        android:paddingTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/uploadBtns"
+        android:id="@+id/tabDots"/>
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapFragView"
         android:name="com.google.android.gms.maps.SupportMapFragment"

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -45,7 +48,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int PICK_VIDEO_CODE=11;
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
-    private ImageButton choosePicGallery, chooseVidGallery, takePic, recordVid;
+    private ImageButton choosePicGallery, chooseVidGallery, takePic, recordVid,saveMemoryButton;
+    private TextInputLayout memoryTitle,memoryDescription;
+    private DatePicker memoryDate;
     private Uri imageUri;
     private Uri recordedVideoUri;
 
@@ -83,6 +88,10 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         takePic =findViewById(R.id.takePic);
         chooseVidGallery =findViewById(R.id.uploadVideo);
         recordVid =findViewById(R.id.recordVid);
+        saveMemoryButton=findViewById(R.id.saveMemoryBtn);
+        memoryDescription=findViewById(R.id.memoryDescription);
+        memoryTitle=findViewById(R.id.memoryTitle);
+        memoryDate=findViewById(R.id.memoryDate);
         //setting the adapter for the slider view
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");

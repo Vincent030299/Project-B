@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.gwtmaterialdesign:gwt-material-jquery:2.0-rc5@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.gwtmaterialdesign/gwt-material-jquery/2.0-rc5/160474b167d20ff0de4bfbb2dfe6c83d54bc742c/gwt-material-jquery-2.0-rc5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.gwtmaterialdesign/gwt-material-jquery/2.0-rc5/1a1cad6c936630afbad1abfd34457e90843e1df9/gwt-material-jquery-2.0-rc5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

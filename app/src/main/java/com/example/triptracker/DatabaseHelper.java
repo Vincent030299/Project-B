@@ -49,7 +49,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MEDIA_PATH, mediaPath);
         contentValues.put(COL_MARKER_LAT, markerLat);
         contentValues.put(COL_MARKER_LONG, markerLong);
-
         Log.d(TAG, "addData: Adding " + memoryName + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
 

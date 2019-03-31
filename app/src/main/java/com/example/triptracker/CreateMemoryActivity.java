@@ -226,8 +226,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             recordedVideoUri =data.getData();
             if (recordedVideoUri ==null){
                 Toast.makeText(getApplicationContext(),"please choose a video",Toast.LENGTH_LONG).show();
-            }
-            else{
+            } else {
                 Bundle args=new Bundle();
                 args.putString("the video", recordedVideoUri.toString());
                 VidFragment recordedVideoFragment= new VidFragment();
@@ -236,10 +235,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
                 createMemorySlider.setAdapter(chosenViewsAdapter);
             }
-
-        }
-
-        else {
+        } else {
             Toast.makeText(getApplicationContext(),"please choose a video or an image",Toast.LENGTH_LONG).show();
         }
     }
@@ -247,10 +243,11 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-
+        Intent intent = getIntent();
+        point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
                 //placeholder latlng until intent is added
-                .position(new LatLng(51.9225, 4.47917))
+                .position(point)
                 .draggable(true));
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -264,7 +261,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-
                 point = marker.getPosition();
                 Log.d("New location", String.valueOf(point));
             }

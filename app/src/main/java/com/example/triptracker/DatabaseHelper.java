@@ -3,10 +3,10 @@ package com.example.triptracker;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
@@ -15,7 +15,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_MEMORY_ID = "memory_id";
     private static final String COL_MEMORY_DATE = "memory_date";
     private static final String COL_MEMORY_DESCRIPTION = "memory_description";
-    private static final String COL_MEDIA_PATH = "media_path";
+    private static final String COL_IMAGE_URI = "image_uri";
+    private static final String COL_IMAGE_BITMAP = "image_bitmap";
+    private static final String COL_VIDEO_URI= "video_uri";
     private static final String COL_MARKER_LAT = "marker_lat";
     private static final String COL_MARKER_LONG = "marker_long";
 
@@ -29,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + "TEXT," + COL_MEMORY_DATE + "TEXT," + COL_MEDIA_PATH + "TEXT," + COL_MARKER_LAT + "REAL," + COL_MARKER_LONG + "REAL)";
+                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_IMAGE_URI + " TEXT," + COL_IMAGE_BITMAP + " TEXT," + COL_VIDEO_URI + " TEXT," + COL_MARKER_LAT + " REAL," + COL_MARKER_LONG + " REAL)";
         db.execSQL(createTable);
     }
 
@@ -40,13 +42,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert 1 memory to the database
-    public boolean addData(String memoryName, String memoryDate, String memoryDescription, String mediaPath, Double markerLat, Double markerLong) {
+    public boolean addData(String memoryName, String memoryDate, String memoryDescription, String imageUri,String imageBitmap,String videoUri, Double markerLat, Double markerLong) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_MEMORY_NAME, memoryName);
         contentValues.put(COL_MEMORY_DATE, memoryDate);
         contentValues.put(COL_MEMORY_DESCRIPTION, memoryDescription);
-        contentValues.put(COL_MEDIA_PATH, mediaPath);
+        contentValues.put(COL_IMAGE_URI, imageUri);
+        contentValues.put(COL_IMAGE_BITMAP, imageBitmap);
+        contentValues.put(COL_VIDEO_URI, videoUri);
         contentValues.put(COL_MARKER_LAT, markerLat);
         contentValues.put(COL_MARKER_LONG, markerLong);
         Log.d(TAG, "addData: Adding " + memoryName + " to " + TABLE_NAME);
@@ -90,12 +94,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param id
      * @param oldName
      */
-    public void updateName(String newName, int id, String oldName, String newDate, String newDescription, String newMediaPath, Double newMarkerLat, Double newMarkerLong){
+    public void updateName(String newName, int id, String oldName, String newDate, String newDescription, String newImageUri,String newImageBitmap,String newVideoUri, Double newMarkerLat, Double newMarkerLong){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + TABLE_NAME + " SET " + COL_MEMORY_NAME +
                 " = '" + newName + "'," + COL_MEMORY_DATE + " = '"+ newDate +
                 "', " + COL_MEMORY_DESCRIPTION + "= '" + newDescription +
-                "', " + COL_MEDIA_PATH + "= '" + newMediaPath +
+                "', " + COL_IMAGE_URI + "= '" + newImageUri +
+                "', " + COL_IMAGE_BITMAP + "= '" + newImageBitmap +
+                "', " + COL_VIDEO_URI + "= '" + newVideoUri +
                 "', " + COL_MARKER_LAT + "= '" + newMarkerLat +
                 "', " + COL_MARKER_LONG + "= '" + newMarkerLong +
                 "' WHERE " + COL_MEMORY_ID + " = '" + id + "'" +

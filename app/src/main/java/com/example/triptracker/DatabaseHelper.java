@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_MEDIA_PATH = "media_path";
     private static final String COL_MARKER_LAT = "marker_lat";
     private static final String COL_MARKER_LONG = "marker_long";
-    
+
     /*
     constructor is getting used when i implement the one to many relation thats why the error at super
     */
@@ -39,11 +39,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String item) {
+    // Insert 1 memory to the database
+    public boolean addData(String memoryName, String memoryDate, String memoryDescription, String mediaPath, Double markerLat, Double markerLong) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MEMORY_NAME, item);
-        Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
+        contentValues.put(COL_MEMORY_NAME, memoryName);
+        contentValues.put(COL_MEMORY_DATE, memoryDate);
+        contentValues.put(COL_MEMORY_DESCRIPTION, memoryDescription);
+        contentValues.put(COL_MEDIA_PATH, mediaPath);
+        contentValues.put(COL_MARKER_LAT, markerLat);
+        contentValues.put(COL_MARKER_LONG, markerLong);
+        Log.d(TAG, "addData: Adding " + memoryName + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
 
         //if date as inserted incorrectly it will return -1
@@ -66,28 +72,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns only the ID that matches the name passed in
-     * @param name
+     * Returns one Memory
+     * @param id
      * @return
      */
-    public Cursor getItemID(String name){
+    public Cursor getItem(Integer id){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + COL_MEMORY_ID + " FROM " + TABLE_NAME +
-                " WHERE " + COL_MEMORY_NAME + " = '" + name + "'";
+        String query = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + COL_MEMORY_ID + " = '" + id + "'";
         Cursor data = db.rawQuery(query, null);
         return data;
     }
 
     /**
-     * Updates the name field
+     * Updates the memory
      * @param newName
      * @param id
      * @param oldName
      */
-    public void updateName(String newName, int id, String oldName){
+    public void updateName(String newName, int id, String oldName, String newDate, String newDescription, String newMediaPath, Double newMarkerLat, Double newMarkerLong){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + TABLE_NAME + " SET " + COL_MEMORY_NAME +
-                " = '" + newName + "' WHERE " + COL_MEMORY_ID + " = '" + id + "'" +
+                " = '" + newName + "'," + COL_MEMORY_DATE + " = '"+ newDate +
+                "', " + COL_MEMORY_DESCRIPTION + "= '" + newDescription +
+                "', " + COL_MEDIA_PATH + "= '" + newMediaPath +
+                "', " + COL_MARKER_LAT + "= '" + newMarkerLat +
+                "', " + COL_MARKER_LONG + "= '" + newMarkerLong +
+                "' WHERE " + COL_MEMORY_ID + " = '" + id + "'" +
                 " AND " + COL_MEMORY_NAME + " = '" + oldName + "'";
         Log.d(TAG, "updateName: query: " + query);
         Log.d(TAG, "updateName: Setting name to " + newName);

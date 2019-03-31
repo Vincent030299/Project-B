@@ -192,7 +192,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             String chosenvideos=recordedVideoUri.toString();
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
 
-            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, chosenImages, takenImages, chosenvideos, 0.0, 0.0)){
+            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, chosenImages, takenImages, chosenvideos, point.latitude, point.longitude)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
             }
             else{

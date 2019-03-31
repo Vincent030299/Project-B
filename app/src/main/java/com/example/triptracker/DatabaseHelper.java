@@ -95,9 +95,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "UPDATE " + TABLE_NAME + " SET " + COL_MEMORY_NAME +
                 " = '" + newName + "'," + COL_MEMORY_DATE + " = '"+ newDate +
                 "', " + COL_MEMORY_DESCRIPTION + "= '" + newDescription +
-                "', " + COL_MEDIA_PATH + "= '" + COL_MEDIA_PATH +
-                "', " + COL_MARKER_LAT + "= '" + COL_MARKER_LAT +
-                "', " + COL_MARKER_LONG + "= '" + COL_MARKER_LONG +
+                "', " + COL_MEDIA_PATH + "= '" + newMediaPath +
+                "', " + COL_MARKER_LAT + "= '" + newMarkerLat +
+                "', " + COL_MARKER_LONG + "= '" + newMarkerLong +
                 "' WHERE " + COL_MEMORY_ID + " = '" + id + "'" +
                 " AND " + COL_MEMORY_NAME + " = '" + oldName + "'";
         Log.d(TAG, "updateName: query: " + query);

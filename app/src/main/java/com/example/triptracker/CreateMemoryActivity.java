@@ -87,11 +87,11 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");
-        CirclePageIndicator myindicator= findViewById(R.id.tabDots);
-        myindicator.setFillColor(Color.rgb(20,145,218));
-        myindicator.setRadius(12.0F);
-        myindicator.setStrokeColor(Color.rgb(20,145,218));
-        myindicator.setViewPager(createMemorySlider);
+        CirclePageIndicator pageIndicator= findViewById(R.id.tabDots);
+        pageIndicator.setFillColor(Color.rgb(20,145,218));
+        pageIndicator.setRadius(12.0F);
+        pageIndicator.setStrokeColor(Color.rgb(20,145,218));
+        pageIndicator.setViewPager(createMemorySlider);
 
         choosePicGallery.setOnClickListener(new View.OnClickListener() {
             @Override

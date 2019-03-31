@@ -32,9 +32,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Button createMemoryButton;
-    private boolean mLocationPermissionGranted;
     private final int REQUEST_LOCATION_PERMISSION = 1;
-    private LatLng point;
     private LocationManager locationManager;
     private LatLng userLocation;
 
@@ -42,6 +40,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -54,7 +57,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             double latitude = location.getLatitude();
                             double longitude = location.getLongitude();
                             userLocation = new LatLng(latitude, longitude);
-                            Log.d("swag", "onLocationChanged: ");
                         }
 
                         @Override
@@ -73,17 +75,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     });
         }
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         createMemoryButton = findViewById(R.id.createMemoryButton);
-        createMemoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMemoryActivity(point);
-            }
-        });
     }
 
     public void openMemoryActivity(LatLng point) {
@@ -123,10 +118,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 openCreateMemoryActivity(point);
             }
         });
+        createMemoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMemoryActivity(userLocation);
+            }
+        });
     }
 
     public void openCreateMemoryActivity(LatLng point) {
-
         Intent intent = new Intent(this, CreateMemoryActivity.class);
         intent.putExtra("location", point);
         startActivityForResult(intent, 1);
@@ -145,6 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -175,6 +176,3 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 }
-
-
-

@@ -64,7 +64,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_memory);
 
-
         //Get the screen size
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -319,10 +318,11 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-
+        Intent intent = getIntent();
+        point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
                 //placeholder latlng until intent is added
-                .position(new LatLng(51.9225, 4.47917))
+                .position(point)
                 .draggable(true));
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -336,7 +336,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-
                 point = marker.getPosition();
                 Log.d("New location", String.valueOf(point));
             }

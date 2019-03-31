@@ -3,6 +3,7 @@ package com.example.triptracker;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -95,6 +97,11 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         //setting the adapter for the slider view
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");
+        CirclePageIndicator pageIndicator= findViewById(R.id.tabDots);
+        pageIndicator.setFillColor(Color.rgb(20,145,218));
+        pageIndicator.setRadius(12.0F);
+        pageIndicator.setStrokeColor(Color.rgb(20,145,218));
+        pageIndicator.setViewPager(createMemorySlider);
 
         choosePicGallery.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -4,89 +4,169 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
     tools:context=".CreateMemoryActivity">
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/createMemorySlider"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:id="@+id/mediaFilesLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/createMemorySlider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+ />
+    </LinearLayout>
+
 
     <com.viewpagerindicator.CirclePageIndicator
-        android:paddingTop="8dp"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/uploadBtns"
+        app:layout_constraintBottom_toTopOf="@id/uploadBtns"
         android:id="@+id/tabDots"/>
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/mapFragView"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        class="com.google.android.gms.maps.SupportMapFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:id="@+id/mapLayout">
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mapFragView"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
     <Switch
         android:id="@+id/mediaSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Media files"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mediaFilesLayout"
         tools:layout_editor_absoluteX="303dp"
         tools:layout_editor_absoluteY="351dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createMemorySlider"/>
+        android:theme="@style/AppThemeBlue"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="97dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mediaSwitch"
         android:id="@+id/uploadBtns"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mediaFilesLayout"
+        android:layout_marginTop="15dp">
 
         <ImageButton
             android:id="@+id/galleryImage"
             android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="23dp"
-            android:layout_marginRight="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
             android:background="#00000000"
             android:src="@drawable/gallery_icon" />
 
         <ImageButton
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/camera_icon"
-            android:background="#00000000"
-            android:layout_margin="10dp"
             android:id="@+id/takePic"
-
-            />
-        <ImageButton
             android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:src="@drawable/video_upload_icon"
             android:layout_margin="10dp"
+            android:layout_weight="1"
             android:background="#00000000"
-            android:id="@+id/uploadVideo"/>
+            android:src="@drawable/camera_icon" />
+
+        <ImageButton
+            android:id="@+id/uploadVideo"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:src="@drawable/video_upload_icon" />
 
         <ImageButton
             android:id="@+id/recordVid"
             android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
             android:background="#00000000"
             android:src="@drawable/video_icon" />
+
     </LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/memoryTitle"
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/uploadBtns"
+        android:hint="@string/hint_memory_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/blueapp"
+        android:theme="@style/AppThemeBlue"
+        android:textColorHint="@color/blueapp"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textStyle="bold"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="269dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memoryTitle"
+        android:hint="@string/hint_memory_description"
+        android:id="@+id/memoryDescription"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textColorHint="@color/blueapp"
+        app:boxStrokeColor="@color/blueapp"
+        android:theme="@style/AppThemeBlue"
+
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine" />
+    </android.support.design.widget.TextInputLayout>
+    <LinearLayout
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/memoryDescription">
+
+        <DatePicker
+            android:id="@+id/memoryDate"
+            style="@android:style/Widget.DatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <ImageButton
+            android:id="@+id/saveMemoryBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="#00000000"
+            android:src="@drawable/savememoryiconblue" />
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

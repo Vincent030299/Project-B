@@ -1,20 +1,42 @@
 package com.example.triptracker;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import android.widget.Button;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
+    private Button createMemoryButton;
+    private final int REQUEST_LOCATION_PERMISSION = 1;
+    private LocationManager locationManager;
+    private LatLng userLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +47,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return; }
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
+                    new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            userLocation = new LatLng(latitude, longitude);
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+
+                        }
+                    });
+        }
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        createMemoryButton = findViewById(R.id.createMemoryButton);
+    }
+
+    public void openMemoryActivity(LatLng point) {
+        Intent intent = new Intent(this, CreateMemoryActivity.class);
+        intent.putExtra("location", point);
+        startActivityForResult(intent, 1);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -52,23 +113,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        requestLocationPermission();
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                //placeholders until create marker window gets added
-                String title = "title";
-                String desc = "desc";
-                createMarker(point, title, desc);
-                createMemory();
+                openCreateMemoryActivity(point);
+            }
+        });
+        createMemoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMemoryActivity(userLocation);
             }
         });
     }
 
-    public void createMemory() {
+    public void openCreateMemoryActivity(LatLng point) {
         Intent intent = new Intent(this, CreateMemoryActivity.class);
-        startActivity(intent);
-    }
+        intent.putExtra("location", point);
+        startActivityForResult(intent, 1);
 
+    }
     public void createMarker(LatLng point, String title, String desc) {
         mMap.addMarker(new MarkerOptions()
                 .position(point)
@@ -82,6 +147,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @SuppressLint("MissingPermission")
+    @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
+    public void requestLocationPermission() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if(EasyPermissions.hasPermissions(this, perms)) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                LatLng point = data.getParcelableExtra("location");
+                String title = data.getStringExtra("title");
+                String desc = data.getStringExtra("description");
+                createMarker(point, title, desc);
+            }
+        }
+    }
 }
-
-

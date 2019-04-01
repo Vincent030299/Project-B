@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.quanqi:android-view-pager-indicator:0.9.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/android-view-pager-indicator-0.9.0.aar/0a28dce08ad3c99d3f5099d538915981/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/android-view-pager-indicator-0.9.0.aar/0a28dce08ad3c99d3f5099d538915981/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.quanqi/android-view-pager-indicator/0.9.0/441de1c6347990299941c10f78e4a96923a11537/android-view-pager-indicator-0.9.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

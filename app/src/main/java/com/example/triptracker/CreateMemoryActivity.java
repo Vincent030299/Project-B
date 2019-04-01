@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +21,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -47,9 +52,15 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int PICK_VIDEO_CODE=11;
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
-    private ImageButton choosePicGallery, chooseVidGallery, takePic, recordVid;
-    private Uri imageUri;
-    private Uri recordedVideoUri;
+    private ImageButton choosePicGallery, chooseVidGallery, takePic, recordVid,saveMemoryButton;
+    private TextInputLayout memoryTitle,memoryDescription;
+    private DatePicker memoryDate;
+    private int imageAmount=0, videoAmount=0, bitmapsAmount=0;
+    private Uri[] imageUri = new Uri[imageAmount];
+    private Uri[] recordedVideoUri= new Uri[videoAmount];
+    private Bitmap[] imageBitmaps= new Bitmap[bitmapsAmount];
+    private int currentDay,currentMonth,currentYear;
+    private Fragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +89,33 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
         //initialize the adapter for the chosen media files
         chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+        //initialize the used components in the layout file
         createMemorySlider =findViewById(R.id.createMemorySlider);
         mapMediaToggle =findViewById(R.id.mediaSwitch);
         choosePicGallery =findViewById(R.id.galleryImage);
         takePic =findViewById(R.id.takePic);
         chooseVidGallery =findViewById(R.id.uploadVideo);
         recordVid =findViewById(R.id.recordVid);
+        saveMemoryButton=findViewById(R.id.saveMemoryBtn);
+        memoryDescription=findViewById(R.id.memoryDescription);
+        memoryTitle=findViewById(R.id.memoryTitle);
+        memoryDate=findViewById(R.id.memoryDate);
+        mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
+        LinearLayout mapLayout= findViewById(R.id.mapLayout);
+        LinearLayout mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
 
+        //adjusting the layout parameters according to the user's screen
+        ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((int)(screenWidth*0.8),(int)(screenHeight*.8*.35));
+        ConstraintLayout.LayoutParams mediafilesSliderParams= new ConstraintLayout.LayoutParams((int)(screenWidth*0.8),(int)(screenHeight*.8*.35));
+        mediaFilesLayout.setLayoutParams(mediafilesSliderParams);
+        mediaFilesLayout.requestLayout();
+        mapLayout.setLayoutParams(mapsLayoutParams);
+        mapLayout.requestLayout();
+        currentDay=memoryDate.getDayOfMonth();
+        currentMonth=memoryDate.getMonth();
+        currentYear=memoryDate.getYear();
+
+        //setting the adapter for the slider view
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");
         CirclePageIndicator pageIndicator= findViewById(R.id.tabDots);
@@ -93,6 +124,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         pageIndicator.setStrokeColor(Color.rgb(20,145,218));
         pageIndicator.setViewPager(createMemorySlider);
 
+        saveMemoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveMemory();
+            }
+        });
         choosePicGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,11 +174,46 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 }
             }
         });
-
-
     }
 
-//starts the activity of choosing a pic from the gallery
+    private void saveMemory() {
+        int chosenDay= memoryDate.getDayOfMonth();
+        int chosenMonth= memoryDate.getMonth();
+        int chosenYear=memoryDate.getYear();
+        if (memoryTitle.getEditText().getText().length()==0){
+            Toast.makeText(getApplicationContext(),"Please enter a title",Toast.LENGTH_SHORT).show();
+        }
+        else if (memoryDescription.getEditText().getText().length()==0){
+            Toast.makeText(getApplicationContext(),"Please enter a description",Toast.LENGTH_SHORT).show();
+        }
+        else if ((chosenDay>currentDay & chosenMonth>currentMonth & chosenYear>currentYear)
+                |(chosenDay>currentDay & chosenMonth==currentMonth & currentYear==chosenYear)
+                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
+                |(chosenDay==currentDay & currentMonth==chosenMonth & chosenYear>currentYear)){
+            Toast.makeText(getApplicationContext(),"Please choose another date",Toast.LENGTH_SHORT).show();
+        }
+        else if(chosenViewsArrayList.size()==0){
+            Toast.makeText(getApplicationContext(),"Please choose an image or a video",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            String currentMemoryTitle=memoryTitle.getEditText().getText().toString();
+            String currentMemoryDescription= memoryDescription.getEditText().getText().toString();
+            String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
+            String chosenImages= imageUri.toString();
+            String takenImages= imageBitmaps.toString();
+            String chosenvideos=recordedVideoUri.toString();
+            DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
+
+            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, chosenImages, takenImages, chosenvideos, point.latitude, point.longitude)){
+                Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //starts the activity of choosing a pic from the gallery
     private void uploadPic() {
         Intent upload= new Intent(Intent.ACTION_GET_CONTENT);
         upload.setType("image/*");
@@ -171,14 +243,16 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode==PICK_IMAGE_CODE && resultCode== Activity.RESULT_OK){
-            imageUri =data.getData();
-            if (imageUri ==null){
+            if (data.getData() ==null){
 
                 Toast.makeText(getApplicationContext(),"please choose an image",Toast.LENGTH_LONG).show();
             }
             else{
+                imageAmount=imageAmount+1;
+                imageUri=new Uri[imageAmount];
+                imageUri[imageUri.length-1]=data.getData();
                 Bundle args=new Bundle();
-                args.putString("the image", imageUri.toString());
+                args.putString("the image", imageUri[imageUri.length-1].toString());
                 ImageFragment chosenImageFragment= new ImageFragment();
                 chosenImageFragment.setArguments(args);
                 chosenViewsArrayList.add(chosenImageFragment);
@@ -188,12 +262,15 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
 
         else if (requestCode==PICK_VIDEO_CODE && resultCode==Activity.RESULT_OK) {
-            recordedVideoUri = data.getData();
+
             if (recordedVideoUri == null) {
                 Toast.makeText(getApplicationContext(), "please choose a video", Toast.LENGTH_LONG).show();
             } else {
+                videoAmount=videoAmount+1;
+                recordedVideoUri=new Uri[videoAmount];
+                recordedVideoUri[recordedVideoUri.length-1]=data.getData();
                 Bundle args = new Bundle();
-                args.putString("the video", recordedVideoUri.toString());
+                args.putString("the video", recordedVideoUri[recordedVideoUri.length-1].toString());
                 VidFragment chosenVideoFragment = new VidFragment();
                 chosenVideoFragment.setArguments(args);
                 chosenViewsArrayList.add(chosenVideoFragment);
@@ -203,14 +280,16 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
 
         else if (requestCode==TAKE_PIC_CODE && resultCode==Activity.RESULT_OK){
-            Bitmap takenImageBitMap= (Bitmap) data.getExtras().get("data");
-            if(takenImageBitMap==null){
+            if(data.getExtras()==null){
                 Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
             }
             else{
+                bitmapsAmount=bitmapsAmount+1;
+                imageBitmaps=new Bitmap[bitmapsAmount];
+                imageBitmaps[imageBitmaps.length-1]=(Bitmap) data.getExtras().get("data");
                 Bundle args=new Bundle();
                 ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
-                takenImageBitMap.compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+                imageBitmaps[imageBitmaps.length-1].compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
                 byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
                 args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
                 CapImageFragment capturedImageFragment= new CapImageFragment();
@@ -223,13 +302,15 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
 
         else if (requestCode==RECORD_VIDEO_CODE && resultCode== Activity.RESULT_OK){
-            recordedVideoUri =data.getData();
-            if (recordedVideoUri ==null){
+            if (data.getData() ==null){
                 Toast.makeText(getApplicationContext(),"please choose a video",Toast.LENGTH_LONG).show();
             }
             else{
+                videoAmount=videoAmount+1;
+                recordedVideoUri=new Uri[videoAmount];
+                recordedVideoUri[recordedVideoUri.length-1]=data.getData();
                 Bundle args=new Bundle();
-                args.putString("the video", recordedVideoUri.toString());
+                args.putString("the video", recordedVideoUri[recordedVideoUri.length-1].toString());
                 VidFragment recordedVideoFragment= new VidFragment();
                 recordedVideoFragment.setArguments(args);
                 chosenViewsArrayList.add(recordedVideoFragment);
@@ -247,10 +328,11 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-
+        Intent intent = getIntent();
+        point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
                 //placeholder latlng until intent is added
-                .position(new LatLng(51.9225, 4.47917))
+                .position(point)
                 .draggable(true));
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -264,7 +346,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-
                 point = marker.getPosition();
                 Log.d("New location", String.valueOf(point));
             }

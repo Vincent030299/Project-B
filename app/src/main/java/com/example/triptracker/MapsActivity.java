@@ -52,6 +52,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return; }
+
+        // get initial user location
+        Location currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        userLocation = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
                     new LocationListener() {

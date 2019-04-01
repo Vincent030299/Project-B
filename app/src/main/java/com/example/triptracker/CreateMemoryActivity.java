@@ -29,9 +29,11 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -348,9 +350,15 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         Intent intent = getIntent();
         point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
-                //placeholder latlng until intent is added
                 .position(point)
                 .draggable(true));
+
+        //Create camera zoom to show marker close
+        CameraPosition cameraPosition = new CameraPosition.Builder().
+                target(point).
+                zoom(15).
+                build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         closePopup.setOnClickListener(new View.OnClickListener() {
 

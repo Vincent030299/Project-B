@@ -52,9 +52,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return; }
+            return;
+        }
+
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
                     new LocationListener() {
@@ -126,8 +129,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         createMemoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMemoryActivity(userLocation);
-                Toast.makeText(getApplicationContext(), "Placed marker on current location", Toast.LENGTH_SHORT).show();
+                if(userLocation == null) {
+                    Toast.makeText(getApplicationContext(), "No known location, try turning on GPS", Toast.LENGTH_SHORT).show();
+                } else {
+                    openMemoryActivity(userLocation);
+                    Toast.makeText(getApplicationContext(), "Placed marker on current location", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

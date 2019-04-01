@@ -136,7 +136,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this, CreateMemoryActivity.class);
         intent.putExtra("location", point);
         startActivityForResult(intent, CREATE_MARKER);
-
     }
     public void createMarker(LatLng point, String title) {
         mMap.addMarker(new MarkerOptions()

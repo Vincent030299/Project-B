@@ -380,7 +380,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 point = marker.getPosition();
-                Log.d("New location", String.valueOf(point));
+                Toast.makeText(getApplicationContext(), "Updated memory location", Toast.LENGTH_SHORT).show();
             }
 
         });

@@ -63,6 +63,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private Bitmap[] imageBitmaps= new Bitmap[bitmapsAmount];
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
+    private LinearLayout pageIndicatorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +104,13 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         memoryTitle=findViewById(R.id.memoryTitle);
         memoryDate=findViewById(R.id.memoryDate);
         closePopup =findViewById(R.id.closePopup);
+        pageIndicatorView =findViewById(R.id.pageIndicator);
         mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
         LinearLayout mapLayout= findViewById(R.id.mapLayout);
         LinearLayout mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
+
+        //setting the initial visibility state of pageIndicatorView
+        pageIndicatorView.setVisibility(View.INVISIBLE);
 
         //adjusting the layout parameters according to the user's screen
         ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((int)(screenWidth*0.8),(int)(screenHeight*.8*.35));
@@ -121,9 +126,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         //setting the adapter for the slider view
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");
-        CirclePageIndicator pageIndicator= findViewById(R.id.tabDots);
+        final CirclePageIndicator pageIndicator= findViewById(R.id.tabDots);
         pageIndicator.setFillColor(Color.rgb(20,145,218));
-        pageIndicator.setRadius(12.0F);
+        pageIndicator.setRadius(8.0F);
         pageIndicator.setStrokeColor(Color.rgb(20,145,218));
         pageIndicator.setViewPager(createMemorySlider);
 
@@ -165,12 +170,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mapMediaToggle.isChecked()){
+                    pageIndicatorView.setVisibility(View.VISIBLE);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.hide(themapview);
                     fragmentTransaction.commit();
 
                 }
                 else{
+                    pageIndicatorView.setVisibility(View.INVISIBLE);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.show(themapview);
                     fragmentTransaction.commit();
@@ -192,7 +199,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         else if ((chosenDay>currentDay & chosenMonth>currentMonth & chosenYear>currentYear)
                 |(chosenDay>currentDay & chosenMonth==currentMonth & currentYear==chosenYear)
                 |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
-                |(chosenDay==currentDay & currentMonth==chosenMonth & chosenYear>currentYear)){
+                |(chosenDay==currentDay & currentMonth==chosenMonth & chosenYear>currentYear)
+                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear>currentYear)){
             Toast.makeText(getApplicationContext(),"Please choose another date",Toast.LENGTH_SHORT).show();
         }
         else if(chosenViewsArrayList.size()==0){
@@ -209,6 +217,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
             if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, chosenImages, takenImages, chosenvideos, point.latitude, point.longitude)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("location", point);
+                resultIntent.putExtra("title", currentMemoryTitle);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+
             }
             else{
                 Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();

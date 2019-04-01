@@ -35,8 +35,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Button createMemoryButton;
     private final int REQUEST_LOCATION_PERMISSION = 1;
+    private final int CREATE_MARKER = 2;
     private LocationManager locationManager;
     private LatLng userLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,14 +133,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void openCreateMemoryActivity(LatLng point) {
         Intent intent = new Intent(this, CreateMemoryActivity.class);
         intent.putExtra("location", point);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, CREATE_MARKER);
 
     }
-    public void createMarker(LatLng point, String title, String desc) {
+    public void createMarker(LatLng point, String title) {
         mMap.addMarker(new MarkerOptions()
                 .position(point)
-                .title(title)
-                .snippet(desc));
+                .title(title));
     }
 
     public void openActivity(Class className) {
@@ -168,13 +169,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                LatLng point = data.getParcelableExtra("location");
-                String title = data.getStringExtra("title");
-                String desc = data.getStringExtra("description");
-                createMarker(point, title, desc);
-            }
+        if (requestCode == CREATE_MARKER && resultCode == RESULT_OK) {
+            LatLng point = data.getParcelableExtra("location");
+            String title = data.getStringExtra("title");
+            createMarker(point, title);
         }
     }
 }

@@ -117,7 +117,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                createMarker(point, "test", "test");
                 openCreateMemoryActivity(point);
             }
         });

@@ -51,7 +51,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/createMemorySlider">
+        app:layout_constraintTop_toBottomOf="@id/createMemorySlider"
+        android:layout_marginTop="10dp">
 
         <ImageButton
             android:id="@+id/galleryImage"
@@ -132,26 +133,29 @@
             android:layout_height="match_parent"
             android:inputType="textMultiLine" />
     </android.support.design.widget.TextInputLayout>
-
-    <DatePicker
-        android:id="@+id/memoryDate"
-        style="@android:style/Widget.DatePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="65dp"
-        android:layout_marginLeft="32dp"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/memoryDescription" />
-
-    <ImageButton
-        android:id="@+id/saveMemoryBtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="269dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:background="#00000000"
-        android:src="@drawable/savememoryiconblue"
-        app:layout_constraintStart_toEndOf="@id/memoryDate"
-        app:layout_constraintTop_toBottomOf="@id/memoryDescription" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/memoryDescription">
+
+        <DatePicker
+            android:id="@+id/memoryDate"
+            style="@android:style/Widget.DatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <ImageButton
+            android:id="@+id/saveMemoryBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="#00000000"
+            android:src="@drawable/savememoryiconblue" />
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

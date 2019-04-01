@@ -20,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -53,6 +54,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
     private ImageButton choosePicGallery, chooseVidGallery, takePic, recordVid,saveMemoryButton;
+    private Button closePopup;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
     private int imageAmount=0, videoAmount=0, bitmapsAmount=0;
@@ -100,6 +102,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         memoryDescription=findViewById(R.id.memoryDescription);
         memoryTitle=findViewById(R.id.memoryTitle);
         memoryDate=findViewById(R.id.memoryDate);
+        closePopup =findViewById(R.id.closePopup);
         mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
         LinearLayout mapLayout= findViewById(R.id.mapLayout);
         LinearLayout mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
@@ -334,6 +337,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 //placeholder latlng until intent is added
                 .position(point)
                 .draggable(true));
+
+        closePopup.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -58,6 +60,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private Uri[] recordedVideoUri= new Uri[videoAmount];
     private Bitmap[] imageBitmaps= new Bitmap[bitmapsAmount];
     private int currentDay,currentMonth,currentYear;
+    private Fragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +100,17 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         memoryDescription=findViewById(R.id.memoryDescription);
         memoryTitle=findViewById(R.id.memoryTitle);
         memoryDate=findViewById(R.id.memoryDate);
+        mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
+        LinearLayout mapLayout= findViewById(R.id.mapLayout);
+        LinearLayout mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
 
+        //adjusting the layout parameters according to the user's screen
+        ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((int)(screenWidth*0.8),(int)(screenHeight*.8*.35));
+        ConstraintLayout.LayoutParams mediafilesSliderParams= new ConstraintLayout.LayoutParams((int)(screenWidth*0.8),(int)(screenHeight*.8*.35));
+        mediaFilesLayout.setLayoutParams(mediafilesSliderParams);
+        mediaFilesLayout.requestLayout();
+        mapLayout.setLayoutParams(mapsLayoutParams);
+        mapLayout.requestLayout();
         currentDay=memoryDate.getDayOfMonth();
         currentMonth=memoryDate.getMonth();
         currentYear=memoryDate.getYear();
@@ -161,7 +174,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 }
             }
         });
-
     }
 
     private void saveMemory() {
@@ -198,8 +210,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             else{
                 Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();
             }
-
-
         }
     }
 

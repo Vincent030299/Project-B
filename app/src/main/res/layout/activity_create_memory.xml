@@ -6,14 +6,20 @@
     android:layout_height="match_parent"
     android:theme="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
     tools:context=".CreateMemoryActivity">
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/createMemorySlider"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:id="@+id/mediaFilesLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/createMemorySlider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+ />
+    </LinearLayout>
+
 
     <com.viewpagerindicator.CirclePageIndicator
         android:layout_marginTop="8dp"
@@ -23,16 +29,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/uploadBtns"
         android:id="@+id/tabDots"/>
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/mapFragView"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        class="com.google.android.gms.maps.SupportMapFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/mapLayout">
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mapFragView"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
     <Switch
         android:id="@+id/mediaSwitch"
@@ -40,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="Media files"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createMemorySlider"
+        app:layout_constraintTop_toBottomOf="@+id/mediaFilesLayout"
         tools:layout_editor_absoluteX="303dp"
         tools:layout_editor_absoluteY="351dp"
         android:theme="@style/AppThemeBlue"/>
@@ -51,8 +62,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/createMemorySlider"
-        android:layout_marginTop="10dp">
+        app:layout_constraintTop_toBottomOf="@id/mediaFilesLayout"
+        android:layout_marginTop="15dp">
 
         <ImageButton
             android:id="@+id/galleryImage"

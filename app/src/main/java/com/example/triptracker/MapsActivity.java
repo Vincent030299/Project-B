@@ -89,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void openMemoryActivity(LatLng point) {
         Intent intent = new Intent(this, CreateMemoryActivity.class);
         intent.putExtra("location", point);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, CREATE_MARKER);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

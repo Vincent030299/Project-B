@@ -20,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -28,9 +29,11 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -53,6 +56,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
     private ImageButton choosePicGallery, chooseVidGallery, takePic, recordVid,saveMemoryButton;
+    private Button closePopup;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
     private int imageAmount=0, videoAmount=0, bitmapsAmount=0;
@@ -61,6 +65,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private Bitmap[] imageBitmaps= new Bitmap[bitmapsAmount];
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
+    private LinearLayout pageIndicatorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +105,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         memoryDescription=findViewById(R.id.memoryDescription);
         memoryTitle=findViewById(R.id.memoryTitle);
         memoryDate=findViewById(R.id.memoryDate);
+        closePopup =findViewById(R.id.closePopup);
+        pageIndicatorView =findViewById(R.id.pageIndicator);
         mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
         LinearLayout mapLayout= findViewById(R.id.mapLayout);
         LinearLayout mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
+
+        //setting the initial visibility state of pageIndicatorView
+        pageIndicatorView.setVisibility(View.INVISIBLE);
 
         //adjusting the layout parameters according to the user's screen
         ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((int)(screenWidth*0.8),(int)(screenHeight*.8*.35));
@@ -118,9 +128,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         //setting the adapter for the slider view
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");
-        CirclePageIndicator pageIndicator= findViewById(R.id.tabDots);
+        final CirclePageIndicator pageIndicator= findViewById(R.id.tabDots);
         pageIndicator.setFillColor(Color.rgb(20,145,218));
-        pageIndicator.setRadius(12.0F);
+        pageIndicator.setRadius(8.0F);
         pageIndicator.setStrokeColor(Color.rgb(20,145,218));
         pageIndicator.setViewPager(createMemorySlider);
 
@@ -162,12 +172,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mapMediaToggle.isChecked()){
+                    pageIndicatorView.setVisibility(View.VISIBLE);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.hide(themapview);
                     fragmentTransaction.commit();
 
                 }
                 else{
+                    pageIndicatorView.setVisibility(View.INVISIBLE);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.show(themapview);
                     fragmentTransaction.commit();
@@ -189,7 +201,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         else if ((chosenDay>currentDay & chosenMonth>currentMonth & chosenYear>currentYear)
                 |(chosenDay>currentDay & chosenMonth==currentMonth & currentYear==chosenYear)
                 |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
-                |(chosenDay==currentDay & currentMonth==chosenMonth & chosenYear>currentYear)){
+                |(chosenDay==currentDay & currentMonth==chosenMonth & chosenYear>currentYear)
+                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear>currentYear)){
             Toast.makeText(getApplicationContext(),"Please choose another date",Toast.LENGTH_SHORT).show();
         }
         else if(chosenViewsArrayList.size()==0){
@@ -206,6 +219,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
             if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, chosenImages, takenImages, chosenvideos, point.latitude, point.longitude)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("location", point);
+                resultIntent.putExtra("title", currentMemoryTitle);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+
             }
             else{
                 Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();
@@ -331,9 +350,23 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         Intent intent = getIntent();
         point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
-                //placeholder latlng until intent is added
                 .position(point)
                 .draggable(true));
+
+        //Create camera zoom to show marker close
+        CameraPosition cameraPosition = new CameraPosition.Builder().
+                target(point).
+                zoom(15).
+                build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        closePopup.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
@@ -347,7 +380,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 point = marker.getPosition();
-                Log.d("New location", String.valueOf(point));
+                Toast.makeText(getApplicationContext(), "Updated memory location", Toast.LENGTH_SHORT).show();
             }
 
         });

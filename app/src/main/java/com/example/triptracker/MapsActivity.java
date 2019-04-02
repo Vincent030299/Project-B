@@ -23,9 +23,11 @@ import android.widget.Button;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -39,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Button createMemoryButton;
     private final int REQUEST_LOCATION_PERMISSION = 1;
+    private final int CREATE_MARKER = 2;
     private LocationManager locationManager;
     private LatLng userLocation;
 
@@ -53,9 +56,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return; }
+            return;
+        }
+
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
                     new LocationListener() {
@@ -91,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void openMemoryActivity(LatLng point) {
         Intent intent = new Intent(this, CreateMemoryActivity.class);
         intent.putExtra("location", point);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, CREATE_MARKER);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -127,7 +133,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         createMemoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMemoryActivity(userLocation);
+                if(userLocation == null) {
+                    Toast.makeText(getApplicationContext(), "No known location, try turning on GPS", Toast.LENGTH_SHORT).show();
+                } else {
+                    openMemoryActivity(userLocation);
+                    Toast.makeText(getApplicationContext(), "Placed marker on current location", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -145,8 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void openCreateMemoryActivity(LatLng point) {
         Intent intent = new Intent(this, CreateMemoryActivity.class);
         intent.putExtra("location", point);
-        startActivityForResult(intent, 1);
-
+        startActivityForResult(intent, CREATE_MARKER);
     }
     public void createMarker(LatLng point, String title) {
         mMap.addMarker(new MarkerOptions()
@@ -181,12 +191,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                LatLng point = data.getParcelableExtra("location");
-                String title = data.getStringExtra("title");
-                createMarker(point, title);
-            }
+        if (requestCode == CREATE_MARKER && resultCode == RESULT_OK) {
+            LatLng point = data.getParcelableExtra("location");
+            String title = data.getStringExtra("title");
+            createMarker(point, title);
         }
     }
 }

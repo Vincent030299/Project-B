@@ -52,6 +52,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        Cursor markers = databaseHelper.getData();
+        while(markers.moveToNext()){
+            Double lat = markers.getDouble(7);
+            Double lng = markers.getDouble(8);
+            String title = markers.getString(1);
+            LatLng point = new LatLng(lat,lng);
+            Log.e("point:", point.toString());
+//            createMarker(point,title);
+        }
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -138,11 +149,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivityForResult(intent, 1);
 
     }
-    public void createMarker(LatLng point, String title, String desc) {
+    public void createMarker(LatLng point, String title) {
         mMap.addMarker(new MarkerOptions()
                 .position(point)
-                .title(title)
-                .snippet(desc));
+                .title(title));
     }
 
     public void openActivity(Class className) {
@@ -176,8 +186,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (resultCode == RESULT_OK) {
                 LatLng point = data.getParcelableExtra("location");
                 String title = data.getStringExtra("title");
-                String desc = data.getStringExtra("description");
-                createMarker(point, title, desc);
+                createMarker(point, title);
             }
         }
     }

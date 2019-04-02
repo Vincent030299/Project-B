@@ -52,17 +52,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        Cursor markers = databaseHelper.getData();
-        while(markers.moveToNext()){
-            Double lat = markers.getDouble(7);
-            Double lng = markers.getDouble(8);
-            String title = markers.getString(1);
-            LatLng point = new LatLng(lat,lng);
-            Log.e("point:", point.toString());
-//            createMarker(point,title);
-        }
-
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -141,6 +130,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 openMemoryActivity(userLocation);
             }
         });
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        Cursor markers = databaseHelper.getData();
+        while(markers.moveToNext()){
+            Double lat = markers.getDouble(7);
+            Double lng = markers.getDouble(8);
+            String title = markers.getString(1);
+            LatLng point = new LatLng(lat,lng);
+            createMarker(point,title);
+        }
     }
 
     public void openCreateMemoryActivity(LatLng point) {

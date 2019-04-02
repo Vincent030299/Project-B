@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -29,6 +30,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -137,6 +141,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        Cursor markers = databaseHelper.getData();
+        while(markers.moveToNext()){
+            Double lat = markers.getDouble(7);
+            Double lng = markers.getDouble(8);
+            String title = markers.getString(1);
+            LatLng point = new LatLng(lat,lng);
+            createMarker(point,title);
+        }
     }
 
     public void openCreateMemoryActivity(LatLng point) {

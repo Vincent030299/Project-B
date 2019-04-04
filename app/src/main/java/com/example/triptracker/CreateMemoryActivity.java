@@ -17,13 +17,11 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -66,6 +64,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
     private LinearLayout pageIndicatorView;
+    FragmentManager createMemoryFragmentManager;
+    android.support.v4.app.Fragment createMemoryMapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,28 +164,41 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 recordVid();
             }
         });
-
+        //setting up the map fragment
+        createMemoryFragmentManager = getSupportFragmentManager();
+        createMemoryMapView = createMemoryFragmentManager.findFragmentById(R.id.mapFragView);
         //toggling on and off between the map and the media files
         mapMediaToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.Fragment themapview = fragmentManager.findFragmentById(R.id.mapFragView);
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mapMediaToggle.isChecked()){
-                    pageIndicatorView.setVisibility(View.VISIBLE);
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.hide(themapview);
-                    fragmentTransaction.commit();
+
+                    mapViewVisibility(false);
 
                 }
                 else{
-                    pageIndicatorView.setVisibility(View.INVISIBLE);
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.show(themapview);
-                    fragmentTransaction.commit();
+                    mapViewVisibility(true);
                 }
             }
         });
+    }
+
+    private void mapViewVisibility(boolean visible) {
+        if (visible){
+            pageIndicatorView.setVisibility(View.INVISIBLE);
+            FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
+            fragmentTransaction.show(createMemoryMapView);
+            fragmentTransaction.commit();
+            mapMediaToggle.setChecked(false);
+        }
+        else {
+            pageIndicatorView.setVisibility(View.VISIBLE);
+            FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
+            fragmentTransaction.hide(createMemoryMapView);
+            fragmentTransaction.commit();
+            mapMediaToggle.setChecked(true);
+        }
     }
 
     private void saveMemory() {
@@ -235,13 +248,16 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     //starts the activity of choosing a pic from the gallery
     private void uploadPic() {
         Intent upload= new Intent(Intent.ACTION_GET_CONTENT);
+        upload.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         upload.setType("image/*");
+        mapViewVisibility(false);
         startActivityForResult(upload,PICK_IMAGE_CODE);
     }
 
 //starts the activity of taking a pic
     private void takePic() {
         Intent takepic=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        mapViewVisibility(false);
         startActivityForResult(takepic,TAKE_PIC_CODE);
     }
 
@@ -249,12 +265,15 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private void uploadVid() {
         Intent upload_vid= new Intent(Intent.ACTION_GET_CONTENT);
         upload_vid.setType("video/*");
+        upload_vid.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        mapViewVisibility(false);
         startActivityForResult(upload_vid,PICK_VIDEO_CODE);
     }
 
     //starts the activity of recording a video
     private void recordVid() {
         Intent recordvid= new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        mapViewVisibility(false);
         startActivityForResult(recordvid,RECORD_VIDEO_CODE);
     }
 
@@ -262,11 +281,21 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode==PICK_IMAGE_CODE && resultCode== Activity.RESULT_OK){
-            if (data.getData() ==null){
-
-                Toast.makeText(getApplicationContext(),"please choose an image",Toast.LENGTH_LONG).show();
+            if(data.getClipData()!=null){
+                for (int i=0; i<data.getClipData().getItemCount();i++){
+                    imageAmount=imageAmount+1;
+                    imageUri=new Uri[imageAmount];
+                    imageUri[imageUri.length-1]=data.getClipData().getItemAt(i).getUri();
+                    Bundle args=new Bundle();
+                    args.putString("the image", imageUri[imageUri.length-1].toString());
+                    ImageFragment chosenImageFragment= new ImageFragment();
+                    chosenImageFragment.setArguments(args);
+                    chosenViewsArrayList.add(chosenImageFragment);
+                    chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+                    createMemorySlider.setAdapter(chosenViewsAdapter);
+                }
             }
-            else{
+            else if (data.getData() !=null){
                 imageAmount=imageAmount+1;
                 imageUri=new Uri[imageAmount];
                 imageUri[imageUri.length-1]=data.getData();
@@ -277,14 +306,29 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 chosenViewsArrayList.add(chosenImageFragment);
                 chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
                 createMemorySlider.setAdapter(chosenViewsAdapter);
+
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"please choose an image",Toast.LENGTH_LONG).show();
             }
         }
 
         else if (requestCode==PICK_VIDEO_CODE && resultCode==Activity.RESULT_OK) {
-
-            if (recordedVideoUri == null) {
-                Toast.makeText(getApplicationContext(), "please choose a video", Toast.LENGTH_LONG).show();
-            } else {
+            if(data.getClipData()!=null){
+                for(int i=0;i<data.getClipData().getItemCount();i++){
+                    videoAmount=videoAmount+1;
+                    recordedVideoUri=new Uri[videoAmount];
+                    recordedVideoUri[recordedVideoUri.length-1]=data.getClipData().getItemAt(i).getUri();
+                    Bundle args = new Bundle();
+                    args.putString("the video", recordedVideoUri[recordedVideoUri.length-1].toString());
+                    VidFragment chosenVideoFragment = new VidFragment();
+                    chosenVideoFragment.setArguments(args);
+                    chosenViewsArrayList.add(chosenVideoFragment);
+                    chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+                    createMemorySlider.setAdapter(chosenViewsAdapter);
+                }
+            }
+            else if (recordedVideoUri != null) {
                 videoAmount=videoAmount+1;
                 recordedVideoUri=new Uri[videoAmount];
                 recordedVideoUri[recordedVideoUri.length-1]=data.getData();
@@ -295,6 +339,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 chosenViewsArrayList.add(chosenVideoFragment);
                 chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
                 createMemorySlider.setAdapter(chosenViewsAdapter);
+
+            } else {
+                Toast.makeText(getApplicationContext(), "please choose a video", Toast.LENGTH_LONG).show();
             }
         }
 

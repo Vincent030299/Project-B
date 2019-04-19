@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
-    tools:context=".CreateMemoryActivity">
+    tools:context=".CreateMemoryActivity"
+    style="@style/AppThemeBlue">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +16,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBar">
+        app:layout_constraintTop_toBottomOf="@+id/TopBar">
         <android.support.v4.view.ViewPager
             android:id="@+id/createMemorySlider"
             android:layout_width="match_parent"
@@ -25,7 +27,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/mapLayout"
+        app:layout_constraintTop_toBottomOf="@id/mediaFilesLayout"
         android:id="@+id/pageIndicator">
         <com.viewpagerindicator.CirclePageIndicator
             android:padding="8dp"
@@ -60,12 +62,13 @@
     <LinearLayout
         android:id="@+id/mapLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/uploadBtns"
+        app:layout_constraintBottom_toTopOf="@+id/pageIndicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBar">
+        app:layout_constraintTop_toBottomOf="@+id/TopBar"
+        >
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/mapFragView"
@@ -76,80 +79,35 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/topBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/blueapp"
-        android:paddingStart="10dp"
-        android:paddingEnd="0dp"
-        android:paddingTop="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:layout_width="230dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-3dp"
-            android:layout_marginBottom="10dp"
-            android:text="Create memory"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/closePopup"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="right"
-            android:background="@drawable/close_popup" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/uploadBtns"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toBottomOf="@+id/switchLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mediaFilesLayout"
-        android:layout_marginTop="40dp">
+        tools:layout_editor_absoluteY="240dp"
+        android:layout_marginBottom="10dp">
 
-        <ImageButton
-            android:id="@+id/galleryImage"
+        <ImageView
+            android:id="@+id/addMediaFilesBtn"
             android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|left"
             android:layout_weight="1"
-            android:background="#00000000"
-            android:src="@drawable/gallery_icon" />
+            android:src="@drawable/add_media_files_button" />
 
-        <ImageButton
-            android:id="@+id/takePic"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="#00000000"
-            android:src="@drawable/camera_icon" />
-
-        <ImageButton
-            android:id="@+id/uploadVideo"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="#00000000"
-            android:src="@drawable/video_upload_icon" />
-
-        <ImageButton
-            android:id="@+id/recordVid"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="#00000000"
-            android:src="@drawable/video_icon" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_weight="3"
+            android:text="Add media file"
+            android:textColor="@color/vpi__background_holo_dark"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -160,10 +118,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/uploadBtns"
         android:orientation="vertical"
-        android:id="@+id/inputLayout">
+        android:id="@+id/inputLayout"
+        android:layout_marginTop="10dp">
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/memoryTitle"
-            android:layout_width="269dp"
+            android:layout_width="350dp"
             android:layout_height="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -184,8 +144,8 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="269dp"
-            android:layout_height="100dp"
+            android:layout_width="350dp"
+            android:layout_height="160dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/memoryTitle"
@@ -194,9 +154,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:textColorHint="@color/blueapp"
             app:boxStrokeColor="@color/blueapp"
-            android:theme="@style/AppThemeBlue"
-
-            >
+            android:theme="@style/AppThemeBlue">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
@@ -207,9 +165,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="269dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputLayout">
 
@@ -218,17 +179,61 @@
             style="@android:style/Widget.DatePicker"
             android:layout_width="wrap_content"
             android:layout_height="65dp"
+            android:layout_marginTop="5dp"
             android:calendarViewShown="false"
-            android:datePickerMode="spinner"
-            android:layout_marginTop="5dp"/>
+            android:datePickerMode="spinner" />
 
         <ImageButton
             android:id="@+id/saveMemoryBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="82dp"
             android:background="#00000000"
             android:src="@drawable/savememoryiconblue" />
+    </LinearLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation"
+        android:backgroundTint="@color/blueapp"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/blueapp"
+        android:id="@+id/TopBar"
+        android:padding="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Memory"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:layout_gravity="start|center"/>
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/close_popup"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginStart="180dp"
+            android:background="#00000000"
+            android:layout_marginBottom="2dp"
+            android:id="@+id/closeCreateMemory"/>
     </LinearLayout>
 
 

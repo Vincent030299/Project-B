@@ -6,17 +6,21 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.TimeUtils;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -24,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -38,8 +43,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
+import java.util.Timer;
 
 public class CreateMemoryActivity extends FragmentActivity implements OnMapReadyCallback{
 
@@ -53,8 +63,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int PICK_VIDEO_CODE=11;
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
-    private ImageButton choosePicGallery, chooseVidGallery, takePic, recordVid,saveMemoryButton;
-    private Button closePopup;
+    private ImageButton closePopup,saveMemoryButton;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
     private int imageAmount=0, videoAmount=0, bitmapsAmount=0;
@@ -64,9 +73,28 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
     private LinearLayout pageIndicatorView;
-    FragmentManager createMemoryFragmentManager;
-    android.support.v4.app.Fragment createMemoryMapView;
+    private FragmentManager createMemoryFragmentManager;
+    private android.support.v4.app.Fragment createMemoryMapView;
+    private LinearLayout uploadMediaFilesMenu;
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    openActivity(MapsActivity.class);
+                    return true;
+                case R.id.navigation_dashboard:
+                    openActivity(DashboardActivity.class);
+                    return true;
+                case R.id.navigation_settings:
+                    openActivity(SettingsActivity.class);
+                    return true;
+            }
+            return false;
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,15 +108,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
 
-        //Set the screen size of current activity to *8 and *7 to make it appear smaller
-        getWindow().setLayout((int) (screenWidth*.8), (int) (screenHeight*.8));
-
-        //Move the popup up
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.x = 0;
-        params.y = 0;
-        getWindow().setAttributes(params);
-
         final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragView);
         Objects.requireNonNull(spmf).getMapAsync(this);
 
@@ -97,30 +116,29 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         //initialize the used components in the layout file
         createMemorySlider =findViewById(R.id.createMemorySlider);
         mapMediaToggle =findViewById(R.id.mediaSwitch);
-        choosePicGallery =findViewById(R.id.galleryImage);
-        takePic =findViewById(R.id.takePic);
-        chooseVidGallery =findViewById(R.id.uploadVideo);
-        recordVid =findViewById(R.id.recordVid);
+        uploadMediaFilesMenu=findViewById(R.id.uploadBtns);
         saveMemoryButton=findViewById(R.id.saveMemoryBtn);
         memoryDescription=findViewById(R.id.memoryDescription);
         memoryTitle=findViewById(R.id.memoryTitle);
         memoryDate=findViewById(R.id.memoryDate);
-        closePopup =findViewById(R.id.closePopup);
+        closePopup =findViewById(R.id.closeCreateMemory);
         pageIndicatorView =findViewById(R.id.pageIndicator);
         mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
         LinearLayout mapLayout= findViewById(R.id.mapLayout);
         LinearLayout mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
 
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
 
         //adjusting the layout parameters according to the user's screen
-        ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((int)(screenWidth*0.8),(int)(screenHeight*.8*.35));
-        ConstraintLayout.LayoutParams mediafilesSliderParams= new ConstraintLayout.LayoutParams((int)(screenWidth*0.8),(int)(screenHeight*.8*.35));
-        mediaFilesLayout.setLayoutParams(mediafilesSliderParams);
-        mediaFilesLayout.requestLayout();
-        mapLayout.setLayoutParams(mapsLayoutParams);
-        mapLayout.requestLayout();
+//        ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((int)(screenWidth),(int)(screenHeight*.8*.35));
+//        ConstraintLayout.LayoutParams mediafilesSliderParams= new ConstraintLayout.LayoutParams((int)(screenWidth),(int)(screenHeight*.8*.35));
+//        mediaFilesLayout.setLayoutParams(mediafilesSliderParams);
+//        mediaFilesLayout.requestLayout();
+//        mapLayout.setLayoutParams(mapsLayoutParams);
+//        mapLayout.requestLayout();
         currentDay=memoryDate.getDayOfMonth();
         currentMonth=memoryDate.getMonth();
         currentYear=memoryDate.getYear();
@@ -134,42 +152,55 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         pageIndicator.setStrokeColor(Color.rgb(20,145,218));
         pageIndicator.setViewPager(createMemorySlider);
 
+        //all of the click listeners in the layout
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         saveMemoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveMemory();
             }
         });
-        choosePicGallery.setOnClickListener(new View.OnClickListener() {
+        uploadMediaFilesMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadPic();
+                PopupMenu uploadBtnsMenu= new PopupMenu(CreateMemoryActivity.this, uploadMediaFilesMenu);
+                uploadBtnsMenu.inflate(R.menu.choosemediafilemenu);
+                uploadBtnsMenu.show();
+                uploadBtnsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.uploadImageItem:
+                                uploadPic();
+                                return true;
+                            case R.id.takePicItem:
+                                takePic();
+                                return true;
+                            case R.id.uploadVideoItem:
+                                uploadVid();
+                                return true;
+                            case R.id.recordVideoItem:
+                                recordVid();
+                                return true;
+                        }
+                        return false;
+                    }
+                });
             }
         });
-        takePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePic();
-            }
-        });
-        chooseVidGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadVid();
-            }
-        });
-        recordVid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recordVid();
-            }
-        });
+
         //setting up the map fragment
         createMemoryFragmentManager = getSupportFragmentManager();
         createMemoryMapView = createMemoryFragmentManager.findFragmentById(R.id.mapFragView);
+
         //toggling on and off between the map and the media files
         mapMediaToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mapMediaToggle.isChecked()){
@@ -211,11 +242,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         else if (memoryDescription.getEditText().getText().length()==0){
             Toast.makeText(getApplicationContext(),"Please enter a description",Toast.LENGTH_SHORT).show();
         }
-        else if ((chosenDay>currentDay & chosenMonth>currentMonth & chosenYear>currentYear)
-                |(chosenDay>currentDay & chosenMonth==currentMonth & currentYear==chosenYear)
+        else if ((chosenDay>currentDay & chosenMonth==currentMonth & currentYear==chosenYear)
                 |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
                 |(chosenDay==currentDay & currentMonth==chosenMonth & chosenYear>currentYear)
-                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear>currentYear)){
+                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear>currentYear)
+                |(chosenDay>currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
+                |(chosenDay>currentDay & chosenMonth<=currentMonth & chosenYear>currentYear)
+                |(chosenDay>currentDay & chosenMonth>currentMonth & chosenYear>currentYear))
+                {
             Toast.makeText(getApplicationContext(),"Please choose another date",Toast.LENGTH_SHORT).show();
         }
         else if(chosenViewsArrayList.size()==0){
@@ -275,6 +309,15 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         Intent recordvid= new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         mapViewVisibility(false);
         startActivityForResult(recordvid,RECORD_VIDEO_CODE);
+    }
+    //open a given activity
+    public void openActivity(Class className) {
+        Intent intent = new Intent(this, className);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        overridePendingTransition(0, 0);
+        finish();
+        startActivity(intent);
+
     }
 
     //handels all the data from the called intents
@@ -407,13 +450,13 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        closePopup.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        closePopup.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override

@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -72,10 +73,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private Bitmap[] imageBitmaps= new Bitmap[bitmapsAmount];
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
-    private LinearLayout pageIndicatorView;
+    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout;
     private FragmentManager createMemoryFragmentManager;
     private android.support.v4.app.Fragment createMemoryMapView;
-    private LinearLayout uploadMediaFilesMenu;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -124,8 +124,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         closePopup =findViewById(R.id.closeCreateMemory);
         pageIndicatorView =findViewById(R.id.pageIndicator);
         mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
-        LinearLayout mapLayout= findViewById(R.id.mapLayout);
-        LinearLayout mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
+        mapLayout= findViewById(R.id.mapLayout);
+        mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
 
@@ -133,8 +133,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         pageIndicatorView.setVisibility(View.INVISIBLE);
 
         //adjusting the layout parameters according to the user's screen
-//        ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((int)(screenWidth),(int)(screenHeight*.8*.35));
-//        ConstraintLayout.LayoutParams mediafilesSliderParams= new ConstraintLayout.LayoutParams((int)(screenWidth),(int)(screenHeight*.8*.35));
+//        ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((screenWidth),(int)(screenHeight*0.8*0.35));
+//        ConstraintLayout.LayoutParams mediafilesSliderParams= new ConstraintLayout.LayoutParams((screenWidth),(int)(screenHeight*0.8*0.35));
 //        mediaFilesLayout.setLayoutParams(mediafilesSliderParams);
 //        mediaFilesLayout.requestLayout();
 //        mapLayout.setLayoutParams(mapsLayoutParams);
@@ -218,6 +218,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private void mapViewVisibility(boolean visible) {
         if (visible){
             pageIndicatorView.setVisibility(View.INVISIBLE);
+            mediaFilesLayout.setVisibility(View.INVISIBLE);
             FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
             fragmentTransaction.show(createMemoryMapView);
             fragmentTransaction.commit();
@@ -225,6 +226,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
         else {
             pageIndicatorView.setVisibility(View.VISIBLE);
+            mediaFilesLayout.setVisibility(View.VISIBLE);
             FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
             fragmentTransaction.hide(createMemoryMapView);
             fragmentTransaction.commit();

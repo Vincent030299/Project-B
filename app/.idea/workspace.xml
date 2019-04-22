@@ -3,9 +3,15 @@
   <component name="AndroidLayouts">
     <shared>
       <config>
+        <device id="Nexus 5X" />
+        <device id="pixel_3" />
+        <device id="pixel_3_xl" />
+        <device id="Nexus 6" />
         <device id="pixel" />
-        <device id="Nexus 7" />
         <device id="pixel_2" />
+        <device id="pixel_xl" />
+        <device id="Nexus 7 2013" />
+        <device id="Nexus 7" />
         <pickBest>false</pickBest>
         <target>android-28</target>
       </config>
@@ -17,10 +23,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="468c359b-a049-4d6d-9e81-65c641df45ec" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout-w447dp-h611dp/activity_create_memory.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout-large/activity_create_memory.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout-long/activity_create_memory.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout-w447dp-h611dp/activity_create_memory.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/../.gradle/" />
@@ -108,7 +114,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1411">
+            <state relative-caret-position="170">
               <caret line="133" selection-start-line="133" selection-end-line="133" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -129,42 +135,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml">
           <provider selected="true" editor-type-id="android-designer2" />
           <provider editor-type-id="text-editor">
-            <state relative-caret-position="-2312">
-              <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/res/layout-w447dp-h611dp/activity_create_memory.xml">
-          <provider selected="true" editor-type-id="android-designer2" />
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="187" column="44" selection-start-line="187" selection-start-column="44" selection-end-line="187" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/res/layout-long/activity_create_memory.xml">
-          <provider selected="true" editor-type-id="android-designer2" />
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="3927">
-              <caret line="231" column="44" selection-start-line="231" selection-start-column="44" selection-end-line="231" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/res/layout-large/activity_create_memory.xml">
-          <provider selected="true" editor-type-id="android-designer2" />
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="1088">
-              <caret line="64" column="36" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
+            <state relative-caret-position="278">
+              <caret line="92" column="38" selection-start-line="92" selection-start-column="38" selection-end-line="92" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -203,10 +179,10 @@
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout-large/activity_create_memory.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout-long/activity_create_memory.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout-w447dp-h611dp/activity_create_memory.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" />
       </list>
     </option>
   </component>
@@ -293,13 +269,6 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
               <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="Project-B" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
-              <item name="activity_create_memory" type="c431d0b8:AndroidResGroupNode" />
             </path>
           </expand>
           <select />
@@ -490,7 +459,14 @@
       <option name="project" value="LOCAL" />
       <updated>1555705517700</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="added layouts for different screen sizes.">
+      <created>1555947618644</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1555947618644</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView">
@@ -507,7 +483,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.32942432" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.32942432" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Build Variants" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
@@ -518,10 +494,10 @@
       <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49733475" weight="0.329718" />
       <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.4978678" weight="0.329718" />
       <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49946696" weight="0.329718" />
-      <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Android Profiler" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.4989339" weight="0.329718" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5010661" side_tool="true" weight="0.329718" />
-      <window_info anchor="bottom" id="Build" order="6" sideWeight="0.4914712" visible="true" weight="0.32502708" />
+      <window_info active="true" anchor="bottom" id="Build" order="6" sideWeight="0.4914712" visible="true" weight="0.32502708" />
       <window_info anchor="bottom" id="Run" order="7" sideWeight="0.4989339" weight="0.3340564" />
       <window_info anchor="bottom" id="Debug" order="8" />
       <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.49946696" weight="0.329718" />
@@ -598,7 +574,8 @@
     <MESSAGE value="adjusted the position of the media buttons, date picker and the save button." />
     <MESSAGE value="Added the ability to select multiple images or videos at once.&#10;you can see the chosen images or videos immediately after choosing them." />
     <MESSAGE value="Adjusted the layout of the createMemoryActivity.&#10;made a popup menu of the upload buttons.&#10;modified &quot;Openactivity&quot; method." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adjusted the layout of the createMemoryActivity.&#10;made a popup menu of the upload buttons.&#10;modified &quot;Openactivity&quot; method." />
+    <MESSAGE value="added layouts for different screen sizes." />
+    <option name="LAST_COMMIT_MESSAGE" value="added layouts for different screen sizes." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../.idea/misc.xml">
@@ -769,26 +746,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1411">
-          <caret line="133" selection-start-line="133" selection-end-line="133" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DashboardActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/res/layout-large/activity_create_memory.xml">
       <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor">
@@ -809,19 +766,39 @@
       <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="-2312">
-          <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DashboardActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/res/layout-w447dp-h611dp/activity_create_memory.xml">
       <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="187" column="44" selection-start-line="187" selection-start-column="44" selection-end-line="187" selection-end-column="44" />
+        <state relative-caret-position="3927">
+          <caret line="231" column="45" selection-start-line="231" selection-start-column="45" selection-end-line="231" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="133" selection-start-line="133" selection-end-line="133" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="92" column="38" selection-start-line="92" selection-start-column="38" selection-end-line="92" selection-end-column="38" />
         </state>
       </provider>
     </entry>

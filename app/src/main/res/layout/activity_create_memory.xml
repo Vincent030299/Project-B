@@ -48,7 +48,7 @@
             android:id="@+id/mediaSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Media files"
+            android:text="@string/media_files"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mediaFilesLayout"
             tools:layout_editor_absoluteX="303dp"
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-3dp"
             android:layout_marginBottom="10dp"
-            android:text="Create memory"
+            android:text="@string/create_memory"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold" />

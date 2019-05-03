@@ -5,8 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
@@ -66,7 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert 1 memory to the database
-    public boolean addData(String memoryName, String memoryDate, String memoryDescription, Double markerLat, Double markerLong) {
+    public boolean addData(String memoryName, String memoryDate, String memoryDescription, Uri[] images, Uri[] videos, Bitmap[] imageCaptures, Double markerLat, Double markerLong) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_MEMORY_NAME, memoryName);
@@ -76,6 +81,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MARKER_LONG, markerLong);
         Log.d(TAG, "addData: Adding " + memoryName + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
+
+        // get latest row
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY id DESC LIMIT 1";
+        Cursor data = db.rawQuery(query, null);
+
+        if (images.length != 0) {
+            for (int x = 0; x < images.length; x++) {
+                ContentValues imageValues = new ContentValues();
+                imageValues.put(COL_IMAGE_URI, images[x].toString());
+                imageValues.put("memory_id", data.getInt(0));
+                db.insert(IMAGE_NAME, null, imageValues);
+            }
+        }
+
+        if (videos.length != 0) {
+            for (int x = 0; x < videos.length; x++) {
+                ContentValues videoValues = new ContentValues();
+                videoValues.put(COL_VIDEO_URI, videos[x].toString());
+                videoValues.put("memory_id", data.getInt(0));
+                db.insert(VIDEO_NAME, null, videoValues);
+            }
+        }
+
+        if (imageCaptures.length != 0) {
+            for (int x = 0; x < imageCaptures.length; x++) {
+                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
+                imageCaptures[x].compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
+
+                ContentValues imageCaptureValues = new ContentValues();
+                imageCaptureValues.put(COL_IMAGE_CAPTURE_BITMAP, Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
+                imageCaptureValues.put("memory_id", data.getInt(0));
+                db.insert(IMAGE_CAPTURE_NAME, null, imageCaptureValues);
+            }
+        }
 
         //if date as inserted incorrectly it will return -1
         if (result == -1) {

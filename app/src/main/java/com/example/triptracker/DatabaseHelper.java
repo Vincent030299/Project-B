@@ -10,16 +10,30 @@ import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
-    private static final String TABLE_NAME = "Memory";
+
+    // The memory database
+    private static final String TABLE_NAME = "memory";
     private static final String COL_MEMORY_NAME = "memory_name";
     private static final String COL_MEMORY_ID = "memory_id";
     private static final String COL_MEMORY_DATE = "memory_date";
     private static final String COL_MEMORY_DESCRIPTION = "memory_description";
-    private static final String COL_IMAGE_URI = "image_uri";
-    private static final String COL_IMAGE_BITMAP = "image_bitmap";
-    private static final String COL_VIDEO_URI= "video_uri";
     private static final String COL_MARKER_LAT = "marker_lat";
     private static final String COL_MARKER_LONG = "marker_long";
+
+    // The image database
+    private static final String IMAGE_NAME = "image";
+    private static final String COL_IMAGE_ID = "image_id";
+    private static final String COL_IMAGE_URI = "image_uri";
+
+    // The video database
+    private static final String VIDEO_NAME = "video";
+    private static final String VIDEO_ID = "video_id";
+    private static final String VIDEO_URI = "video_uri";
+
+    // The image capture database
+    private static final String IMAGE_CAPTURE_NAME = "image_capture";
+    private static final String IMAGE_CAPTURE_ID = "image_capture_id";
+    private static final String IMAGE_CAPTURE_BITMAP = "image_capture_bitmap";
 
     /*
     constructor is getting used when i implement the one to many relation thats why the error at super
@@ -31,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_IMAGE_URI + " TEXT," + COL_IMAGE_BITMAP + " TEXT," + COL_VIDEO_URI + " TEXT," + COL_MARKER_LAT + " REAL," + COL_MARKER_LONG + " REAL)";
+                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " REAL," + COL_MARKER_LONG + " REAL)";
         db.execSQL(createTable);
     }
 
@@ -48,9 +62,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MEMORY_NAME, memoryName);
         contentValues.put(COL_MEMORY_DATE, memoryDate);
         contentValues.put(COL_MEMORY_DESCRIPTION, memoryDescription);
-        contentValues.put(COL_IMAGE_URI, imageUri);
-        contentValues.put(COL_IMAGE_BITMAP, imageBitmap);
-        contentValues.put(COL_VIDEO_URI, videoUri);
         contentValues.put(COL_MARKER_LAT, markerLat);
         contentValues.put(COL_MARKER_LONG, markerLong);
         Log.d(TAG, "addData: Adding " + memoryName + " to " + TABLE_NAME);
@@ -99,9 +110,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "UPDATE " + TABLE_NAME + " SET " + COL_MEMORY_NAME +
                 " = '" + newName + "'," + COL_MEMORY_DATE + " = '"+ newDate +
                 "', " + COL_MEMORY_DESCRIPTION + "= '" + newDescription +
-                "', " + COL_IMAGE_URI + "= '" + newImageUri +
-                "', " + COL_IMAGE_BITMAP + "= '" + newImageBitmap +
-                "', " + COL_VIDEO_URI + "= '" + newVideoUri +
                 "', " + COL_MARKER_LAT + "= '" + newMarkerLat +
                 "', " + COL_MARKER_LONG + "= '" + newMarkerLong +
                 "' WHERE " + COL_MEMORY_ID + " = '" + id + "'" +

@@ -52,11 +52,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " REAL," + COL_MARKER_LONG + " REAL)";
 
-        String tableImage = "CREATE TABLE " + IMAGE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_URI + "TEXT, memory_id INTEGER)";
+        String tableImage = "CREATE TABLE " + IMAGE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_URI + " TEXT, memory_id INTEGER)";
 
-        String tableVideo = "CREATE TABLE " + VIDEO_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_VIDEO_URI + "TEXT, memory_id INTEGER)";
+        String tableVideo = "CREATE TABLE " + VIDEO_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_VIDEO_URI + " TEXT, memory_id INTEGER)";
 
-        String tableImageCapture = "CREATE TABLE " + IMAGE_CAPTURE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_CAPTURE_BITMAP + "TEXT, memory_id INTEGER)";
+        String tableImageCapture = "CREATE TABLE " + IMAGE_CAPTURE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_CAPTURE_BITMAP + " TEXT, memory_id INTEGER)";
 
         db.execSQL(createTable);
         db.execSQL(tableImage);

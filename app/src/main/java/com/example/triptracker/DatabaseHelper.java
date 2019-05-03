@@ -90,7 +90,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (int x = 0; x < images.length; x++) {
                 ContentValues imageValues = new ContentValues();
                 imageValues.put(COL_IMAGE_URI, images[x].toString());
-                imageValues.put("memory_id", data.getInt(0));
+                while(data.moveToNext()){
+                    imageValues.put("memory_id", data.getInt(0));
+                }
                 db.insert(IMAGE_NAME, null, imageValues);
             }
         }
@@ -99,7 +101,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (int x = 0; x < videos.length; x++) {
                 ContentValues videoValues = new ContentValues();
                 videoValues.put(COL_VIDEO_URI, videos[x].toString());
-                videoValues.put("memory_id", data.getInt(0));
+                while(data.moveToNext()){
+                    videoValues.put("memory_id", data.getInt(0));
+                }
                 db.insert(VIDEO_NAME, null, videoValues);
             }
         }
@@ -112,7 +116,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 ContentValues imageCaptureValues = new ContentValues();
                 imageCaptureValues.put(COL_IMAGE_CAPTURE_BITMAP, Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
-                imageCaptureValues.put("memory_id", data.getInt(0));
+                while(data.moveToNext()){
+                    imageCaptureValues.put("memory_id", data.getInt(0));
+                }
                 db.insert(IMAGE_CAPTURE_NAME, null, imageCaptureValues);
             }
         }

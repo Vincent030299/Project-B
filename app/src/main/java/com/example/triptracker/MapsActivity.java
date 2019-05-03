@@ -148,8 +148,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         Cursor markers = databaseHelper.getData();
         while(markers.moveToNext()){
-            Double lat = markers.getDouble(7);
-            Double lng = markers.getDouble(8);
+            Double lat = markers.getDouble(4);
+            Double lng = markers.getDouble(5);
             String title = markers.getString(1);
             LatLng point = new LatLng(lat,lng);
             createMarker(point,title);

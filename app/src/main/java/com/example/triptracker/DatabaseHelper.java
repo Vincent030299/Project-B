@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // The memory database
     private static final String TABLE_NAME = "memory";
     private static final String COL_MEMORY_NAME = "memory_name";
-    private static final String COL_MEMORY_ID = "memory_id";
+    private static final String COL_MEMORY_ID = "id";
     private static final String COL_MEMORY_DATE = "memory_date";
     private static final String COL_MEMORY_DESCRIPTION = "memory_description";
     private static final String COL_MARKER_LAT = "marker_lat";
@@ -22,18 +22,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // The image database
     private static final String IMAGE_NAME = "image";
-    private static final String COL_IMAGE_ID = "image_id";
+    private static final String COL_IMAGE_ID = "id";
     private static final String COL_IMAGE_URI = "image_uri";
 
     // The video database
     private static final String VIDEO_NAME = "video";
-    private static final String VIDEO_ID = "video_id";
-    private static final String VIDEO_URI = "video_uri";
+    private static final String COL_VIDEO_ID = "id";
+    private static final String COL_VIDEO_URI = "video_uri";
 
     // The image capture database
     private static final String IMAGE_CAPTURE_NAME = "image_capture";
-    private static final String IMAGE_CAPTURE_ID = "image_capture_id";
-    private static final String IMAGE_CAPTURE_BITMAP = "image_capture_bitmap";
+    private static final String COL_IMAGE_CAPTURE_ID = "id";
+    private static final String COL_IMAGE_CAPTURE_BITMAP = "image_capture_bitmap";
 
     /*
     constructor is getting used when i implement the one to many relation thats why the error at super
@@ -46,7 +46,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " REAL," + COL_MARKER_LONG + " REAL)";
+
+        String tableImage = "CREATE TABLE " + IMAGE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_URI + "TEXT, memory_id INTEGER)";
+
+        String tableVideo = "CREATE TABLE " + VIDEO_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_VIDEO_URI + "TEXT, memory_id INTEGER)";
+
+        String tableImageCapture = "CREATE TABLE " + IMAGE_CAPTURE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_CAPTURE_BITMAP + "TEXT, memory_id INTEGER)";
+
         db.execSQL(createTable);
+        db.execSQL(tableImage);
+        db.execSQL(tableImageCapture);
+        db.execSQL(tableVideo);
     }
 
     @Override
@@ -56,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert 1 memory to the database
-    public boolean addData(String memoryName, String memoryDate, String memoryDescription, String imageUri,String imageBitmap,String videoUri, Double markerLat, Double markerLong) {
+    public boolean addData(String memoryName, String memoryDate, String memoryDescription, Double markerLat, Double markerLong) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_MEMORY_NAME, memoryName);

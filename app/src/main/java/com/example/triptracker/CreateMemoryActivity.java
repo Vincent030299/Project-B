@@ -64,7 +64,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int PICK_VIDEO_CODE=11;
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
-    private ImageButton closePopup,saveMemoryButton;
+    private ImageButton closePopup,saveMemoryButton,deleteMediaBtn;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
     private int imageAmount=0, videoAmount=0, bitmapsAmount=0;
@@ -73,7 +73,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private Bitmap[] imageBitmaps= new Bitmap[bitmapsAmount];
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
-    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout;
+    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout,optionsTab;
     private FragmentManager createMemoryFragmentManager;
     private android.support.v4.app.Fragment createMemoryMapView;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -127,7 +127,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         mapLayout= findViewById(R.id.mapLayout);
         mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
+        optionsTab = findViewById(R.id.optionsTab);
+        deleteMediaBtn = findViewById(R.id.deleteMediaBtn);
 
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
@@ -142,7 +143,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         currentDay=memoryDate.getDayOfMonth();
         currentMonth=memoryDate.getMonth();
         currentYear=memoryDate.getYear();
-
+        optionsTab.getBackground().setAlpha(75);
+        optionsTab.setVisibility(View.INVISIBLE);
         //setting the adapter for the slider view
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");
@@ -194,6 +196,24 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 });
             }
         });
+        //the functionality to delete a media file
+        createMemorySlider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                deleteMediaFile(i);
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
         //setting up the map fragment
         createMemoryFragmentManager = getSupportFragmentManager();
@@ -214,23 +234,51 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
         });
     }
+    private void deleteMediaFile(final int position){
+        deleteMediaBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chosenViewsArrayList.remove(position);
+                chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+                createMemorySlider.setAdapter(chosenViewsAdapter);
+                Toast.makeText(getApplicationContext(), "Chosen media file deleted successfully", Toast.LENGTH_SHORT).show();
+                if (chosenViewsArrayList.isEmpty()){
+                    mapViewVisibility(true);
+                }
 
+            }
+        });
+    }
     private void mapViewVisibility(boolean visible) {
         if (visible){
             pageIndicatorView.setVisibility(View.INVISIBLE);
             mediaFilesLayout.setVisibility(View.INVISIBLE);
+            optionsTab.setVisibility(View.INVISIBLE);
             FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
             fragmentTransaction.show(createMemoryMapView);
             fragmentTransaction.commit();
             mapMediaToggle.setChecked(false);
         }
         else {
-            pageIndicatorView.setVisibility(View.VISIBLE);
-            mediaFilesLayout.setVisibility(View.VISIBLE);
-            FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
-            fragmentTransaction.hide(createMemoryMapView);
-            fragmentTransaction.commit();
-            mapMediaToggle.setChecked(true);
+            if (chosenViewsArrayList.isEmpty()){
+                optionsTab.setVisibility(View.INVISIBLE);
+                pageIndicatorView.setVisibility(View.VISIBLE);
+                mediaFilesLayout.setVisibility(View.VISIBLE);
+                FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
+                fragmentTransaction.hide(createMemoryMapView);
+                fragmentTransaction.commit();
+                mapMediaToggle.setChecked(true);
+            }
+            else{
+                pageIndicatorView.setVisibility(View.VISIBLE);
+                mediaFilesLayout.setVisibility(View.VISIBLE);
+                optionsTab.setVisibility(View.VISIBLE);
+                FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
+                fragmentTransaction.hide(createMemoryMapView);
+                fragmentTransaction.commit();
+                mapMediaToggle.setChecked(true);
+            }
+
         }
     }
 
@@ -327,6 +375,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode==PICK_IMAGE_CODE && resultCode== Activity.RESULT_OK){
             if(data.getClipData()!=null){
+                optionsTab.setVisibility(View.VISIBLE);
                 for (int i=0; i<data.getClipData().getItemCount();i++){
                     imageAmount=imageAmount+1;
                     imageUri=new Uri[imageAmount];
@@ -341,6 +390,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 }
             }
             else if (data.getData() !=null){
+                optionsTab.setVisibility(View.VISIBLE);
                 imageAmount=imageAmount+1;
                 imageUri=new Uri[imageAmount];
                 imageUri[imageUri.length-1]=data.getData();
@@ -360,6 +410,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
         else if (requestCode==PICK_VIDEO_CODE && resultCode==Activity.RESULT_OK) {
             if(data.getClipData()!=null){
+                optionsTab.setVisibility(View.VISIBLE);
                 for(int i=0;i<data.getClipData().getItemCount();i++){
                     videoAmount=videoAmount+1;
                     recordedVideoUri=new Uri[videoAmount];
@@ -374,6 +425,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 }
             }
             else if (recordedVideoUri != null) {
+                optionsTab.setVisibility(View.VISIBLE);
                 videoAmount=videoAmount+1;
                 recordedVideoUri=new Uri[videoAmount];
                 recordedVideoUri[recordedVideoUri.length-1]=data.getData();
@@ -395,6 +447,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
             }
             else{
+                optionsTab.setVisibility(View.VISIBLE);
                 bitmapsAmount=bitmapsAmount+1;
                 imageBitmaps=new Bitmap[bitmapsAmount];
                 imageBitmaps[imageBitmaps.length-1]=(Bitmap) data.getExtras().get("data");
@@ -411,12 +464,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
 
         }
-
         else if (requestCode==RECORD_VIDEO_CODE && resultCode== Activity.RESULT_OK){
             if (data.getData() ==null){
                 Toast.makeText(getApplicationContext(),"please choose a video",Toast.LENGTH_LONG).show();
             }
             else{
+                optionsTab.setVisibility(View.VISIBLE);
                 videoAmount=videoAmount+1;
                 recordedVideoUri=new Uri[videoAmount];
                 recordedVideoUri[recordedVideoUri.length-1]=data.getData();

@@ -78,6 +78,25 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/vpi__background_holo_dark"
+        android:id="@+id/optionsTab"
+        app:layout_constraintTop_toBottomOf="@+id/TopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="end">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/deleteMediaBtn"
+            android:layout_width="25dp"
+            android:layout_height="26dp"
+            android:layout_gravity="end"
+            android:background="#00000000"
+            android:src="@drawable/trash_btn" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

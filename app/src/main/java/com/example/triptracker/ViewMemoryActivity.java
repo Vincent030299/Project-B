@@ -1,6 +1,9 @@
 package com.example.triptracker;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.Objects;
@@ -88,6 +92,5 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
     }
 }

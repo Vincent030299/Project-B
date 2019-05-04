@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class ImageFragment extends Fragment {
     Uri imageuri;
@@ -21,6 +23,7 @@ public class ImageFragment extends Fragment {
         imageuri=Uri.parse(getArguments().getString("the image"));
         mychosenimageview.setImageURI(imageuri);
         mychosenimageview.setAdjustViewBounds(true);
+
         return thechosenimage;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.triptracker;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -36,6 +37,14 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        Cursor memories = databaseHelper.getData();
+        while(memories.moveToNext()){
+            Integer id = memories.getInt(0);
+            String name = memories.getString(1);
+            String date = memories.getString(2);
+        }
     }
     
     public void openActivity(Class className) {

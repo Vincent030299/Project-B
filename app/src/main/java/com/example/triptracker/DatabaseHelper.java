@@ -150,8 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public Cursor getItem(Double markerLat, Double markerLong){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COL_MARKER_LAT + " = '" + markerLat + "'";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_MARKER_LAT + " = " + markerLat + " AND " + COL_MARKER_LONG + " = " + markerLong;
         Cursor data = db.rawQuery(query, null);
         return data;
     }
@@ -159,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getImage(Integer id){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + IMAGE_NAME +
-                " WHERE " + COL_MEMORY_ID + " = '" + id + "'";
+                " WHERE " + COL_MEMORY_ID + " = " + id;
         Cursor data = db.rawQuery(query, null);
         return data;
     }

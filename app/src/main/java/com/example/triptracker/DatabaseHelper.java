@@ -5,21 +5,40 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
-    private static final String TABLE_NAME = "Memory";
+
+    // The memory database
+    private static final String TABLE_NAME = "memory";
     private static final String COL_MEMORY_NAME = "memory_name";
     private static final String COL_MEMORY_ID = "memory_id";
     private static final String COL_MEMORY_DATE = "memory_date";
     private static final String COL_MEMORY_DESCRIPTION = "memory_description";
-    private static final String COL_IMAGE_URI = "image_uri";
-    private static final String COL_IMAGE_BITMAP = "image_bitmap";
-    private static final String COL_VIDEO_URI= "video_uri";
     private static final String COL_MARKER_LAT = "marker_lat";
     private static final String COL_MARKER_LONG = "marker_long";
+
+    // The image database
+    private static final String IMAGE_NAME = "image";
+    private static final String COL_IMAGE_ID = "id";
+    private static final String COL_IMAGE_URI = "image_uri";
+
+    // The video database
+    private static final String VIDEO_NAME = "video";
+    private static final String COL_VIDEO_ID = "id";
+    private static final String COL_VIDEO_URI = "video_uri";
+
+    // The image capture database
+    private static final String IMAGE_CAPTURE_NAME = "image_capture";
+    private static final String COL_IMAGE_CAPTURE_ID = "id";
+    private static final String COL_IMAGE_CAPTURE_BITMAP = "image_capture_bitmap";
 
     /*
     constructor is getting used when i implement the one to many relation thats why the error at super
@@ -31,8 +50,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_IMAGE_URI + " TEXT," + COL_IMAGE_BITMAP + " TEXT," + COL_VIDEO_URI + " TEXT," + COL_MARKER_LAT + " REAL," + COL_MARKER_LONG + " REAL)";
+                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " REAL," + COL_MARKER_LONG + " REAL)";
+
+        String tableImage = "CREATE TABLE " + IMAGE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_URI + " TEXT," + COL_MEMORY_ID + " INTEGER)";
+
+        String tableVideo = "CREATE TABLE " + VIDEO_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_VIDEO_URI + " TEXT," + COL_MEMORY_ID + " INTEGER)";
+
+        String tableImageCapture = "CREATE TABLE " + IMAGE_CAPTURE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_CAPTURE_BITMAP + " TEXT, memory_id INTEGER)";
+
         db.execSQL(createTable);
+        db.execSQL(tableImage);
+        db.execSQL(tableImageCapture);
+        db.execSQL(tableVideo);
     }
 
     @Override
@@ -42,19 +71,57 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert 1 memory to the database
-    public boolean addData(String memoryName, String memoryDate, String memoryDescription, String imageUri,String imageBitmap,String videoUri, Double markerLat, Double markerLong) {
+    public boolean addData(String memoryName, String memoryDate, String memoryDescription, Uri[] images, Uri[] videos, Bitmap[] imageCaptures, Double markerLat, Double markerLong) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_MEMORY_NAME, memoryName);
         contentValues.put(COL_MEMORY_DATE, memoryDate);
         contentValues.put(COL_MEMORY_DESCRIPTION, memoryDescription);
-        contentValues.put(COL_IMAGE_URI, imageUri);
-        contentValues.put(COL_IMAGE_BITMAP, imageBitmap);
-        contentValues.put(COL_VIDEO_URI, videoUri);
         contentValues.put(COL_MARKER_LAT, markerLat);
         contentValues.put(COL_MARKER_LONG, markerLong);
         Log.d(TAG, "addData: Adding " + memoryName + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
+
+        // get latest row
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY id DESC LIMIT 1";
+        Cursor data = db.rawQuery(query, null);
+
+        if (images.length != 0) {
+            for (int x = 0; x < images.length; x++) {
+                ContentValues imageValues = new ContentValues();
+                imageValues.put(COL_IMAGE_URI, images[x].toString());
+                while(data.moveToNext()){
+                    imageValues.put(COL_MEMORY_ID, data.getInt(0));
+                }
+                db.insert(IMAGE_NAME, null, imageValues);
+            }
+        }
+
+        if (videos.length != 0) {
+            for (int x = 0; x < videos.length; x++) {
+                ContentValues videoValues = new ContentValues();
+                videoValues.put(COL_VIDEO_URI, videos[x].toString());
+                while(data.moveToNext()){
+                    videoValues.put(COL_MEMORY_ID, data.getInt(0));
+                }
+                db.insert(VIDEO_NAME, null, videoValues);
+            }
+        }
+
+        if (imageCaptures.length != 0) {
+            for (int x = 0; x < imageCaptures.length; x++) {
+                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
+                imageCaptures[x].compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
+
+                ContentValues imageCaptureValues = new ContentValues();
+                imageCaptureValues.put(COL_IMAGE_CAPTURE_BITMAP, Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
+                while(data.moveToNext()){
+                    imageCaptureValues.put(COL_MEMORY_ID, data.getInt(0));
+                }
+                db.insert(IMAGE_CAPTURE_NAME, null, imageCaptureValues);
+            }
+        }
 
         //if date as inserted incorrectly it will return -1
         if (result == -1) {
@@ -99,9 +166,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "UPDATE " + TABLE_NAME + " SET " + COL_MEMORY_NAME +
                 " = '" + newName + "'," + COL_MEMORY_DATE + " = '"+ newDate +
                 "', " + COL_MEMORY_DESCRIPTION + "= '" + newDescription +
-                "', " + COL_IMAGE_URI + "= '" + newImageUri +
-                "', " + COL_IMAGE_BITMAP + "= '" + newImageBitmap +
-                "', " + COL_VIDEO_URI + "= '" + newVideoUri +
                 "', " + COL_MARKER_LAT + "= '" + newMarkerLat +
                 "', " + COL_MARKER_LONG + "= '" + newMarkerLong +
                 "' WHERE " + COL_MEMORY_ID + " = '" + id + "'" +

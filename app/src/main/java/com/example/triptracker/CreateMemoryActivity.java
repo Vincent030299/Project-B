@@ -309,12 +309,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             String currentMemoryTitle=memoryTitle.getEditText().getText().toString();
             String currentMemoryDescription= memoryDescription.getEditText().getText().toString();
             String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
-            String chosenImages= imageUri.toString();
-            String takenImages= imageBitmaps.toString();
-            String chosenvideos=recordedVideoUri.toString();
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
 
-            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, chosenImages, takenImages, chosenvideos, point.latitude, point.longitude)){
+            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);

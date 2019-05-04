@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -170,6 +174,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 View infoWindow = getLayoutInflater().inflate(R.layout.info_window_layout, null);
                 TextView markerTitle = (TextView) infoWindow.findViewById(R.id.markerTitle);
                 TextView markerDesc = (TextView) infoWindow.findViewById(R.id.markerDesc);
+                ImageView markerImage = (ImageView) infoWindow.findViewById(R.id.markerImage);
 
                 final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
                 LatLng markerPos = marker.getPosition();
@@ -178,14 +183,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 while(dbMarker.moveToNext()){
                     String dbMarkerTitle = dbMarker.getString(1);
                     String dbMarkerDesc = dbMarker.getString(2);
+                    Integer dbMemoryId = dbMarker.getInt(0);
+                    Cursor dbImage = databaseHelper.getImage(dbMemoryId);
+                    while (dbImage.moveToNext()){
+                        String dbImageUriString = dbImage.getString(1);
+                        Uri dbImageUri = Uri.parse(dbImageUriString);
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.setData(dbImageUri);
+                        markerImage.setImageURI(intent.getData());
+                    }
 
                     if(dbMarkerTitle.length() > 21) {
                         markerTitle.setText(dbMarkerTitle.substring(0, 21) + "..");
                     } else {
                         markerTitle.setText(dbMarkerTitle);
                     }
-                    if(dbMarkerDesc.length() > 100) {
-                        markerDesc.setText(dbMarkerDesc.substring(0, 100) + "..");
+                    if(dbMarkerDesc.length() > 82) {
+                        markerDesc.setText(dbMarkerDesc.substring(0, 82) + "..");
                     } else {
                         markerDesc.setText(dbMarkerDesc);
                     }

@@ -156,6 +156,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public Cursor getImage(Integer id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + IMAGE_NAME +
+                " WHERE " + COL_MEMORY_ID + " = '" + id + "'";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
     /**
      * Updates the memory
      * @param newName

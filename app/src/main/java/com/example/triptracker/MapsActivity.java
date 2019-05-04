@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -146,7 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         Cursor markers = databaseHelper.getData();
         while(markers.moveToNext()){
             Double lat = markers.getDouble(7);
@@ -155,6 +156,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng point = new LatLng(lat,lng);
             createMarker(point,title);
         }
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                View infoWindow = getLayoutInflater().inflate(R.layout.info_window_layout, null);
+                TextView markerTitle = (TextView) infoWindow.findViewById(R.id.markerTitle);
+                TextView markerDesc = (TextView) infoWindow.findViewById(R.id.markerDesc);
+
+                final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                LatLng markerPos = marker.getPosition();
+
+                Cursor dbMarker = databaseHelper.getItem(markerPos.latitude,markerPos.longitude);
+                while(dbMarker.moveToNext()){
+                    String dbMarkerTitle = dbMarker.getString(1);
+                    String dbMarkerDesc = dbMarker.getString(2);
+
+                    if(dbMarkerTitle.length() > 21) {
+                        markerTitle.setText(dbMarkerTitle.substring(0, 21) + "..");
+                    } else {
+                        markerTitle.setText(dbMarkerTitle);
+                    }
+                    if(dbMarkerDesc.length() > 100) {
+                        markerDesc.setText(dbMarkerDesc.substring(0, 100) + "..");
+                    } else {
+                        markerDesc.setText(dbMarkerDesc);
+                    }
+                }
+
+                return infoWindow;
+            }
+
+        });
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 

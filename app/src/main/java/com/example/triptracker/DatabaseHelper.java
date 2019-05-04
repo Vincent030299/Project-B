@@ -77,13 +77,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Returns one Memory
-     * @param id
+     * @param markerLat
+     * @param markerLong
      * @return
      */
-    public Cursor getItem(Integer id){
+    public Cursor getItem(Double markerLat, Double markerLong){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COL_MEMORY_ID + " = '" + id + "'";
+                " WHERE " + COL_MARKER_LAT + " = '" + markerLat + "'";
         Cursor data = db.rawQuery(query, null);
         return data;
     }

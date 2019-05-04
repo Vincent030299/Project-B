@@ -129,10 +129,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         optionsTab = findViewById(R.id.optionsTab);
         deleteMediaBtn = findViewById(R.id.deleteMediaBtn);
-
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
-
         //adjusting the layout parameters according to the user's screen
 //        ConstraintLayout.LayoutParams mapsLayoutParams=new ConstraintLayout.LayoutParams((screenWidth),(int)(screenHeight*0.8*0.35));
 //        ConstraintLayout.LayoutParams mediafilesSliderParams= new ConstraintLayout.LayoutParams((screenWidth),(int)(screenHeight*0.8*0.35));
@@ -328,7 +326,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
     //starts the activity of choosing a pic from the gallery
     private void uploadPic() {
-        Intent upload= new Intent(Intent.ACTION_GET_CONTENT);
+        Intent upload= new Intent(Intent.ACTION_OPEN_DOCUMENT);
         upload.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         upload.setType("image/*");
         mapViewVisibility(false);
@@ -344,7 +342,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
 //starts the activity of choosing a video from the gallery
     private void uploadVid() {
-        Intent upload_vid= new Intent(Intent.ACTION_GET_CONTENT);
+        Intent upload_vid= new Intent(Intent.ACTION_OPEN_DOCUMENT);
         upload_vid.setType("video/*");
         upload_vid.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         mapViewVisibility(false);

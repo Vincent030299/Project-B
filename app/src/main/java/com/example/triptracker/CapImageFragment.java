@@ -23,8 +23,8 @@ public class CapImageFragment extends Fragment {
         String mymap= getArguments().getString("the cam");
         byte[] mybyte= Base64.decode(mymap,Base64.DEFAULT);
         takenImageBitMap= BitmapFactory.decodeByteArray(mybyte,0,mybyte.length);
-        resizedImage=Bitmap.createScaledBitmap(takenImageBitMap, (int)(takenImageBitMap.getWidth()*2), (int)(takenImageBitMap.getHeight()*2), false);
-        takenImage.setImageBitmap(resizedImage);
+//        resizedImage=Bitmap.createScaledBitmap(takenImageBitMap, (int)(takenImageBitMap.getWidth()*2), (int)(takenImageBitMap.getHeight()*2), false);
+        takenImage.setImageBitmap(takenImageBitMap);
         return capturedImage;
     }
 }

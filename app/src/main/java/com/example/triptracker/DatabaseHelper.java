@@ -197,4 +197,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "deleteName: Deleting " + name + " from database.");
         db.execSQL(query);
     }
+
+    public Cursor getImages(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + IMAGE_NAME +
+                " WHERE " + COL_MEMORY_ID + " = " + id;
+        Cursor images = db.rawQuery(query, null);
+        return images;
+    }
+
+    public Cursor getPicturesBitmaps(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + IMAGE_CAPTURE_NAME;
+        Cursor imagesBitmaps = db.rawQuery(query, null);
+        return imagesBitmaps;
+    }
+
+    public Cursor getVideos(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + VIDEO_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+        Cursor videos = db.rawQuery(query, null);
+        return videos;
+    }
 }

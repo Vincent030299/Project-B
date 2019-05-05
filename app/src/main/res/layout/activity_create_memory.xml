@@ -67,12 +67,7 @@
         app:layout_constraintBottom_toTopOf="@+id/pageIndicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
         app:layout_constraintTop_toBottomOf="@+id/TopBar">
-=======
-        app:layout_constraintTop_toBottomOf="@id/topBar"
-        android:layout_marginTop="30dp">
->>>>>>> a463f2825fdfffac3aff96af1b8eb845873ffb50
 
         <fragment
             android:id="@+id/mapFragView"

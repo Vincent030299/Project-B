@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
     private ListView memoriesList;
-    private ArrayList<String> memoryTitles,memoryDates;
+    private ArrayList<String> memoryTitles,memoryDates,memoryBitmaps,memoryDiscriptions;
     private ArrayList<Integer> memoryIds;
     private ListViewAdapter memoryListAdapter;
 
@@ -53,20 +53,30 @@ public class DashboardActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         Cursor memories = databaseHelper.getData();
+        Cursor memoryBitmapsCursor = databaseHelper.getPicturesBitmaps();
         memoryTitles = new ArrayList<>();
         memoryDates = new ArrayList<>();
         memoryIds  = new ArrayList<>();
-        memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds);
+        memoryBitmaps = new ArrayList<>();
+        memoryDiscriptions = new ArrayList<>();
+
         while(memories.moveToNext()){
             Integer id = memories.getInt(0);
             String title = memories.getString(1);
             String date = memories.getString(3);
+            String discription = memories.getString(2);
             Log.e("date", date);
             Log.e("title",title);
-            memoryListAdapter.addDate(date);
-            memoryListAdapter.addId(id);
-            memoryListAdapter.addTitle(title);
+            memoryDates.add(date);
+            memoryIds.add(id);
+            memoryTitles.add(title);
+            memoryDiscriptions.add(discription);
         }
+        while (memoryBitmapsCursor.moveToNext()){
+            String singleBitmap = memoryBitmapsCursor.getString(1);
+            memoryBitmaps.add(singleBitmap);
+        }
+        memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds,memoryDiscriptions);
         memoriesList.setAdapter(memoryListAdapter);
     }
 

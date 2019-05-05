@@ -1,10 +1,18 @@
 package com.example.triptracker;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,6 +52,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +61,10 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Timer;
 
+/*
+these links helped with learning to be able to write the code for this class
+    https://www.youtube.com/watch?v=LpL9akTG4hI
+*/
 public class CreateMemoryActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
@@ -64,6 +77,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int PICK_VIDEO_CODE=11;
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
+    private final int PERMISSION_REQUEST_CODE = 14;
     private ImageButton closePopup,saveMemoryButton,deleteMediaBtn;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
@@ -76,6 +90,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout,optionsTab;
     private FragmentManager createMemoryFragmentManager;
     private android.support.v4.app.Fragment createMemoryMapView;
+    private Uri takenPictureUri;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -99,7 +114,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_memory);
-
+        takenPictureUri = null;
         //Get the screen size
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -180,7 +195,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                                 uploadPic();
                                 return true;
                             case R.id.takePicItem:
-                                takePic();
+                                askCameraRequest();
                                 return true;
                             case R.id.uploadVideoItem:
                                 uploadVid();
@@ -333,11 +348,38 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         startActivityForResult(upload,PICK_IMAGE_CODE);
     }
 
-//starts the activity of taking a pic
-    private void takePic() {
-        Intent takepic=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//asks for permission to use camera and storage
+    private void askCameraRequest() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED
+                || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED ){
+                String[] permissionrequest = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissionrequest, PERMISSION_REQUEST_CODE);
+            }
+            else{
+                takePic();
+            }
+        }
+        else{
+            takePic();
+        }
+
+    }
+    //starts the activity of taking a pic
+    private void takePic(){
+//        ContentValues takenPicInfo = new ContentValues();
+//        takenPicInfo.put(MediaStore.Images.Media.TITLE, "New picture");
+//        takenPicInfo.put(MediaStore.Images.Media.DESCRIPTION, "From camera");
+//        takenPictureUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,takenPicInfo);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        takenPictureUri = Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                "TripTracker" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+        Intent openCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        openCamera.putExtra(MediaStore.EXTRA_OUTPUT, takenPictureUri);
+        startActivityForResult(openCamera, TAKE_PIC_CODE);
         mapViewVisibility(false);
-        startActivityForResult(takepic,TAKE_PIC_CODE);
+
     }
 
 //starts the activity of choosing a video from the gallery
@@ -438,25 +480,39 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
 
         else if (requestCode==TAKE_PIC_CODE && resultCode==Activity.RESULT_OK){
-            if(data.getExtras()==null){
-                Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
-            }
-            else{
+//            if(data.getClipData()==null){
+//                Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
+//            }
+//            else{
+
                 optionsTab.setVisibility(View.VISIBLE);
-                bitmapsAmount=bitmapsAmount+1;
-                imageBitmaps=new Bitmap[bitmapsAmount];
-                imageBitmaps[imageBitmaps.length-1]=(Bitmap) data.getExtras().get("data");
+                imageAmount=imageAmount+1;
+                imageUri=new Uri[imageAmount];
+                imageUri[imageUri.length-1]= takenPictureUri;
                 Bundle args=new Bundle();
-                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
-                imageBitmaps[imageBitmaps.length-1].compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
-                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
-                args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
-                CapImageFragment capturedImageFragment= new CapImageFragment();
-                capturedImageFragment.setArguments(args);
-                chosenViewsArrayList.add(capturedImageFragment);
+                args.putString("the image", imageUri[imageUri.length-1].toString());
+                ImageFragment chosenImageFragment= new ImageFragment();
+                chosenImageFragment.setArguments(args);
+                chosenViewsArrayList.add(chosenImageFragment);
                 chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
                 createMemorySlider.setAdapter(chosenViewsAdapter);
-            }
+                Toast.makeText(getApplicationContext(), String.valueOf(imageUri.length),Toast.LENGTH_LONG).show();
+
+//                optionsTab.setVisibility(View.VISIBLE);
+//                bitmapsAmount=bitmapsAmount+1;
+//                imageBitmaps=new Bitmap[bitmapsAmount];
+//                imageBitmaps[imageBitmaps.length-1]=(Bitmap) data.getExtras().get("data");
+//                Bundle args=new Bundle();
+//                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
+//                imageBitmaps[imageBitmaps.length-1].compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+//                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
+//                args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
+//                CapImageFragment capturedImageFragment= new CapImageFragment();
+//                capturedImageFragment.setArguments(args);
+//                chosenViewsArrayList.add(capturedImageFragment);
+//                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+//                createMemorySlider.setAdapter(chosenViewsAdapter);
+//            }
 
         }
         else if (requestCode==RECORD_VIDEO_CODE && resultCode== Activity.RESULT_OK){
@@ -524,5 +580,15 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
 
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            takePic();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Permission denied... cannot open the camera", Toast.LENGTH_LONG);
+        }
     }
 }

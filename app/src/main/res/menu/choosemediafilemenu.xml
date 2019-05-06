@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/uploadImageItem"
+        android:checkable="false"
+        android:enabled="true"
+        android:title="Choose image from gallery"
+        android:visible="true" />
+    <item
+        android:id="@+id/takePicItem"
+        android:enabled="true"
+        android:title="Take picture"
+        android:visible="true" />
+    <item
+        android:id="@+id/uploadVideoItem"
+        android:enabled="true"
+        android:title="Choose a video from gallery"
+        android:visible="true" />
+    <item
+        android:id="@+id/recordVideoItem"
+        android:enabled="true"
+        android:title="Record video"
+        android:visible="true" />
+
+</menu>

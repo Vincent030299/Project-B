@@ -8,14 +8,17 @@
     tools:context=".DashboardActivity">
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/memoriesList"
+        android:layout_width="411dp"
+        android:layout_height="675dp"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/memoriesList"
-        android:padding="5dp"
-        android:scrollbars="vertical"/>
+        app:layout_constraintVertical_bias="0.0" />
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"

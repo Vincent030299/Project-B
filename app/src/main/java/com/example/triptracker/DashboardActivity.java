@@ -2,6 +2,7 @@ package com.example.triptracker;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,12 +16,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
 public class DashboardActivity extends AppCompatActivity {
     private ListView memoriesList;
-    private ArrayList<String> memoryTitles,memoryDates;
+    private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     private ArrayList<Integer> memoryIds;
     private ListViewAdapter memoryListAdapter;
 
@@ -56,17 +59,22 @@ public class DashboardActivity extends AppCompatActivity {
         memoryTitles = new ArrayList<>();
         memoryDates = new ArrayList<>();
         memoryIds  = new ArrayList<>();
-        memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds);
+        memoryDiscriptions = new ArrayList<>();
+
+
         while(memories.moveToNext()){
             Integer id = memories.getInt(0);
             String title = memories.getString(1);
             String date = memories.getString(3);
+            String discription = memories.getString(2);
             Log.e("date", date);
             Log.e("title",title);
-            memoryListAdapter.addDate(date);
-            memoryListAdapter.addId(id);
-            memoryListAdapter.addTitle(title);
+            memoryDates.add(date);
+            memoryIds.add(id);
+            memoryTitles.add(title);
+            memoryDiscriptions.add(discription);
         }
+        memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds,memoryDiscriptions);
         memoriesList.setAdapter(memoryListAdapter);
     }
 
@@ -74,6 +82,12 @@ public class DashboardActivity extends AppCompatActivity {
         Intent intent = new Intent(this, className);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         overridePendingTransition(0, 0);
+        finish();
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
     }
 }

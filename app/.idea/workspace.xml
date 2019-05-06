@@ -26,12 +26,6 @@
   <component name="ChangeListManager">
     <list default="true" id="468c359b-a049-4d6d-9e81-65c641df45ec" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/ListViewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/ListViewAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/ViewMemoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/ViewMemoryActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/../.gradle/" />
@@ -121,8 +115,8 @@
         <entry file="file://$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml">
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="103" column="60" selection-start-line="103" selection-start-column="60" selection-end-line="103" selection-end-column="60" />
+            <state relative-caret-position="236">
+              <caret line="152" column="45" selection-start-line="152" selection-start-column="45" selection-end-line="152" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -183,7 +177,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
+            <state relative-caret-position="255">
               <caret line="156" column="23" selection-start-line="156" selection-start-column="23" selection-end-line="156" selection-end-column="23" />
             </state>
           </provider>
@@ -602,7 +596,14 @@
       <option name="project" value="LOCAL" />
       <updated>1557152010197</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="adjusted view memory layout. fixed bugs in view memory activity.">
+      <created>1557163231265</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1557163231265</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TodoView">
@@ -717,7 +718,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="unversioned files" />
     <MESSAGE value="applied hotfixes of the class ImageFragment." />
     <MESSAGE value="applied hotfixes of the class imageFragment." />
     <MESSAGE value="fixing ImageFragment" />
@@ -742,7 +742,8 @@
     <MESSAGE value="added functionality to open a memory. adjusted the queries of getting item from tables." />
     <MESSAGE value="fixed showing the pictures taken with camera. disabled back button in some activities." />
     <MESSAGE value="fixed bugs when uploading same type of files." />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs when uploading same type of files." />
+    <MESSAGE value="adjusted view memory layout. fixed bugs in view memory activity." />
+    <option name="LAST_COMMIT_MESSAGE" value="adjusted view memory layout. fixed bugs in view memory activity." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../.idea/misc.xml">
@@ -940,7 +941,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
+        <state relative-caret-position="255">
           <caret line="156" column="23" selection-start-line="156" selection-start-column="23" selection-end-line="156" selection-end-column="23" />
         </state>
       </provider>
@@ -1007,8 +1008,8 @@
     <entry file="file://$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="103" column="60" selection-start-line="103" selection-start-column="60" selection-end-line="103" selection-end-column="60" />
+        <state relative-caret-position="236">
+          <caret line="152" column="45" selection-start-line="152" selection-start-column="45" selection-end-line="152" selection-end-column="45" />
         </state>
       </provider>
     </entry>

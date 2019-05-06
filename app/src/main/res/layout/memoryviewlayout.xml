@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center"
-            android:text="Create Memory"
+            android:text="Memory"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -150,7 +150,7 @@
             android:id="@+id/viewMemoryShareBtn"
             android:src="@drawable/sharebutton"
             android:background="#00000000"
-            android:layout_marginStart="185dp"
+            android:layout_marginStart="250dp"
             android:maxHeight="42dp"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"/>

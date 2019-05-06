@@ -33,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, className);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         overridePendingTransition(0, 0);
+        finish();
         startActivity(intent);
     }
     

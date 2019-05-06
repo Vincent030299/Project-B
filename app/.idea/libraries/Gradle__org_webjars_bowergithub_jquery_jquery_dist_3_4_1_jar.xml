@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.webjars.bowergithub.jquery:jquery-dist:3.4.1@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.webjars.bowergithub.jquery/jquery-dist/3.4.1/c638a3f7a984a303255d8c2d2927ac841c7ec6c5/jquery-dist-3.4.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.webjars.bowergithub.jquery/jquery-dist/3.4.1/b04f3ee8f5e43fa3b162981b50bb72fe1acabb33/jquery-dist-3.4.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

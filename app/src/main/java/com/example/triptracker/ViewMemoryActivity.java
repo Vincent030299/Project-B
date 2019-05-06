@@ -43,7 +43,7 @@ import java.util.Objects;
 public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCallback {
     private ViewPager viewMemoryMediaSlider;
     private TextView viewMemoryTitle,viewMemoryDate,viewMemoryDescription;
-    private ImageButton viewMemoryShareButton;
+    private ImageButton viewMemoryShareButton,closeViewMemory;
     private Fragment viewmemoryMapFragment;
     private CirclePageIndicator viewMemoryDotsIndicator;
     private Switch viewMemoryMediaSwitch;
@@ -87,6 +87,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryDotsIndicator=findViewById(R.id.viewMemoryDotsIndicator);
         viewMemoryMediaSwitch=findViewById(R.id.viewMemoryMediaSwitch);
         mediaFilesLayout = findViewById(R.id.viewMemoryMediaLayout);
+        closeViewMemory = findViewById(R.id.closeViewMemory);
         mDataBaseHelper = new DatabaseHelper(getApplicationContext());
 
         memoryTitle = getIntent().getStringExtra("title");
@@ -96,6 +97,13 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        closeViewMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         viewMemoryDate.setText(memoryDate);
         viewMemoryTitle.setText(memoryTitle);
         viewMemoryDescription.setText(memoryDescription);

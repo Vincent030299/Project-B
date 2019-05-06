@@ -156,7 +156,7 @@
             android:adjustViewBounds="true"/>
 
         <ImageButton
-            android:id="@+id/closeCreateMemory"
+            android:id="@+id/closeViewMemory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"

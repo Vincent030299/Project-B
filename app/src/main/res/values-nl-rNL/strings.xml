@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Trip Tracker</string>
+    <string name="title_activity_maps">Trip Tracker</string>
+    <string name="title_activity_dashboard_activty">DashboardActiviteit</string>
+    <string name="title_home">Startpagina</string>
+    <string name="title_memories">Herinneringen</string>
+    <string name="title_settings">Instellingen</string>
+    <string name="title_activity_settings">InstellingenActiviteit</string>
+    <string name="title_activity_dashboard">DashboardActiviteit</string>
+    <string name="title_notifications">Notificaties</string>
+    <string name="hint_memory_description">Beschrijving</string>
+    <string name="hint_memory_title">Titel</string>
+    <string name="media_files">Media bestanden</string>
+    <string name="create_memory">Maak herinnering</string>
+</resources>

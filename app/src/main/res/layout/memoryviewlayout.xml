@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewMemoryTopBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         >
@@ -30,7 +30,7 @@
         android:layout_height="200dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewMemoryTopBar"
         android:id="@+id/viewMemoryMediaLayout">
         <android.support.v4.view.ViewPager
             android:id="@+id/viewMemorySlider"
@@ -68,46 +68,45 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewMemorySwitchLayout"
-        android:orientation="horizontal"
-        android:id="@+id/ViewMemoryTitleLayout">
+        android:orientation="vertical"
+        android:id="@+id/ViewMemoryTitleLayout"
+        android:gravity="start"
+        android:layout_marginStart="20dp">
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/viewMemoryTitle"
             android:text="hint"
             android:textStyle="bold"
-            android:layout_weight="2"
+            android:textColor="@color/vpi__background_holo_dark"
+            android:maxHeight="35dp"
+            android:textSize="22sp"
             android:scrollbars="horizontal"/>
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/viewMemoryDate" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewMemoryDate"
+            android:layout_marginTop="6dp"/>
     </LinearLayout>
 
     <TextView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
         android:id="@+id/viewMemoryDescription"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ViewMemoryTitleLayout"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:textColor="@color/vpi__background_holo_dark"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="5dp"/>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewMemoryDescription"
-        android:layout_marginEnd="55dp"
-        android:id="@+id/viewMemoryShareBtn"
-        android:src="@drawable/sharebutton"
-        android:background="#00000000"/>
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
@@ -122,4 +121,51 @@
         android:backgroundTint="@color/blueapp"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"/>
+    <LinearLayout
+        android:id="@+id/viewMemoryTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/blueapp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/viewMemoryMediaLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:text="Create Memory"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewMemoryDescription"
+            android:id="@+id/viewMemoryShareBtn"
+            android:src="@drawable/sharebutton"
+            android:background="#00000000"
+            android:layout_marginStart="185dp"
+            android:maxHeight="42dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
+
+        <ImageButton
+            android:id="@+id/closeCreateMemory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginStart="10dp"
+            android:background="#00000000"
+            android:src="@drawable/close_popup"
+            android:maxHeight="25dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

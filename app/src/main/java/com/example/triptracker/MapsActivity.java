@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +45,8 @@ import java.util.HashMap;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private Button createMemoryButton;
@@ -50,6 +54,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final int CREATE_MARKER = 2;
     private LocationManager locationManager;
     private LatLng userLocation;
+    private ArrayList<String> memoryImages = new ArrayList<>();
+    private ArrayList<String> memoryVideos = new ArrayList<>();
+    private ArrayList<String> memoryBitmaps = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +228,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void openMemory(Marker marker) {
+        int markerId;
+        DatabaseHelper mDataBaseHelper = new DatabaseHelper(getApplicationContext());
+        Cursor dbMarkerInfo = mDataBaseHelper.getItem(marker.getPosition().latitude, marker.getPosition().longitude);
+        if(dbMarkerInfo.moveToFirst()){
+            markerId = dbMarkerInfo.getInt(0);
+            Cursor allImagesForMemory = mDataBaseHelper.getImages(markerId);
+            Cursor allVideosForMemory = mDataBaseHelper.getVideos(markerId);
+            Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps(markerId);
+            while(allImagesForMemory.moveToNext()){
+                String singleImage = allImagesForMemory.getString(1);
+                memoryImages.add(singleImage);
+            }
+            while (allVideosForMemory.moveToNext()){
+                String singleVideo = allVideosForMemory.getString(1);
+                memoryVideos.add(singleVideo);
+            }
+            while(allBitmapsForMemory.moveToNext()){
+                byte[] singleBitmap = allBitmapsForMemory.getBlob(1);
+                memoryBitmaps.add(Base64.encodeToString(singleBitmap, Base64.DEFAULT));
+            }
+            LatLng markerLoc = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
+            Intent openMemory = new Intent(getApplicationContext(), ViewMemoryActivity.class);
+            openMemory.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            openMemory.putStringArrayListExtra("images", memoryImages);
+            openMemory.putStringArrayListExtra("bitmaps", memoryBitmaps);
+            openMemory.putStringArrayListExtra("videos", memoryVideos);
+            openMemory.putExtra("description", dbMarkerInfo.getString(2));
+            openMemory.putExtra("title", dbMarkerInfo.getString(1));
+            openMemory.putExtra("date", dbMarkerInfo.getString(3));
+            openMemory.putExtra("location", markerLoc);
+            startActivity(openMemory);
+        }
+
 
     }
 
@@ -268,5 +308,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String title = data.getStringExtra("title");
             createMarker(point, title);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAndRemoveTask();
     }
 }

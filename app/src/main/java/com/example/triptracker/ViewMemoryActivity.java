@@ -1,6 +1,7 @@
 package com.example.triptracker;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,13 +22,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.net.URI;
@@ -47,6 +53,9 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private ArrayList<Fragment> memoryViewMediaFiles = new ArrayList<>();
     private String memoryTitle, memoryDescription,memoryDate;
     private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
+    private LinearLayout mediaFilesLayout;
+    private LatLng markerLoc;
+    private DatabaseHelper mDataBaseHelper;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -77,9 +86,13 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryShareButton=findViewById(R.id.viewMemoryShareBtn);
         viewMemoryDotsIndicator=findViewById(R.id.viewMemoryDotsIndicator);
         viewMemoryMediaSwitch=findViewById(R.id.viewMemoryMediaSwitch);
+        mediaFilesLayout = findViewById(R.id.viewMemoryMediaLayout);
+        mDataBaseHelper = new DatabaseHelper(getApplicationContext());
+
         memoryTitle = getIntent().getStringExtra("title");
         memoryDescription = getIntent().getStringExtra("description");
         memoryDate = getIntent().getStringExtra("date");
+        markerLoc = new LatLng(getIntent().getExtras().getDouble("lat"), getIntent().getExtras().getDouble("lng"));
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -132,6 +145,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
         viewMemoryFragmentManager=getSupportFragmentManager();
         viewmemoryMapFragment=viewMemoryFragmentManager.findFragmentById(R.id.viewMemoryMap);
+        viewMemoryMapVisibility(false);
         viewMemoryShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +186,24 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
+        Intent intent = getIntent();
+        markerLoc = intent.getParcelableExtra("location");
+        if (markerLoc==null){
+            markerLoc = new LatLng(getIntent().getDoubleExtra("lat", 0.0), getIntent().getDoubleExtra("lng", 0.0));
+        }
+
+        mMap.addMarker(new MarkerOptions()
+                .position(markerLoc)
+                .draggable(true));
+
+        //Create camera zoom to show marker close
+        CameraPosition cameraPosition = new CameraPosition.Builder().
+                target(markerLoc).
+                zoom(15).
+                build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
 

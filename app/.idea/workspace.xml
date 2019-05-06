@@ -26,11 +26,12 @@
   <component name="ChangeListManager">
     <list default="true" id="468c359b-a049-4d6d-9e81-65c641df45ec" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/CapImageFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/CapImageFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/ListViewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/ListViewAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triptracker/ViewMemoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triptracker/ViewMemoryActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/../.gradle/" />
@@ -106,22 +107,32 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/ViewMemoryActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="533">
-              <caret line="130" column="71" selection-start-line="130" selection-start-column="71" selection-end-line="130" selection-end-column="71" />
+            <state relative-caret-position="68">
+              <caret line="42" column="56" selection-start-line="42" selection-start-column="40" selection-end-line="42" selection-end-column="56" />
               <folding>
-                <element signature="e#2004#2662#0" expanded="true" />
-                <element signature="e#2661#2662#0" expanded="true" />
+                <element signature="e#2300#2958#0" expanded="true" />
+                <element signature="e#2957#2958#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml">
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="84" column="42" selection-start-line="84" selection-start-column="42" selection-end-line="84" selection-end-column="42" />
+            <state relative-caret-position="323">
+              <caret line="103" column="60" selection-start-line="103" selection-start-column="60" selection-end-line="103" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml">
+          <provider editor-type-id="android-designer2" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="389">
+              <caret line="272" selection-start-line="272" selection-end-line="272" />
             </state>
           </provider>
         </entry>
@@ -129,8 +140,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="514" column="104" selection-start-line="514" selection-start-column="104" selection-end-line="514" selection-end-column="104" />
+            <state relative-caret-position="323">
+              <caret line="321" column="115" selection-start-line="321" selection-start-column="115" selection-end-line="321" selection-end-column="115" />
               <folding>
                 <element signature="e#7951#8097#0" expanded="true" />
                 <element signature="e#8096#8097#0" expanded="true" />
@@ -139,11 +150,17 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1148">
-              <caret line="112" column="9" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
+            <state relative-caret-position="451">
+              <caret line="262" selection-start-line="262" selection-end-line="262" />
+              <folding>
+                <element signature="e#5484#5666#0" expanded="true" />
+                <element signature="e#5665#5666#0" expanded="true" />
+                <element signature="e#13268#13269#0" expanded="true" />
+                <element signature="e#13292#13293#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -151,11 +168,33 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/ListViewAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="77">
-              <caret line="78" column="69" selection-start-line="78" selection-start-column="69" selection-end-line="78" selection-end-column="69" />
+            <state relative-caret-position="-8">
+              <caret line="84" column="95" selection-start-line="84" selection-start-column="95" selection-end-line="84" selection-end-column="95" />
               <folding>
+                <element signature="e#2680#3898#0" expanded="true" />
                 <element signature="e#3897#3898#0" expanded="true" />
+                <element signature="e#4859#5077#0" expanded="true" />
+                <element signature="e#5076#5077#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="156" column="23" selection-start-line="156" selection-start-column="23" selection-end-line="156" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout/memorylistitem.xml">
+          <provider editor-type-id="android-designer2" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="355">
+              <caret line="69" selection-start-line="69" selection-end-line="70" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -163,27 +202,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DashboardActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="86" column="5" selection-start-line="86" selection-start-column="5" selection-end-line="86" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/CapImageFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_dashboard.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="21" selection-start-line="21" selection-end-line="34" selection-end-column="42" />
+            <state relative-caret-position="448">
+              <caret line="77" column="51" selection-start-line="77" selection-start-column="51" selection-end-line="77" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -203,6 +223,8 @@
     <findStrings>
       <find>close</find>
       <find>navigation</find>
+      <find>creatememoryFra</find>
+      <find>viewmemoryFrag</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -218,24 +240,24 @@
         <option value="$PROJECT_DIR$/src/main/res/layout-large/activity_create_memory.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout-long/activity_create_memory.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout-w447dp-h611dp/activity_create_memory.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java" />
         <option value="$PROJECT_DIR$/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/ImageFragment.java" />
         <option value="$PROJECT_DIR$/src/main/res/layout/imagefragmentlayout.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/VidFragment.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout/memorylistitem.xml" />
         <option value="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
         <option value="$PROJECT_DIR$/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout/activity_dashboard.xml" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/DashboardActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/CapImageFragment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/DashboardActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/ListViewAdapter.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/ViewMemoryActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml" />
       </list>
     </option>
   </component>
@@ -359,7 +381,7 @@
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
-    <property name="device.picker.selection" value="5200a1194fe6b449" />
+    <property name="device.picker.selection" value="Nexus_5X_API_Q" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/res/drawable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -573,7 +595,14 @@
       <option name="project" value="LOCAL" />
       <updated>1557142596284</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="fixed bugs when uploading same type of files.">
+      <created>1557152010197</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1557152010197</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView">
@@ -590,7 +619,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.32942432" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.32942432" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Build Variants" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
@@ -605,7 +634,7 @@
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.4989339" weight="0.329718" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5042644" side_tool="true" weight="0.3336945" />
       <window_info anchor="bottom" id="Build" order="6" sideWeight="0.4946695" weight="0.32502708" />
-      <window_info active="true" anchor="bottom" id="Run" order="7" sideWeight="0.49573562" visible="true" weight="0.3336945" />
+      <window_info anchor="bottom" id="Run" order="7" sideWeight="0.49573562" visible="true" weight="0.3336945" />
       <window_info anchor="bottom" id="Debug" order="8" />
       <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.49946696" weight="0.32936078" />
       <window_info anchor="bottom" id="Find" order="10" />
@@ -688,7 +717,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Changed the naming according to the given feedback" />
     <MESSAGE value="unversioned files" />
     <MESSAGE value="applied hotfixes of the class ImageFragment." />
     <MESSAGE value="applied hotfixes of the class imageFragment." />
@@ -713,7 +741,8 @@
     <MESSAGE value="Adjusted the dimensions of taken pictures." />
     <MESSAGE value="added functionality to open a memory. adjusted the queries of getting item from tables." />
     <MESSAGE value="fixed showing the pictures taken with camera. disabled back button in some activities." />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed showing the pictures taken with camera. disabled back button in some activities." />
+    <MESSAGE value="fixed bugs when uploading same type of files." />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs when uploading same type of files." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../.idea/misc.xml">
@@ -823,36 +852,6 @@
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="76" column="51" selection-start-line="76" selection-start-column="51" selection-end-line="76" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="65" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/memorylistitem.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2388">
-          <caret line="59" column="53" selection-start-line="59" selection-start-column="53" selection-end-line="59" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/VidFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="439">
@@ -905,33 +904,6 @@
     <entry file="file://$PROJECT_DIR$/../build.gradle">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_dashboard.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="21" selection-start-line="21" selection-end-line="34" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="84" column="42" selection-start-line="84" selection-start-column="42" selection-end-line="84" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/ViewMemoryActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="533">
-          <caret line="130" column="71" selection-start-line="130" selection-start-column="71" selection-end-line="130" selection-end-column="71" />
-          <folding>
-            <element signature="e#2004#2662#0" expanded="true" />
-            <element signature="e#2661#2662#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/CapImageFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -939,20 +911,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DashboardActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="77" column="51" selection-start-line="77" selection-start-column="51" selection-end-line="77" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="65" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/MapsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="451">
+          <caret line="262" selection-start-line="262" selection-end-line="262" />
+          <folding>
+            <element signature="e#5484#5666#0" expanded="true" />
+            <element signature="e#5665#5666#0" expanded="true" />
+            <element signature="e#13268#13269#0" expanded="true" />
+            <element signature="e#13292#13293#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="156" column="23" selection-start-line="156" selection-start-column="23" selection-end-line="156" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/ListViewAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="78" column="69" selection-start-line="78" selection-start-column="69" selection-end-line="78" selection-end-column="69" />
+        <state relative-caret-position="-8">
+          <caret line="84" column="95" selection-start-line="84" selection-start-column="95" selection-end-line="84" selection-end-column="95" />
           <folding>
+            <element signature="e#2680#3898#0" expanded="true" />
             <element signature="e#3897#3898#0" expanded="true" />
+            <element signature="e#4859#5077#0" expanded="true" />
+            <element signature="e#5076#5077#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/CreateMemoryActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="514" column="104" selection-start-line="514" selection-start-column="104" selection-end-line="514" selection-end-column="104" />
+        <state relative-caret-position="323">
+          <caret line="321" column="115" selection-start-line="321" selection-start-column="115" selection-end-line="321" selection-end-column="115" />
           <folding>
             <element signature="e#7951#8097#0" expanded="true" />
             <element signature="e#8096#8097#0" expanded="true" />
@@ -960,17 +969,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DashboardActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/ViewMemoryActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="86" column="5" selection-start-line="86" selection-start-column="5" selection-end-line="86" selection-end-column="5" />
+        <state relative-caret-position="68">
+          <caret line="42" column="56" selection-start-line="42" selection-start-column="40" selection-end-line="42" selection-end-column="56" />
+          <folding>
+            <element signature="e#2300#2958#0" expanded="true" />
+            <element signature="e#2957#2958#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/triptracker/DatabaseHelper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/memorylistitem.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1148">
-          <caret line="112" column="9" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
+        <state relative-caret-position="355">
+          <caret line="69" selection-start-line="69" selection-end-line="70" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_dashboard.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="19" column="49" lean-forward="true" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_create_memory.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="389">
+          <caret line="272" selection-start-line="272" selection-end-line="272" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/memoryviewlayout.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="103" column="60" selection-start-line="103" selection-start-column="60" selection-end-line="103" selection-end-column="60" />
         </state>
       </provider>
     </entry>

@@ -145,6 +145,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery(query, null);
         return data;
     }
+    public Cursor getSingleMemoryData(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + "ID" + " = " + id;
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
 
     /**
      * Returns one Memory
@@ -190,16 +196,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Delete from database
      * @param id
-     * @param name
      */
-    public void deleteName(int id, String name){
+    public void deleteName(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE "
-                + COL_MEMORY_ID + " = '" + id + "'" +
-                " AND " + COL_MEMORY_NAME + " = '" + name + "'";
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE id =" + id;
+        String deleteImages = "DELETE FROM " + IMAGE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+        String deleteVideos = "DELETE FROM " + VIDEO_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+        String deleteTakenImages = "DELETE FROM " + IMAGE_CAPTURE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
         Log.d(TAG, "deleteName: query: " + query);
-        Log.d(TAG, "deleteName: Deleting " + name + " from database.");
         db.execSQL(query);
+        db.execSQL(deleteImages);
+        db.execSQL(deleteVideos);
+        db.execSQL(deleteTakenImages);
     }
 
     public Cursor getImages(int id){

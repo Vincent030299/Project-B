@@ -299,7 +299,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         int chosenDay= memoryDate.getDayOfMonth();
         int chosenMonth= memoryDate.getMonth();
         int chosenYear=memoryDate.getYear();
-        if (memoryTitle.getEditText().getText().length()==0){
+        if (memoryTitle.getEditText().getText().length()==0 ){
             Toast.makeText(getApplicationContext(),"Please enter a title",Toast.LENGTH_SHORT).show();
         }
         else if (memoryDescription.getEditText().getText().length()==0){
@@ -317,6 +317,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
         else if(chosenViewsArrayList.size()==0){
             Toast.makeText(getApplicationContext(),"Please choose an image or a video",Toast.LENGTH_SHORT).show();
+        }
+        else if (memoryTitle.getEditText().getText().length()>20){
+            Toast.makeText(getApplicationContext(), "The title is too long, try again", Toast.LENGTH_SHORT).show();
         }
         else {
             String currentMemoryTitle=memoryTitle.getEditText().getText().toString();

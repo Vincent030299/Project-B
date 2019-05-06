@@ -68,7 +68,7 @@ public class ListViewAdapter extends BaseAdapter {
     public View getView(final int position, final View convertView, ViewGroup parent) {
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View singleMemory = layoutInflater.inflate(R.layout.memorylistitem, parent, false);
+        final View singleMemory = layoutInflater.inflate(R.layout.memorylistitem, parent, false);
         openMemoryBtn = singleMemory.findViewById(R.id.open);
         deleteMemoryBtn = singleMemory.findViewById(R.id.delete);
         memoryDate = singleMemory.findViewById(R.id.singleMemoryDate);
@@ -84,6 +84,7 @@ public class ListViewAdapter extends BaseAdapter {
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
                 Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps(memoryIds.get(position));
+
 //                Toast.makeText(context.getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
                 while(allImagesForMemory.moveToNext()){
                     String singleImage = allImagesForMemory.getString(1);
@@ -105,8 +106,26 @@ public class ListViewAdapter extends BaseAdapter {
                 openMemory.putExtra("description", memoryDiscriptions.get(position));
                 openMemory.putExtra("title", memoryTitles.get(position));
                 openMemory.putExtra("date", memoryDates.get(position));
+                Cursor singleMemoryInfos = mDataBaseHelper.getSingleMemoryData(memoryIds.get(position));
+                if (singleMemoryInfos.moveToFirst()) {
+                    Double lat = singleMemoryInfos.getDouble(4);
+                    Double lng = singleMemoryInfos.getDouble(5);
+                    openMemory.putExtra("lat", lat);
+                    openMemory.putExtra("lng", lng);
+                }
                 context.getApplicationContext().startActivity(openMemory);
 
+            }
+        });
+
+        deleteMemoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
+                mDataBaseHelper.deleteName(memoryIds.get(position));
+                Intent openDashBoard = new Intent(context.getApplicationContext(),DashboardActivity.class);
+                openDashBoard.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(openDashBoard);
             }
         });
         return singleMemory;

@@ -81,7 +81,8 @@
             android:id="@+id/viewMemoryTitle"
             android:text="hint"
             android:textStyle="bold"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:scrollbars="horizontal"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -95,7 +96,8 @@
         android:id="@+id/viewMemoryDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ViewMemoryTitleLayout"/>
+        app:layout_constraintTop_toBottomOf="@id/ViewMemoryTitleLayout"
+        android:scrollbars="vertical" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -103,7 +105,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewMemoryDescription"
         android:layout_marginEnd="55dp"
-        android:layout_marginTop="15dp"
         android:id="@+id/viewMemoryShareBtn"
         android:src="@drawable/sharebutton"
         android:background="#00000000"/>

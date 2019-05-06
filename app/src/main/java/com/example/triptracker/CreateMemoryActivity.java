@@ -31,6 +31,7 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -81,10 +82,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private ImageButton closePopup,saveMemoryButton,deleteMediaBtn;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
-    private int imageAmount=0, videoAmount=0, bitmapsAmount=0;
-    private Uri[] imageUri = new Uri[imageAmount];
-    private Uri[] recordedVideoUri= new Uri[videoAmount];
-    private Bitmap[] imageBitmaps= new Bitmap[bitmapsAmount];
+    private ArrayList<Uri> imageUri = new ArrayList<>();
+    private ArrayList<Uri> recordedVideoUri= new ArrayList<>();
+    private ArrayList<Bitmap> imageBitmaps= new ArrayList<>();
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
     private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout,optionsTab;
@@ -413,11 +413,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             if(data.getClipData()!=null){
                 optionsTab.setVisibility(View.VISIBLE);
                 for (int i=0; i<data.getClipData().getItemCount();i++){
-                    imageAmount=imageAmount+1;
-                    imageUri=new Uri[imageAmount];
-                    imageUri[imageUri.length-1]=data.getClipData().getItemAt(i).getUri();
+                    imageUri.add(i,data.getClipData().getItemAt(i).getUri());
                     Bundle args=new Bundle();
-                    args.putString("the image", imageUri[imageUri.length-1].toString());
+                    args.putString("the image", imageUri.get(i).toString());
                     ImageFragment chosenImageFragment= new ImageFragment();
                     chosenImageFragment.setArguments(args);
                     chosenViewsArrayList.add(chosenImageFragment);
@@ -427,11 +425,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
             else if (data.getData() !=null){
                 optionsTab.setVisibility(View.VISIBLE);
-                imageAmount=imageAmount+1;
-                imageUri=new Uri[imageAmount];
-                imageUri[imageUri.length-1]=data.getData();
+                imageUri.add(data.getData());
                 Bundle args=new Bundle();
-                args.putString("the image", imageUri[imageUri.length-1].toString());
+                args.putString("the image", imageUri.get(imageUri.size()-1).toString());
                 ImageFragment chosenImageFragment= new ImageFragment();
                 chosenImageFragment.setArguments(args);
                 chosenViewsArrayList.add(chosenImageFragment);
@@ -448,11 +444,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             if(data.getClipData()!=null){
                 optionsTab.setVisibility(View.VISIBLE);
                 for(int i=0;i<data.getClipData().getItemCount();i++){
-                    videoAmount=videoAmount+1;
-                    recordedVideoUri=new Uri[videoAmount];
-                    recordedVideoUri[recordedVideoUri.length-1]=data.getClipData().getItemAt(i).getUri();
+                    recordedVideoUri.add(i,data.getClipData().getItemAt(i).getUri());
                     Bundle args = new Bundle();
-                    args.putString("the video", recordedVideoUri[recordedVideoUri.length-1].toString());
+                    args.putString("the video", recordedVideoUri.get(i).toString());
                     VidFragment chosenVideoFragment = new VidFragment();
                     chosenVideoFragment.setArguments(args);
                     chosenViewsArrayList.add(chosenVideoFragment);
@@ -462,11 +456,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
             else if (recordedVideoUri != null) {
                 optionsTab.setVisibility(View.VISIBLE);
-                videoAmount=videoAmount+1;
-                recordedVideoUri=new Uri[videoAmount];
-                recordedVideoUri[recordedVideoUri.length-1]=data.getData();
+                recordedVideoUri.add(data.getData());
                 Bundle args = new Bundle();
-                args.putString("the video", recordedVideoUri[recordedVideoUri.length-1].toString());
+                args.putString("the video", recordedVideoUri.get(recordedVideoUri.size()-1).toString());
                 VidFragment chosenVideoFragment = new VidFragment();
                 chosenVideoFragment.setArguments(args);
                 chosenViewsArrayList.add(chosenVideoFragment);
@@ -498,12 +490,10 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 //                Toast.makeText(getApplicationContext(), String.valueOf(imageUri.length),Toast.LENGTH_LONG).show();
 
                 optionsTab.setVisibility(View.VISIBLE);
-                bitmapsAmount=bitmapsAmount+1;
-                imageBitmaps=new Bitmap[bitmapsAmount];
-                imageBitmaps[imageBitmaps.length-1]=(Bitmap) data.getExtras().get("data");
+                imageBitmaps.add((Bitmap) data.getExtras().get("data"));
                 Bundle args=new Bundle();
                 ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
-                imageBitmaps[imageBitmaps.length-1].compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+                imageBitmaps.get(imageBitmaps.size()-1).compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
                 byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
                 args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
                 CapImageFragment capturedImageFragment= new CapImageFragment();
@@ -520,11 +510,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
             else{
                 optionsTab.setVisibility(View.VISIBLE);
-                videoAmount=videoAmount+1;
-                recordedVideoUri=new Uri[videoAmount];
-                recordedVideoUri[recordedVideoUri.length-1]=data.getData();
+                recordedVideoUri.add(data.getData());
                 Bundle args=new Bundle();
-                args.putString("the video", recordedVideoUri[recordedVideoUri.length-1].toString());
+                args.putString("the video", recordedVideoUri.get(recordedVideoUri.size()-1).toString());
                 VidFragment recordedVideoFragment= new VidFragment();
                 recordedVideoFragment.setArguments(args);
                 chosenViewsArrayList.add(recordedVideoFragment);

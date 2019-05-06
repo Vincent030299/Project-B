@@ -79,7 +79,7 @@ public class ListViewAdapter extends BaseAdapter {
         openMemoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(), String.valueOf(memoryIds.get(position)), Toast.LENGTH_LONG).show();
+//                Toast.makeText(context.getApplicationContext(), String.valueOf(memoryIds.get(position)), Toast.LENGTH_LONG).show();
                 DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));

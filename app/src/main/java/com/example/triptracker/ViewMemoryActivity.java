@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -126,6 +127,8 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryDotsIndicator.setVisibility(View.INVISIBLE);
         viewMemoryMediaSlider.setVisibility(View.INVISIBLE);
         viewMemoryDotsIndicator.setViewPager(viewMemoryMediaSlider);
+        viewMemoryDescription.setMovementMethod(new ScrollingMovementMethod());
+        viewMemoryTitle.setMovementMethod(new ScrollingMovementMethod());
 
         viewMemoryFragmentManager=getSupportFragmentManager();
         viewmemoryMapFragment=viewMemoryFragmentManager.findFragmentById(R.id.viewMemoryMap);

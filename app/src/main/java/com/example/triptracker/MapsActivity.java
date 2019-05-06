@@ -114,8 +114,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void init(){
-        Log.d(TAG, "init: initializing");
-
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
@@ -125,7 +123,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
 
                     geoLocate();
-
                 }
 
                 return false;
@@ -134,8 +131,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void geoLocate(){
-        Log.d(TAG, "geoLocate: geolocating");
-
         String searchString = mSearchText.getText().toString();
 
         Geocoder geocoder = new Geocoder(MapsActivity.this);
@@ -143,15 +138,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         try{
             list = geocoder.getFromLocationName(searchString, 1);
         }catch (IOException e){
-            Log.e(TAG, "geoLocate: IOException:" + e.getMessage() );
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
         }
 
         if(list.size() > 0){
             Address address = list.get(0);
-
-            Log.d(TAG, "geoLocate: found a location: " + address.toString());
-
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), 10);
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), 16);
         }
     }
 

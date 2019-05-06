@@ -56,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String tableVideo = "CREATE TABLE " + VIDEO_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_VIDEO_URI + " TEXT," + COL_MEMORY_ID + " INTEGER)";
 
-        String tableImageCapture = "CREATE TABLE " + IMAGE_CAPTURE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_CAPTURE_BITMAP + " TEXT, memory_id INTEGER)";
+        String tableImageCapture = "CREATE TABLE " + IMAGE_CAPTURE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_CAPTURE_BITMAP + " BLOB, memory_id INTEGER)";
 
         db.execSQL(createTable);
         db.execSQL(tableImage);
@@ -115,7 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
 
                 ContentValues imageCaptureValues = new ContentValues();
-                imageCaptureValues.put(COL_IMAGE_CAPTURE_BITMAP, Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
+                imageCaptureValues.put(COL_IMAGE_CAPTURE_BITMAP, takenImageByteArray);
                 while(data.moveToNext()){
                     imageCaptureValues.put(COL_MEMORY_ID, data.getInt(0));
                 }
@@ -206,9 +206,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return images;
     }
 
-    public Cursor getPicturesBitmaps(){
+    public Cursor getPicturesBitmaps(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + IMAGE_CAPTURE_NAME;
+        String query = "SELECT * FROM " + IMAGE_CAPTURE_NAME +
+                " WHERE " + COL_MEMORY_ID + " = " + id;
         Cursor imagesBitmaps = db.rawQuery(query, null);
         return imagesBitmaps;
     }

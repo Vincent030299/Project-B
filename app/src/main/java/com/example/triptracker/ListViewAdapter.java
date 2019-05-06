@@ -83,8 +83,7 @@ public class ListViewAdapter extends BaseAdapter {
                 DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
-                Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps();
-
+                Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps(memoryIds.get(position));
 //                Toast.makeText(context.getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
                 while(allImagesForMemory.moveToNext()){
                     String singleImage = allImagesForMemory.getString(1);
@@ -95,8 +94,8 @@ public class ListViewAdapter extends BaseAdapter {
                     memoryVideos.add(singleVideo);
                 }
                 while(allBitmapsForMemory.moveToNext()){
-                    String singleBitmap = allBitmapsForMemory.getString(1);
-                    memoryBitmaps.add(Base64.encodeToString(singleBitmap.getBytes(), Base64.DEFAULT));
+                    byte[] singleBitmap = allBitmapsForMemory.getBlob(1);
+                    memoryBitmaps.add(Base64.encodeToString(singleBitmap, Base64.DEFAULT));
                 }
                 Intent openMemory = new Intent(context.getApplicationContext(), ViewMemoryActivity.class);
                 openMemory.addFlags(FLAG_ACTIVITY_NEW_TASK);
@@ -107,6 +106,7 @@ public class ListViewAdapter extends BaseAdapter {
                 openMemory.putExtra("title", memoryTitles.get(position));
                 openMemory.putExtra("date", memoryDates.get(position));
                 context.getApplicationContext().startActivity(openMemory);
+
             }
         });
         return singleMemory;

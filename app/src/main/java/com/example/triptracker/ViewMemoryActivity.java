@@ -1,9 +1,12 @@
 package com.example.triptracker;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.BundleCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,6 +15,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -41,6 +46,25 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private ArrayList<Fragment> memoryViewMediaFiles = new ArrayList<>();
     private String memoryTitle, memoryDescription,memoryDate;
     private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    openActivity(MapsActivity.class);
+                    return true;
+                case R.id.navigation_dashboard:
+                    openActivity(DashboardActivity.class);
+                    return true;
+                case R.id.navigation_settings:
+                    openActivity(SettingsActivity.class);
+                    return true;
+            }
+            return false;
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +79,9 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         memoryTitle = getIntent().getStringExtra("title");
         memoryDescription = getIntent().getStringExtra("description");
         memoryDate = getIntent().getStringExtra("date");
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         viewMemoryDate.setText(memoryDate);
         viewMemoryTitle.setText(memoryTitle);
         viewMemoryDescription.setText(memoryDescription);
@@ -82,9 +108,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         if (!memoryBitmaps.isEmpty()){
             for(int i = 0; i<memoryBitmaps.size(); i++){
                 Bundle fragmentArgs = new Bundle();
-                Log.d("the bitmap", memoryBitmaps.get(i));
-                byte[] bitmapInBytes = memoryBitmaps.get(i).getBytes();
-                fragmentArgs.putString("the cam",Base64.encodeToString(bitmapInBytes, Base64.DEFAULT) );
+                fragmentArgs.putString("the cam",memoryBitmaps.get(i) );
                 CapImageFragment singleImageBitmap = new CapImageFragment();
                 singleImageBitmap.setArguments(fragmentArgs);
                 memoryViewMediaFiles.add(singleImageBitmap);
@@ -146,6 +170,21 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
+    }
+
+    //open a given activity
+    public void openActivity(Class className) {
+        Intent intent = new Intent(this, className);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        overridePendingTransition(0, 0);
+        finish();
+        startActivity(intent);
 
     }
 }

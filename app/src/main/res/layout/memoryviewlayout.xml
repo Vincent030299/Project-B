@@ -107,4 +107,18 @@
         android:id="@+id/viewMemoryShareBtn"
         android:src="@drawable/sharebutton"
         android:background="#00000000"/>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation"
+        android:backgroundTint="@color/blueapp"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"/>
 </android.support.constraint.ConstraintLayout>

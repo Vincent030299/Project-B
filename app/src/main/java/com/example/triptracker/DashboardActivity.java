@@ -2,6 +2,7 @@ package com.example.triptracker;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,12 +16,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
 public class DashboardActivity extends AppCompatActivity {
     private ListView memoriesList;
-    private ArrayList<String> memoryTitles,memoryDates,memoryBitmaps,memoryDiscriptions;
+    private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     private ArrayList<Integer> memoryIds;
     private ListViewAdapter memoryListAdapter;
 
@@ -53,12 +56,11 @@ public class DashboardActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         Cursor memories = databaseHelper.getData();
-        Cursor memoryBitmapsCursor = databaseHelper.getPicturesBitmaps();
         memoryTitles = new ArrayList<>();
         memoryDates = new ArrayList<>();
         memoryIds  = new ArrayList<>();
-        memoryBitmaps = new ArrayList<>();
         memoryDiscriptions = new ArrayList<>();
+
 
         while(memories.moveToNext()){
             Integer id = memories.getInt(0);
@@ -72,10 +74,6 @@ public class DashboardActivity extends AppCompatActivity {
             memoryTitles.add(title);
             memoryDiscriptions.add(discription);
         }
-        while (memoryBitmapsCursor.moveToNext()){
-            String singleBitmap = memoryBitmapsCursor.getString(1);
-            memoryBitmaps.add(singleBitmap);
-        }
         memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds,memoryDiscriptions);
         memoriesList.setAdapter(memoryListAdapter);
     }
@@ -86,5 +84,10 @@ public class DashboardActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         finish();
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
     }
 }

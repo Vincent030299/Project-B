@@ -195,7 +195,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                                 uploadPic();
                                 return true;
                             case R.id.takePicItem:
-                                askCameraRequest();
+                                takePic();
                                 return true;
                             case R.id.uploadVideoItem:
                                 uploadVid();
@@ -371,15 +371,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 //        takenPicInfo.put(MediaStore.Images.Media.TITLE, "New picture");
 //        takenPicInfo.put(MediaStore.Images.Media.DESCRIPTION, "From camera");
 //        takenPictureUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,takenPicInfo);
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        takenPictureUri = Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "TripTracker" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+//        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+//        StrictMode.setVmPolicy(builder.build());
+//        takenPictureUri = Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+//                "TripTracker" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
         Intent openCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        openCamera.putExtra(MediaStore.EXTRA_OUTPUT, takenPictureUri);
+//        openCamera.putExtra(MediaStore.EXTRA_OUTPUT, takenPictureUri);
         startActivityForResult(openCamera, TAKE_PIC_CODE);
         mapViewVisibility(false);
-
     }
 
 //starts the activity of choosing a video from the gallery
@@ -480,39 +479,39 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
 
         else if (requestCode==TAKE_PIC_CODE && resultCode==Activity.RESULT_OK){
-//            if(data.getClipData()==null){
-//                Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
-//            }
-//            else{
-
-                optionsTab.setVisibility(View.VISIBLE);
-                imageAmount=imageAmount+1;
-                imageUri=new Uri[imageAmount];
-                imageUri[imageUri.length-1]= takenPictureUri;
-                Bundle args=new Bundle();
-                args.putString("the image", imageUri[imageUri.length-1].toString());
-                ImageFragment chosenImageFragment= new ImageFragment();
-                chosenImageFragment.setArguments(args);
-                chosenViewsArrayList.add(chosenImageFragment);
-                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
-                createMemorySlider.setAdapter(chosenViewsAdapter);
-                Toast.makeText(getApplicationContext(), String.valueOf(imageUri.length),Toast.LENGTH_LONG).show();
+            if(data.getExtras()==null){
+                Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
+            }
+            else{
 
 //                optionsTab.setVisibility(View.VISIBLE);
-//                bitmapsAmount=bitmapsAmount+1;
-//                imageBitmaps=new Bitmap[bitmapsAmount];
-//                imageBitmaps[imageBitmaps.length-1]=(Bitmap) data.getExtras().get("data");
+//                imageAmount=imageAmount+1;
+//                imageUri=new Uri[imageAmount];
+//                imageUri[imageUri.length-1]= takenPictureUri;
 //                Bundle args=new Bundle();
-//                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
-//                imageBitmaps[imageBitmaps.length-1].compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
-//                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
-//                args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
-//                CapImageFragment capturedImageFragment= new CapImageFragment();
-//                capturedImageFragment.setArguments(args);
-//                chosenViewsArrayList.add(capturedImageFragment);
+//                args.putString("the image", imageUri[imageUri.length-1].toString());
+//                ImageFragment chosenImageFragment= new ImageFragment();
+//                chosenImageFragment.setArguments(args);
+//                chosenViewsArrayList.add(chosenImageFragment);
 //                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
 //                createMemorySlider.setAdapter(chosenViewsAdapter);
-//            }
+//                Toast.makeText(getApplicationContext(), String.valueOf(imageUri.length),Toast.LENGTH_LONG).show();
+
+                optionsTab.setVisibility(View.VISIBLE);
+                bitmapsAmount=bitmapsAmount+1;
+                imageBitmaps=new Bitmap[bitmapsAmount];
+                imageBitmaps[imageBitmaps.length-1]=(Bitmap) data.getExtras().get("data");
+                Bundle args=new Bundle();
+                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
+                imageBitmaps[imageBitmaps.length-1].compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
+                args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
+                CapImageFragment capturedImageFragment= new CapImageFragment();
+                capturedImageFragment.setArguments(args);
+                chosenViewsArrayList.add(capturedImageFragment);
+                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+                createMemorySlider.setAdapter(chosenViewsAdapter);
+            }
 
         }
         else if (requestCode==RECORD_VIDEO_CODE && resultCode== Activity.RESULT_OK){

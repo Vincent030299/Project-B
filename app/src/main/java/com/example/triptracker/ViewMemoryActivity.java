@@ -1,6 +1,8 @@
 package com.example.triptracker;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -218,11 +220,13 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private void shareMemory(String socialMedia) {
         switch (socialMedia) {
             case "twitter":
-
-                Intent twitter = new Intent();
+            Intent twitter = new Intent();
+            try{
+                ApplicationInfo info = getPackageManager().
+                        getApplicationInfo("com.twitter.android", 0 );
                 twitter.setPackage("com.twitter.android");
                 twitter.setAction(Intent.ACTION_SEND);
-                if (!memoryImages.isEmpty()) {
+                if(!memoryImages.isEmpty()) {
                     twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
                     twitter.setType("image/jpeg");
                 }
@@ -230,6 +234,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 twitter.setType("text/plain");
 
                 startActivity(twitter);
+            } catch( PackageManager.NameNotFoundException e ){
+                Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
+            }
+            break;
             case "email":
                 if (!memoryImagesUris.isEmpty()) {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -154,10 +155,24 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryFragmentManager=getSupportFragmentManager();
         viewmemoryMapFragment=viewMemoryFragmentManager.findFragmentById(R.id.viewMemoryMap);
         viewMemoryMapVisibility(false);
+
         viewMemoryShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                PopupMenu uploadBtnsMenu= new PopupMenu(ViewMemoryActivity.this, viewMemoryShareButton);
+                uploadBtnsMenu.inflate(R.menu.choosesocialmediamenu);
+                uploadBtnsMenu.show();
+                uploadBtnsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.shareTwitter:
+                                shareMemory("twitter");
+                                return true;
+                        }
+                        return false;
+                    }
+                });
             }
         });
 
@@ -189,6 +204,23 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             fragmentTransaction.hide(viewmemoryMapFragment);
             fragmentTransaction.commit();
             viewMemoryMediaSwitch.setChecked(true);
+        }
+    }
+
+    private void shareMemory(String socialMedia) {
+        switch (socialMedia){
+            case "twitter":
+
+                Intent twitter = new Intent();
+                twitter.setPackage("com.twitter.android");
+                twitter.setAction(Intent.ACTION_SEND);
+                twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
+                twitter.setType("image/jpeg");
+                twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
+                twitter.setType("text/plain");
+
+                startActivity(twitter);
+
         }
     }
 

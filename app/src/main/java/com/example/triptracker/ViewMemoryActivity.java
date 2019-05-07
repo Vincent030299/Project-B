@@ -1,6 +1,8 @@
 package com.example.triptracker;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -212,16 +214,23 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             case "twitter":
 
                 Intent twitter = new Intent();
-                twitter.setPackage("com.twitter.android");
-                twitter.setAction(Intent.ACTION_SEND);
-                if(!memoryImages.isEmpty()) {
-                    twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
-                    twitter.setType("image/jpeg");
-                }
-                twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
-                twitter.setType("text/plain");
+                try{
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.twitter.android", 0 );
+                    twitter.setPackage("com.twitter.android");
+                    twitter.setAction(Intent.ACTION_SEND);
+                    if(!memoryImages.isEmpty()) {
+                        twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
+                        twitter.setType("image/jpeg");
+                    }
+                    twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
+                    twitter.setType("text/plain");
 
-                startActivity(twitter);
+                    startActivity(twitter);
+                } catch( PackageManager.NameNotFoundException e ){
+                    Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+
 
         }
     }

@@ -1,6 +1,8 @@
 package com.example.triptracker;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -53,6 +55,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private SwipeAdapter viewMemorySwipeAdapter;
     private ArrayList<Fragment> memoryViewMediaFiles = new ArrayList<>();
     private String memoryTitle, memoryDescription,memoryDate;
+    private ArrayList<Uri> memoryImagesUris;
     private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
     private LinearLayout mediaFilesLayout;
     private LatLng markerLoc;
@@ -111,6 +114,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         memoryImages = getIntent().getStringArrayListExtra("images");
         memoryBitmaps = getIntent().getStringArrayListExtra("bitmaps");
         memoryVideos = getIntent().getStringArrayListExtra("videos");
+        memoryImagesUris = new ArrayList<>();
 //        Toast.makeText(getApplicationContext(), String.valueOf(memoryVideos.size()), Toast.LENGTH_SHORT).show();
 
         for(int i = 0; i<memoryImages.size(); i++){
@@ -119,6 +123,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             ImageFragment singleImageFragment = new ImageFragment();
             singleImageFragment.setArguments(fragmentArgs);
             memoryViewMediaFiles.add(singleImageFragment);
+            memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
         }
         for (int i = 0; i<memoryVideos.size();i++){
             Bundle fragmentArgs = new Bundle();
@@ -126,6 +131,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             VidFragment singleVideoFragment = new VidFragment();
             singleVideoFragment.setArguments(fragmentArgs);
             memoryViewMediaFiles.add(singleVideoFragment);
+            memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
         }
 
         if (!memoryBitmaps.isEmpty()){
@@ -169,6 +175,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                             case R.id.shareTwitter:
                                 shareMemory("twitter");
                                 return true;
+                            case R.id.shareEmail:
+                                shareMemory("email");
+                                return true;
+
                         }
                         return false;
                     }
@@ -208,10 +218,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     private void shareMemory(String socialMedia) {
-        switch (socialMedia){
+        switch (socialMedia) {
             case "twitter":
-
-                Intent twitter = new Intent();
+            Intent twitter = new Intent();
+            try{
+                ApplicationInfo info = getPackageManager().
+                        getApplicationInfo("com.twitter.android", 0 );
                 twitter.setPackage("com.twitter.android");
                 twitter.setAction(Intent.ACTION_SEND);
                 if(!memoryImages.isEmpty()) {
@@ -222,9 +234,25 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 twitter.setType("text/plain");
 
                 startActivity(twitter);
+            } catch( PackageManager.NameNotFoundException e ){
+                Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
+            }
+            break;
+            case "email":
+                if (!memoryImagesUris.isEmpty()) {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, memoryTitle);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, memoryDescription);
+                    shareIntent.setType("image/*");
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    startActivity(Intent.createChooser(shareIntent, "Share"));
+                }
 
         }
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

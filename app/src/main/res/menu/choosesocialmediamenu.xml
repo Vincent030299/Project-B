@@ -12,6 +12,6 @@
         android:id="@+id/shareEmail"
         android:checkable="false"
         android:enabled="true"
-        android:title="Share on Email"
+        android:title="Share with other"
         android:visible="true" />
 </menu>

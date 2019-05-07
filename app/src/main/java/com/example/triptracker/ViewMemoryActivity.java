@@ -214,8 +214,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 Intent twitter = new Intent();
                 twitter.setPackage("com.twitter.android");
                 twitter.setAction(Intent.ACTION_SEND);
-                twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
-                twitter.setType("image/jpeg");
+                if(!memoryImages.isEmpty()) {
+                    twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
+                    twitter.setType("image/jpeg");
+                }
                 twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
                 twitter.setType("text/plain");
 

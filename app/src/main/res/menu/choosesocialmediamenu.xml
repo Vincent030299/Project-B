@@ -8,4 +8,10 @@
         android:title="Share on Twitter"
         android:visible="true" />
 
+    <item
+        android:id="@+id/shareEmail"
+        android:checkable="false"
+        android:enabled="true"
+        android:title="Share on Email"
+        android:visible="true" />
 </menu>

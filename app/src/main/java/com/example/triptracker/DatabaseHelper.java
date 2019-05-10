@@ -52,7 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " REAL," + COL_MARKER_LONG + " REAL)";
+                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " TEXT," + COL_MARKER_LONG + " TEXT)";
 
         String tableImage = "CREATE TABLE " + IMAGE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_URI + " TEXT," + COL_MEMORY_ID + " INTEGER)";
 
@@ -160,7 +160,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public Cursor getItem(Double markerLat, Double markerLong){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_MARKER_LAT + " = " + markerLat + " AND " + COL_MARKER_LONG + " = " + markerLong;
+        String markerLatText = String.valueOf(markerLat);
+        String markerLongText = String.valueOf(markerLong);
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_MARKER_LAT + " = " + markerLatText + " AND " + COL_MARKER_LONG + " = " + markerLongText;
         Cursor data = db.rawQuery(query, null);
         return data;
     }

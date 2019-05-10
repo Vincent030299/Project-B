@@ -195,7 +195,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                                 uploadPic();
                                 return true;
                             case R.id.takePicItem:
-                                takePic();
+                                askCameraRequest();
                                 return true;
                             case R.id.uploadVideoItem:
                                 uploadVid();

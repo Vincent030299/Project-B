@@ -25,7 +25,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ListView memoriesList;
     private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     private ArrayList<Integer> memoryIds;
-    private ListViewAdapter memoryListAdapter;
+    protected ListViewAdapter memoryListAdapter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -61,7 +61,6 @@ public class DashboardActivity extends AppCompatActivity {
         memoryIds  = new ArrayList<>();
         memoryDiscriptions = new ArrayList<>();
 
-
         while(memories.moveToNext()){
             Integer id = memories.getInt(0);
             String title = memories.getString(1);
@@ -86,8 +85,8 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
+//    }
 }

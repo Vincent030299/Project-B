@@ -87,10 +87,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private ArrayList<Bitmap> imageBitmaps= new ArrayList<>();
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
-    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout,optionsTab;
+    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout,optionsTab,switchAndMediaLayout;
     private FragmentManager createMemoryFragmentManager;
     private android.support.v4.app.Fragment createMemoryMapView;
     private Uri takenPictureUri;
+    private int screenHeightInPx;
+    private ConstraintLayout createMemoryLayout;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -144,6 +146,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         optionsTab = findViewById(R.id.optionsTab);
         deleteMediaBtn = findViewById(R.id.deleteMediaBtn);
+        switchAndMediaLayout = findViewById(R.id.switchAndMediaLayout);
+        createMemoryLayout = findViewById(R.id.createMemoryLayout);
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
         //adjusting the layout parameters according to the user's screen
@@ -153,11 +157,44 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 //        mediaFilesLayout.requestLayout();
 //        mapLayout.setLayoutParams(mapsLayoutParams);
 //        mapLayout.requestLayout();
+
+        //changing description's height according to the used phone.
+        if(1920-getResources().getDisplayMetrics().heightPixels >= 100){
+            screenHeight = getResources().getDisplayMetrics().heightPixels;
+            LinearLayout.LayoutParams inputLayoutParams = new LinearLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().heightPixels*0.2));
+            ConstraintLayout.LayoutParams mapFragmentLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels,(int)(getResources().getDisplayMetrics().heightPixels*0.26));
+            ConstraintLayout.LayoutParams mediaFilesLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int)(getResources().getDisplayMetrics().heightPixels*0.26));
+            ConstraintLayout.LayoutParams uploadBtnsLayoutParams = new ConstraintLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().density*40));
+            mapFragmentLayoutParams.topToBottom = R.id.TopBar;
+            mapFragmentLayoutParams.endToEnd = R.id.createMemoryLayout;
+            mapFragmentLayoutParams.startToStart = R.id.createMemoryLayout;
+
+            mediaFilesLayoutParams.topToBottom = R.id.TopBar;
+            mediaFilesLayoutParams.startToStart = R.id.createMemoryLayout;
+            mediaFilesLayoutParams.endToEnd = R.id.createMemoryLayout;
+
+            uploadBtnsLayoutParams.startToStart = R.id.createMemoryLayout;
+            uploadBtnsLayoutParams.endToEnd = R.id.createMemoryLayout;
+            uploadBtnsLayoutParams.topToBottom = R.id.pageIndicator;
+
+            mapLayout.setLayoutParams(mapFragmentLayoutParams);
+            memoryDescription.setLayoutParams(inputLayoutParams);
+            mediaFilesLayout.setLayoutParams(mediaFilesLayoutParams);
+            switchAndMediaLayout.setLayoutParams(uploadBtnsLayoutParams);
+            memoryDescription.requestLayout();
+            mapLayout.requestLayout();
+            mediaFilesLayout.requestLayout();
+            switchAndMediaLayout.requestLayout();
+
+        }
+
+
         currentDay=memoryDate.getDayOfMonth();
         currentMonth=memoryDate.getMonth();
         currentYear=memoryDate.getYear();
         optionsTab.getBackground().setAlpha(75);
         optionsTab.setVisibility(View.INVISIBLE);
+        Toast.makeText(getApplicationContext(), String.valueOf(200*getResources().getDisplayMetrics().density), Toast.LENGTH_LONG).show();
         //setting the adapter for the slider view
         createMemorySlider.setAdapter(chosenViewsAdapter);
         mapMediaToggle.setTextOn("Map");

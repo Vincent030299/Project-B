@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
-    tools:context=".CreateMemoryActivity">
+    tools:context=".CreateMemoryActivity"
+    android:id="@+id/createMemoryLayout">
 
     <LinearLayout
         android:id="@+id/mediaFilesLayout"
@@ -149,7 +150,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switchAndMediaLayout"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/inputAndDateLayout">
 
 
         <LinearLayout
@@ -185,7 +187,7 @@
                 android:id="@+id/memoryDescription"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="350dp"
-                android:layout_height="160dp"
+                android:layout_height="180dp"
                 android:hint="@string/hint_memory_description"
                 android:textColorHint="@color/blueapp"
                 android:theme="@style/AppThemeBlue"
@@ -241,7 +243,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/TopBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -250,28 +252,38 @@
         app:layout_constraintBottom_toTopOf="@+id/mediaFilesLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_vertical">
+        app:layout_constraintTop_toTopOf="parent">
+            <ImageButton
+                android:id="@+id/closeCreateMemory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="#00000000"
+                android:maxHeight="25dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/backbutton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:text="Create Memory"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <ImageButton
+                android:id="@+id/feelingEmojiBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="#00000000"
+                android:maxHeight="25dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/emotebutton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
 
-        <ImageButton
-            android:id="@+id/closeCreateMemory"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginStart="200dp"
-            android:background="#00000000"
-            android:src="@drawable/close_popup"
-/>
-    </LinearLayout>
-
-
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="start|center"-->
+        <!--android:text="Create Memory"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold" />-->
 </android.support.constraint.ConstraintLayout>

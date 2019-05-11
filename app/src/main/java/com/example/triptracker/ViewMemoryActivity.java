@@ -53,7 +53,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private FragmentManager viewMemoryFragmentManager;
     private GoogleMap mMap;
     private SwipeAdapter viewMemorySwipeAdapter;
-    private ArrayList<Fragment> memoryViewMediaFiles = new ArrayList<>();
+    private ArrayList<Fragment> memoryViewMediaFiles;
     private String memoryTitle, memoryDescription,memoryDate;
     private ArrayList<Uri> memoryImagesUris;
     private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
@@ -104,7 +104,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         closeViewMemory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent openDashboard = new Intent(getApplicationContext(),DashboardActivity.class);
+                openDashboard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish();
+                startActivity(openDashboard);
             }
         });
 
@@ -116,33 +119,43 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         memoryVideos = getIntent().getStringArrayListExtra("videos");
         memoryImagesUris = new ArrayList<>();
 //        Toast.makeText(getApplicationContext(), String.valueOf(memoryVideos.size()), Toast.LENGTH_SHORT).show();
-
-        for(int i = 0; i<memoryImages.size(); i++){
-            Bundle fragmentArgs = new Bundle();
-            fragmentArgs.putString("the image", memoryImages.get(i));
-            ImageFragment singleImageFragment = new ImageFragment();
-            singleImageFragment.setArguments(fragmentArgs);
-            memoryViewMediaFiles.add(singleImageFragment);
-            memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
-        }
-        for (int i = 0; i<memoryVideos.size();i++){
-            Bundle fragmentArgs = new Bundle();
-            fragmentArgs.putString("the video", memoryVideos.get(i));
-            VidFragment singleVideoFragment = new VidFragment();
-            singleVideoFragment.setArguments(fragmentArgs);
-            memoryViewMediaFiles.add(singleVideoFragment);
-            memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
-        }
-
-        if (!memoryBitmaps.isEmpty()){
-            for(int i = 0; i<memoryBitmaps.size(); i++){
-                Bundle fragmentArgs = new Bundle();
-                fragmentArgs.putString("the cam",memoryBitmaps.get(i) );
-                CapImageFragment singleImageBitmap = new CapImageFragment();
-                singleImageBitmap.setArguments(fragmentArgs);
-                memoryViewMediaFiles.add(singleImageBitmap);
+        memoryViewMediaFiles = null;
+        memoryViewMediaFiles = new ArrayList<>();
+        if (memoryViewMediaFiles.isEmpty()){
+            if(!memoryImages.isEmpty()){
+                for(int i = 0; i<memoryImages.size(); i++){
+                    Bundle fragmentArgs = new Bundle();
+                    fragmentArgs.putString("the image", memoryImages.get(i));
+                    ImageFragment singleImageFragment = new ImageFragment();
+                    singleImageFragment.setArguments(fragmentArgs);
+                    memoryViewMediaFiles.add(singleImageFragment);
+                    memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
+                }
+            }
+            if(!memoryVideos.isEmpty()){
+                for (int i = 0; i<memoryVideos.size();i++){
+                    Bundle fragmentArgs = new Bundle();
+                    fragmentArgs.putString("the video", memoryVideos.get(i));
+                    VidFragment singleVideoFragment = new VidFragment();
+                    singleVideoFragment.setArguments(fragmentArgs);
+                    memoryViewMediaFiles.add(singleVideoFragment);
+                    memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
+                }
+            }
+            if (!memoryBitmaps.isEmpty()){
+                for(int i = 0; i<memoryBitmaps.size(); i++){
+                    Bundle fragmentArgs = new Bundle();
+                    fragmentArgs.putString("the cam",memoryBitmaps.get(i) );
+                    CapImageFragment singleImageBitmap = new CapImageFragment();
+                    singleImageBitmap.setArguments(fragmentArgs);
+                    memoryViewMediaFiles.add(singleImageBitmap);
+                }
             }
         }
+        else {
+            memoryViewMediaFiles.clear();
+        }
+
 
         final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.viewMemoryMap);
         Objects.requireNonNull(spmf).getMapAsync(this);
@@ -279,7 +292,11 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
+        Intent openDashboard = new Intent(getApplicationContext(),DashboardActivity.class);
+        openDashboard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(openDashboard);
     }
 
     //open a given activity

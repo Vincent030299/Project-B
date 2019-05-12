@@ -113,6 +113,7 @@ public class ListViewAdapter extends BaseAdapter {
                     openMemory.putExtra("lat", lat);
                     openMemory.putExtra("lng", lng);
                 }
+                openMemory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.getApplicationContext().startActivity(openMemory);
 
             }
@@ -125,7 +126,9 @@ public class ListViewAdapter extends BaseAdapter {
                 mDataBaseHelper.deleteName(memoryIds.get(position));
                 Intent openDashBoard = new Intent(context.getApplicationContext(),DashboardActivity.class);
                 openDashBoard.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                openDashBoard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 context.startActivity(openDashBoard);
+
             }
         });
         return singleMemory;

@@ -121,32 +121,23 @@
         android:backgroundTint="@color/blueapp"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"/>
-    <LinearLayout
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/viewMemoryTopBar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/blueapp"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/viewMemoryMediaLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:text="Memory"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewMemoryDescription"
+            app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/viewMemoryShareBtn"
             android:src="@drawable/sharebutton"
             android:background="#00000000"
@@ -160,12 +151,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginStart="10dp"
             android:background="#00000000"
-            android:src="@drawable/close_popup"
+            android:src="@drawable/backbutton"
             android:maxHeight="25dp"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

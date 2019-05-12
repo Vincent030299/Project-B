@@ -589,7 +589,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-                mMap = googleMap;
+        mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         Intent intent = getIntent();
         point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()

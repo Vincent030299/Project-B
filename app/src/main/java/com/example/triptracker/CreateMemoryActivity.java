@@ -46,6 +46,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -79,7 +80,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
     private final int PERMISSION_REQUEST_CODE = 14;
-    private ImageButton closePopup,saveMemoryButton,deleteMediaBtn;
+    private ImageButton closePopup,saveMemoryButton,deleteMediaBtn, chooseMarkerMenuBtn;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
     private ArrayList<Uri> imageUri = new ArrayList<>();
@@ -91,6 +92,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private FragmentManager createMemoryFragmentManager;
     private android.support.v4.app.Fragment createMemoryMapView;
     private Uri takenPictureUri;
+    private String markerColor = "red";
+    private Float color;
     private int screenHeightInPx;
     private ConstraintLayout createMemoryLayout;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -149,6 +152,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         deleteMediaBtn = findViewById(R.id.deleteMediaBtn);
         switchAndMediaLayout = findViewById(R.id.switchAndMediaLayout);
         createMemoryLayout = findViewById(R.id.createMemoryLayout);
+        chooseMarkerMenuBtn=findViewById(R.id.customMarkerBtn);
 
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
@@ -278,6 +282,39 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 }
             }
         });
+
+        chooseMarkerMenuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu markerBtnsMenu= new PopupMenu(CreateMemoryActivity.this, chooseMarkerMenuBtn);
+                markerBtnsMenu.inflate(R.menu.choosemarkermenu);
+                markerBtnsMenu.show();
+                markerBtnsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.greenMarker:
+                                markerColor = "green";
+                                changeMarkerColor();
+                                return true;
+                            case R.id.redMarker:
+                                markerColor = "red";
+                                changeMarkerColor();
+                                return true;
+                            case R.id.blueMarker:
+                                markerColor = "blue";
+                                changeMarkerColor();
+                                return true;
+                            case R.id.yellowMarker:
+                                markerColor = "yellow";
+                                changeMarkerColor();
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+        });
     }
 
     //the function for deleting a certain media file
@@ -363,11 +400,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
 
-            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude)){
+            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude, markerColor)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);
                 resultIntent.putExtra("title", currentMemoryTitle);
+                resultIntent.putExtra("color", markerColor);
                 setResult(RESULT_OK, resultIntent);
                 finish();
 
@@ -556,7 +594,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
                 .position(point)
-                .draggable(true));
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
         //Create camera zoom to show marker close
         CameraPosition cameraPosition = new CameraPosition.Builder().
@@ -580,8 +619,31 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
 
         });
+
     }
 
+    public void changeMarkerColor(){
+        mMap.clear();
+        switch (markerColor){
+            case "green":
+                color = BitmapDescriptorFactory.HUE_GREEN;
+                break;
+            case "red":
+                color = BitmapDescriptorFactory.HUE_RED;
+                break;
+            case "blue":
+                color = BitmapDescriptorFactory.HUE_BLUE;
+                break;
+            case "yellow":
+                color = BitmapDescriptorFactory.HUE_YELLOW;
+                break;
+        }
+        mMap.addMarker(new MarkerOptions()
+                .position(point)
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(color)));
+
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){

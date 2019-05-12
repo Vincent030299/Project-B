@@ -266,6 +266,18 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageButton
+                android:id="@+id/customMarkerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="#00000000"
+                android:maxHeight="25dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/custom_marker_btn"
+                android:layout_marginRight="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <ImageButton
                 android:id="@+id/feelingEmojiBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

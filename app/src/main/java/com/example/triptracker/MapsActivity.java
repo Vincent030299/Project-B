@@ -38,6 +38,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -69,6 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String dbMarkerTitle,dbMarkerDesc;
     private Integer dbMemoryId;
     private DatabaseHelper dataBaseHelper;
+    private Float color;
     private boolean isInfoWindowOpen = false;
 
     @Override
@@ -222,9 +224,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         while(markers.moveToNext()){
             Double lat = markers.getDouble(4);
             Double lng = markers.getDouble(5);
+            String color = markers.getString(6);
             String title = markers.getString(1);
             LatLng point = new LatLng(lat,lng);
-            createMarker(point,title);
+            createMarker(point,title,color);
         }
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -330,10 +333,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtra("location", point);
         startActivityForResult(intent, CREATE_MARKER);
     }
-    public void createMarker(LatLng point, String title) {
+    public void createMarker(LatLng point, String title, String markerColor) {
+        switch (markerColor){
+            case "green":
+                color = BitmapDescriptorFactory.HUE_GREEN;
+                break;
+            case "red":
+                color = BitmapDescriptorFactory.HUE_RED;
+                break;
+            case "blue":
+                color = BitmapDescriptorFactory.HUE_BLUE;
+                break;
+            case "yellow":
+                color = BitmapDescriptorFactory.HUE_YELLOW;
+                break;
+        }
         mMap.addMarker(new MarkerOptions()
                 .position(point)
-                .title(title));
+                .title(title)
+                .icon(BitmapDescriptorFactory.defaultMarker(color)));
     }
 
     public void openActivity(Class className) {
@@ -368,7 +386,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (requestCode == CREATE_MARKER && resultCode == RESULT_OK) {
             LatLng point = data.getParcelableExtra("location");
             String title = data.getStringExtra("title");
-            createMarker(point, title);
+            String color = data.getStringExtra("color");
+            createMarker(point, title, color);
         }
     }
 

@@ -322,6 +322,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             openMemory.putExtra("title", dbMarkerInfo.getString(1));
             openMemory.putExtra("date", dbMarkerInfo.getString(3));
             openMemory.putExtra("location", markerLoc);
+            openMemory.putExtra("color", dbMarkerInfo.getString(6));
             startActivity(openMemory);
         }
 

@@ -34,6 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -59,6 +60,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
     private LinearLayout mediaFilesLayout;
     private LatLng markerLoc;
+    private Float color;
     private DatabaseHelper mDataBaseHelper;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -273,13 +275,30 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         mMap = googleMap;
         Intent intent = getIntent();
         markerLoc = intent.getParcelableExtra("location");
+        String markerColor = intent.getStringExtra("color");
         if (markerLoc==null){
             markerLoc = new LatLng(getIntent().getDoubleExtra("lat", 0.0), getIntent().getDoubleExtra("lng", 0.0));
         }
 
+        switch (markerColor){
+            case "green":
+                color = BitmapDescriptorFactory.HUE_GREEN;
+                break;
+            case "red":
+                color = BitmapDescriptorFactory.HUE_RED;
+                break;
+            case "blue":
+                color = BitmapDescriptorFactory.HUE_BLUE;
+                break;
+            case "yellow":
+                color = BitmapDescriptorFactory.HUE_YELLOW;
+                break;
+        }
+
         mMap.addMarker(new MarkerOptions()
                 .position(markerLoc)
-                .draggable(true));
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(color)));
 
         //Create camera zoom to show marker close
         CameraPosition cameraPosition = new CameraPosition.Builder().

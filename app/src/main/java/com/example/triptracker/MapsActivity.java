@@ -46,6 +46,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,6 +72,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Integer dbMemoryId;
     private DatabaseHelper dataBaseHelper;
     private boolean isInfoWindowOpen = false;
+    private int[] feelingsEmojis = {R.drawable.happy_emoji,R.drawable.relaxed_emoji,R.drawable.blessed_emoji
+            ,R.drawable.loved_emoji,R.drawable.crazy_emoji,R.drawable.sad_emoji,R.drawable.tired_emoji,R.drawable.thankful_emoji,R.drawable.hopeful_emoji,R.drawable.fantastic_emoji};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,7 +244,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 View infoWindow = getLayoutInflater().inflate(R.layout.info_window_layout, null);
                 TextView markerTitle = (TextView) infoWindow.findViewById(R.id.markerTitle);
                 TextView markerDesc = (TextView) infoWindow.findViewById(R.id.markerDesc);
+                TextView feelingDescription = (TextView) infoWindow.findViewById(R.id.feelingDescription);
                 ImageView markerImage = (ImageView) infoWindow.findViewById(R.id.markerImage);
+                ImageView feelingImage = (ImageView) infoWindow.findViewById(R.id.feelingImage);
                 isInfoWindowOpen = true;
 
                 dataBaseHelper = new DatabaseHelper(getApplicationContext());
@@ -251,6 +257,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     dbMarkerTitle = dbMarker.getString(1);
                     dbMarkerDesc = dbMarker.getString(2);
                     dbMemoryId = dbMarker.getInt(0);
+                    feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(6)]);
+                    feelingDescription.setText(" - Was feeling " + dbMarker.getString(7));
                     Cursor dbImage = databaseHelper.getImage(dbMemoryId);
 
                     while (dbImage.moveToNext()){

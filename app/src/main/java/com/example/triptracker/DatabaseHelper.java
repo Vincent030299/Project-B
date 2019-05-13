@@ -26,6 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_MEMORY_DESCRIPTION = "memory_description";
     private static final String COL_MARKER_LAT = "marker_lat";
     private static final String COL_MARKER_LONG = "marker_long";
+    private static final String COL_MEMORY_FEELING = "memory_feeling";
+    private static final String COL_MEMORY_FEELING_DESCRIPTION = "memory_feeling_description";
 
     // The image database
     private static final String IMAGE_NAME = "image";
@@ -52,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " TEXT," + COL_MARKER_LONG + " TEXT)";
+                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " TEXT," + COL_MARKER_LONG + " TEXT," + COL_MEMORY_FEELING + " INTEGER," + COL_MEMORY_FEELING_DESCRIPTION + " TEXT)";
 
         String tableImage = "CREATE TABLE " + IMAGE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_URI + " TEXT," + COL_MEMORY_ID + " INTEGER)";
 
@@ -73,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert 1 memory to the database
-    public boolean addData(String memoryName, String memoryDate, String memoryDescription, ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures, Double markerLat, Double markerLong) {
+    public boolean addData(String memoryName, String memoryDate, String memoryDescription, ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures, Double markerLat, Double markerLong,int feeling,String feelingDescription) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_MEMORY_NAME, memoryName);
@@ -81,6 +83,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MEMORY_DESCRIPTION, memoryDescription);
         contentValues.put(COL_MARKER_LAT, markerLat);
         contentValues.put(COL_MARKER_LONG, markerLong);
+        contentValues.put(COL_MEMORY_FEELING, feeling);
+        contentValues.put(COL_MEMORY_FEELING_DESCRIPTION, feelingDescription);
         Log.d(TAG, "addData: Adding " + memoryName + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
 

@@ -28,6 +28,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -59,8 +60,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.Objects;
 import java.util.Timer;
+import java.util.zip.Inflater;
 
 /*
 these links helped with learning to be able to write the code for this class
@@ -79,7 +82,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
     private final int PERMISSION_REQUEST_CODE = 14;
-    private ImageButton closePopup,saveMemoryButton,deleteMediaBtn;
+    private ImageButton closePopup,saveMemoryButton,deleteMediaBtn,feelingEmojiBtn;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
     private ArrayList<Uri> imageUri = new ArrayList<>();
@@ -93,6 +96,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private Uri takenPictureUri;
     private int screenHeightInPx;
     private ConstraintLayout createMemoryLayout;
+    private int feeling = 1000;
+    private String feelingDescription;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -149,6 +154,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         deleteMediaBtn = findViewById(R.id.deleteMediaBtn);
         switchAndMediaLayout = findViewById(R.id.switchAndMediaLayout);
         createMemoryLayout = findViewById(R.id.createMemoryLayout);
+        feelingEmojiBtn = findViewById(R.id.feelingEmojiBtn);
 
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
@@ -198,6 +204,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         pageIndicator.setStrokeColor(Color.rgb(20,145,218));
         pageIndicator.setViewPager(createMemorySlider);
 
+
         //all of the click listeners in the layout
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         closePopup.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +248,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
         });
 
+
         //the functionality to delete a media file
         createMemorySlider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -276,6 +284,73 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 else{
                     mapViewVisibility(true);
                 }
+            }
+        });
+        feelingEmojiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("clicked", "feelings");
+                PopupMenu feelingEmojisMenu = new PopupMenu(CreateMemoryActivity.this, feelingEmojiBtn);
+                feelingEmojisMenu.inflate(R.menu.feelingemojismenu);
+                feelingEmojisMenu.show();
+                feelingEmojisMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.happyEmoji:
+                                feeling = 0;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.happy_emoji);
+                                return true;
+                            case R.id.relaxedEmoji:
+                                feeling = 1;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.relaxed_emoji);
+                                return true;
+                            case R.id.blessedEmoji:
+                                feeling = 2;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.blessed_emoji);
+                                return true;
+                            case R.id.lovedEmoji:
+                                feeling = 3;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.loved_emoji);
+                                return true;
+                            case R.id.crazyEmoji:
+                                feeling = 4;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.crazy_emoji);
+                                return true;
+                            case R.id.sadEmoji:
+                                feeling = 5;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.sad_emoji);
+                                return true;
+                            case R.id.tiredEmoji:
+                                feeling = 6;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.tired_emoji);
+                                return true;
+                            case R.id.thankfulEmoji:
+                                feeling = 7;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.thankful_emoji);
+                                return true;
+                            case R.id.hopefulEmoji:
+                                feeling = 8;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.hopeful_emoji);
+                                return true;
+                            case R.id.fantasticEmoji:
+                                feeling = 9;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.fantastic_emoji);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
             }
         });
     }
@@ -357,13 +432,16 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         else if (memoryTitle.getEditText().getText().length()>20){
             Toast.makeText(getApplicationContext(), "The title is too long, try again", Toast.LENGTH_SHORT).show();
         }
+        else if (feeling == 1000){
+            Toast.makeText(getApplicationContext(), "Please choose a feeling, click on the icon in the top right corner", Toast.LENGTH_SHORT).show();
+        }
         else {
             String currentMemoryTitle=memoryTitle.getEditText().getText().toString();
             String currentMemoryDescription= memoryDescription.getEditText().getText().toString();
             String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
 
-            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude)){
+            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude,feeling,feelingDescription)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);

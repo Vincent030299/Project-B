@@ -43,6 +43,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_IMAGE_CAPTURE_ID = "id";
     private static final String COL_IMAGE_CAPTURE_BITMAP = "image_capture_bitmap";
 
+    // The custom marker datanabse
+    private static final String CUSTOM_MARKER_TABLE_NAME = "custom_marker";
+    private static final String CUSTOM_MARKER_NAME = "custom_marker_name";
+    private static final String CUSTOM_MARKER_ID = "custom_marker_id";
+    private static final String CUSTOM_MARKER_COLOR = "custom_marker_color";
+
     /*
     constructor is getting used when i implement the one to many relation thats why the error at super
     */
@@ -53,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " TEXT," + COL_MARKER_LONG + " TEXT," + COL_MARKER_COLOR + " TEXT)";
+                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " TEXT," + COL_MARKER_LONG + " TEXT," + COL_MARKER_COLOR + " INTEGER)";
 
         String tableImage = "CREATE TABLE " + IMAGE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_URI + " TEXT," + COL_MEMORY_ID + " INTEGER)";
 
@@ -61,10 +67,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String tableImageCapture = "CREATE TABLE " + IMAGE_CAPTURE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_CAPTURE_BITMAP + " BLOB, memory_id INTEGER)";
 
+        String tableCustomMarker = "CREATE TABLE " + CUSTOM_MARKER_TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + CUSTOM_MARKER_NAME + " TEXT," + CUSTOM_MARKER_COLOR + " INTEGER)";
+
         db.execSQL(createTable);
         db.execSQL(tableImage);
         db.execSQL(tableImageCapture);
         db.execSQL(tableVideo);
+        db.execSQL(tableCustomMarker);
     }
 
     @Override
@@ -73,8 +82,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public boolean addCustomMarker(String markerName, Integer markerColor){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CUSTOM_MARKER_NAME, markerName);
+        contentValues.put(CUSTOM_MARKER_COLOR, markerColor);
+        long result = db.insert(CUSTOM_MARKER_TABLE_NAME, null, contentValues);
+
+        //if date as inserted incorrectly it will return -1
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+
+    };
+
     // Insert 1 memory to the database
-    public boolean addData(String memoryName, String memoryDate, String memoryDescription, ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures, Double markerLat, Double markerLong, String markerColor) {
+    public boolean addData(String memoryName, String memoryDate, String memoryDescription, ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures, Double markerLat, Double markerLong, Integer markerColor) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_MEMORY_NAME, memoryName);
@@ -154,6 +179,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public Cursor getCustomMarker(String markerName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + CUSTOM_MARKER_TABLE_NAME + " WHERE " + CUSTOM_MARKER_NAME + " =?";
+        Cursor data = db.rawQuery(query, new String[] {markerName});
+        return data;
+    }
+
     /**
      * Returns one Memory
      * @param markerLat
@@ -173,6 +205,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + IMAGE_NAME +
                 " WHERE " + COL_MEMORY_ID + " = " + id;
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public Cursor getCustomMarkers(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + CUSTOM_MARKER_TABLE_NAME;
         Cursor data = db.rawQuery(query, null);
         return data;
     }

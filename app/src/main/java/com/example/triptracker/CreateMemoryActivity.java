@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +30,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -93,7 +96,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private android.support.v4.app.Fragment createMemoryMapView;
     private Uri takenPictureUri;
     private String markerColor = "red";
-    private Float color;
+    private Integer color;
     private int screenHeightInPx;
     private ConstraintLayout createMemoryLayout;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -288,31 +291,32 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             public void onClick(View v) {
                 PopupMenu markerBtnsMenu= new PopupMenu(CreateMemoryActivity.this, chooseMarkerMenuBtn);
                 markerBtnsMenu.inflate(R.menu.choosemarkermenu);
+
+                Menu menu = markerBtnsMenu.getMenu();
+
+                final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                Cursor markers = databaseHelper.getCustomMarkers();
+                while(markers.moveToNext()) {
+                    String markerName = markers.getString(1);
+                    Integer markerColor = markers.getInt(2);
+                    menu.add(markerName);
+                }
+
                 markerBtnsMenu.show();
+
                 markerBtnsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.greenMarker:
-                                markerColor = "green";
-                                changeMarkerColor();
-                                return true;
-                            case R.id.redMarker:
-                                markerColor = "red";
-                                changeMarkerColor();
-                                return true;
-                            case R.id.blueMarker:
-                                markerColor = "blue";
-                                changeMarkerColor();
-                                return true;
-                            case R.id.yellowMarker:
-                                markerColor = "yellow";
-                                changeMarkerColor();
-                                return true;
+                        final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                        Cursor markers = databaseHelper.getCustomMarker(item.getTitle().toString());
+                        while(markers.moveToNext()) {
+                            Integer markerColor = markers.getInt(2);
+                            changeMarkerColor(markerColor);
                         }
-                        return false;
+                        return true;
                     }
                 });
+
             }
         });
     }
@@ -400,12 +404,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
 
-            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude, markerColor)){
+            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude, color)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);
                 resultIntent.putExtra("title", currentMemoryTitle);
-                resultIntent.putExtra("color", markerColor);
+                resultIntent.putExtra("color", color);
                 setResult(RESULT_OK, resultIntent);
                 finish();
 
@@ -623,26 +627,13 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
     }
 
-    public void changeMarkerColor(){
+    public void changeMarkerColor(Integer markerColor){
         mMap.clear();
-        switch (markerColor){
-            case "green":
-                color = BitmapDescriptorFactory.HUE_GREEN;
-                break;
-            case "red":
-                color = BitmapDescriptorFactory.HUE_RED;
-                break;
-            case "blue":
-                color = BitmapDescriptorFactory.HUE_BLUE;
-                break;
-            case "yellow":
-                color = BitmapDescriptorFactory.HUE_YELLOW;
-                break;
-        }
+        color = markerColor;
         mMap.addMarker(new MarkerOptions()
                 .position(point)
                 .draggable(true)
-                .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
 
     }
     @Override

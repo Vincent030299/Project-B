@@ -12,4 +12,5 @@
     <string name="hint_memory_title">Title</string>
     <string name="title_dashboard">Memories</string>
     <string name="searchHint">Enter Address, City or Zip Code</string>
+    <string name="custom_marker_name">Marker name</string>
 </resources>

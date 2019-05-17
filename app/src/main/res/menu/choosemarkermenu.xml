@@ -1,25 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/greenMarker"
-        android:enabled="true"
-        android:title="Green"
-        android:visible="true" />
-    <item
-        android:id="@+id/redMarker"
-        android:enabled="true"
-        android:title="Red"
-        android:visible="true" />
-    <item
-        android:id="@+id/blueMarker"
-        android:enabled="true"
-        android:title="Blue"
-        android:visible="true" />
-    <item
-        android:id="@+id/yellowMarker"
-        android:enabled="true"
-        android:title="Yellow"
-        android:visible="true" />
 
 </menu>

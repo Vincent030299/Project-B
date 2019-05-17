@@ -142,7 +142,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     VidFragment singleVideoFragment = new VidFragment();
                     singleVideoFragment.setArguments(fragmentArgs);
                     memoryViewMediaFiles.add(singleVideoFragment);
-                    memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
+                    memoryImagesUris.add(Uri.parse(memoryVideos.get(i)));
                 }
             }
             if (!memoryBitmaps.isEmpty()){
@@ -276,29 +276,15 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         mMap.getUiSettings().setZoomControlsEnabled(true);
         Intent intent = getIntent();
         markerLoc = intent.getParcelableExtra("location");
-        String markerColor = intent.getStringExtra("color");
+        Integer markerColor = intent.getIntExtra("color",1);
         if (markerLoc==null){
             markerLoc = new LatLng(getIntent().getDoubleExtra("lat", 0.0), getIntent().getDoubleExtra("lng", 0.0));
         }
 
-        switch (markerColor){
-            case "green":
-                color = BitmapDescriptorFactory.HUE_GREEN;
-                break;
-            case "red":
-                color = BitmapDescriptorFactory.HUE_RED;
-                break;
-            case "blue":
-                color = BitmapDescriptorFactory.HUE_BLUE;
-                break;
-            case "yellow":
-                color = BitmapDescriptorFactory.HUE_YELLOW;
-                break;
-        }
-
+        Toast.makeText(getApplicationContext(), Integer.toString(markerColor), Toast.LENGTH_SHORT).show();
         mMap.addMarker(new MarkerOptions()
                 .position(markerLoc)
-                .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
 
         //Create camera zoom to show marker close
         CameraPosition cameraPosition = new CameraPosition.Builder().

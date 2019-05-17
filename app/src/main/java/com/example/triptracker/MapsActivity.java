@@ -224,7 +224,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         while(markers.moveToNext()){
             Double lat = markers.getDouble(4);
             Double lng = markers.getDouble(5);
-            String color = markers.getString(6);
+            Integer color = markers.getInt(6);
             String title = markers.getString(1);
             LatLng point = new LatLng(lat,lng);
             createMarker(point,title,color);
@@ -322,7 +322,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             openMemory.putExtra("title", dbMarkerInfo.getString(1));
             openMemory.putExtra("date", dbMarkerInfo.getString(3));
             openMemory.putExtra("location", markerLoc);
-            openMemory.putExtra("color", dbMarkerInfo.getString(6));
+            openMemory.putExtra("color", dbMarkerInfo.getInt(6));
+            Toast.makeText(getApplicationContext(), Integer.toString(dbMarkerInfo.getInt(6)), Toast.LENGTH_SHORT).show();
             startActivity(openMemory);
         }
 
@@ -334,25 +335,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtra("location", point);
         startActivityForResult(intent, CREATE_MARKER);
     }
-    public void createMarker(LatLng point, String title, String markerColor) {
-        switch (markerColor){
-            case "green":
-                color = BitmapDescriptorFactory.HUE_GREEN;
-                break;
-            case "red":
-                color = BitmapDescriptorFactory.HUE_RED;
-                break;
-            case "blue":
-                color = BitmapDescriptorFactory.HUE_BLUE;
-                break;
-            case "yellow":
-                color = BitmapDescriptorFactory.HUE_YELLOW;
-                break;
-        }
+    public void createMarker(LatLng point, String title, Integer markerColor) {
+
         mMap.addMarker(new MarkerOptions()
                 .position(point)
                 .title(title)
-                .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
     }
 
     public void openActivity(Class className) {
@@ -387,7 +375,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (requestCode == CREATE_MARKER && resultCode == RESULT_OK) {
             LatLng point = data.getParcelableExtra("location");
             String title = data.getStringExtra("title");
-            String color = data.getStringExtra("color");
+            Integer color = data.getIntExtra("color", 1);
             createMarker(point, title, color);
         }
     }

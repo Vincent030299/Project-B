@@ -10,8 +10,10 @@
 
     <ListView
         android:id="@+id/memoriesList"
+        style="@android:style/Widget.Material.Light.ListView"
         android:layout_width="411dp"
         android:layout_height="675dp"
+        android:cacheColorHint="@color/white"
         android:padding="5dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
@@ -20,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"

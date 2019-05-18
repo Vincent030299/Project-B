@@ -69,6 +69,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<String> memoryBitmaps = new ArrayList<>();
     private EditText mSearchText;
     private static final String TAG = "MapsActivity";
+    private String dbMarkerTitle,dbMarkerDesc;
+    private Integer dbMemoryId;
+    private DatabaseHelper dataBaseHelper;
+    private boolean isInfoWindowOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +204,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                openCreateMemoryActivity(point);
+                if (isInfoWindowOpen){
+                    isInfoWindowOpen = false;
+                }
+                else {
+                    openCreateMemoryActivity(point);
+
+                }
+
             }
         });
         createMemoryButton.setOnClickListener(new View.OnClickListener() {
@@ -239,16 +250,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 TextView markerTitle = (TextView) infoWindow.findViewById(R.id.markerTitle);
                 TextView markerDesc = (TextView) infoWindow.findViewById(R.id.markerDesc);
                 ImageView markerImage = (ImageView) infoWindow.findViewById(R.id.markerImage);
+                isInfoWindowOpen = true;
 
-                final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                dataBaseHelper = new DatabaseHelper(getApplicationContext());
                 LatLng markerPos = marker.getPosition();
 
                 Cursor dbMarker = databaseHelper.getItem(markerPos.latitude,markerPos.longitude);
                 while(dbMarker.moveToNext()){
-                    String dbMarkerTitle = dbMarker.getString(1);
-                    String dbMarkerDesc = dbMarker.getString(2);
-                    Integer dbMemoryId = dbMarker.getInt(0);
+                    dbMarkerTitle = dbMarker.getString(1);
+                    dbMarkerDesc = dbMarker.getString(2);
+                    dbMemoryId = dbMarker.getInt(0);
                     Cursor dbImage = databaseHelper.getImage(dbMemoryId);
+
                     while (dbImage.moveToNext()){
                         String dbImageUriString = dbImage.getString(1);
                         Uri dbImageUri = Uri.parse(dbImageUriString);

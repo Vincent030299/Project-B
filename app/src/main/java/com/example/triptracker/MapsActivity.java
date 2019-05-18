@@ -3,6 +3,7 @@ package com.example.triptracker;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
@@ -55,6 +56,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     private GoogleMap mMap;
     private Button createMemoryButton;
     private final int REQUEST_LOCATION_PERMISSION = 1;
@@ -69,6 +72,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         mSearchText = (EditText) findViewById(R.id.input_search);
@@ -172,13 +181,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     openActivity(MapsActivity.class);
-                    return true;
+                    break;
                 case R.id.navigation_dashboard:
                     openActivity(DashboardActivity.class);
-                    return true;
+                    break;
                 case R.id.navigation_settings:
                     openActivity(SettingsActivity.class);
-                    return true;
+                    break;
             }
             return false;
         }
@@ -326,7 +335,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void openActivity(Class className) {
         Intent intent = new Intent(this, className);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        overridePendingTransition(0, 0);
         finish();
         startActivity(intent);
     }

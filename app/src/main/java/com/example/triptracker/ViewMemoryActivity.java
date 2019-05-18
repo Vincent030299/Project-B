@@ -178,7 +178,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                             case R.id.shareEmail:
                                 shareMemory("email");
                                 return true;
-
+                            case R.id.shareFacebook:
+                                shareMemory("facebook");
+                                return true;
+                            case R.id.shareInstagram:
+                                shareMemory("instagram");
+                                return true;
                         }
                         return false;
                     }
@@ -220,38 +225,66 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private void shareMemory(String socialMedia) {
         switch (socialMedia) {
             case "twitter":
-            Intent twitter = new Intent();
-            try{
-                ApplicationInfo info = getPackageManager().
-                        getApplicationInfo("com.twitter.android", 0 );
-                twitter.setPackage("com.twitter.android");
-                twitter.setAction(Intent.ACTION_SEND);
-                if(!memoryImages.isEmpty()) {
-                    twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
-                    twitter.setType("image/jpeg");
-                }
-                twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
-                twitter.setType("text/plain");
+                Intent twitter = new Intent();
+                try {
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.twitter.android", 0);
+                    twitter.setPackage("com.twitter.android");
+                    twitter.setAction(Intent.ACTION_SEND);
+                    if (!memoryImages.isEmpty()) {
+                        twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
+                        twitter.setType("image/jpeg");
+                    }
+                    twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
+                    twitter.setType("text/plain");
 
-                startActivity(twitter);
-            } catch( PackageManager.NameNotFoundException e ){
-                Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
-            }
-            break;
+                    startActivity(twitter);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case "email":
-                if (!memoryImagesUris.isEmpty()) {
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                    shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, memoryTitle);
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, memoryDescription);
-                    shareIntent.setType("image/*");
-                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    startActivity(Intent.createChooser(shareIntent, "Share"));
-                }
+                try {
+                    Intent shareEmail = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.google.android.gm", 0);
+                    shareEmail.setPackage("com.google.android.gm");
 
+                    if (!memoryImages.isEmpty()) {
+                        shareEmail.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareEmail.setType("image/jpeg");
+                    }
+                    shareEmail.putExtra(Intent.EXTRA_SUBJECT, memoryTitle);
+                    shareEmail.putExtra(Intent.EXTRA_TEXT, memoryDescription);
+                    shareEmail.setType("text/plain");
+
+                    startActivity(shareEmail);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have gmail installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "facebook":
+                break;
+            case "instagram":
+                try {
+                    Intent shareInstagram = new Intent(Intent.ACTION_SEND);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.instagram.android", 0);
+                    shareInstagram.setPackage("com.instagram.android");
+
+                    if (!memoryImages.isEmpty()) {
+                        shareInstagram.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
+                        shareInstagram.setType("image/jpeg");
+                    }
+
+
+                    startActivity(shareInstagram);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have Instagram installed on your device.", Toast.LENGTH_SHORT).show();
+                }
         }
     }
+
 
 
     @Override

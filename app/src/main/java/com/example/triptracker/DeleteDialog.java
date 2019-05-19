@@ -10,6 +10,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class DeleteDialog extends AppCompatDialogFragment {
 
+    // Tutorial for dialog https://www.youtube.com/watch?v=Bsm-BlXo2SI
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

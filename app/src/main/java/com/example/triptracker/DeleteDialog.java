@@ -2,9 +2,11 @@ package com.example.triptracker;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class DeleteDialog extends AppCompatDialogFragment {
 
@@ -18,7 +20,11 @@ public class DeleteDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseHelper databaseHelper = new DatabaseHelper(getContext().getApplicationContext());
-                databaseHelper.deleteName(1);
+                databaseHelper.deleteName(getArguments().getInt("id"));
+                Intent openDashBoard = new Intent(getContext().getApplicationContext(),DashboardActivity.class);
+                openDashBoard.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                openDashBoard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                getContext().startActivity(openDashBoard);
             }
         })
         .setNegativeButton("No", new DialogInterface.OnClickListener() {

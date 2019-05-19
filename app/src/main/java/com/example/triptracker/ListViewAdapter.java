@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentManager;
 import android.util.Base64;
@@ -126,19 +127,16 @@ public class ListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 openDeleteDialog(memoryIds.get(position));
-//                Intent openDashBoard = new Intent(context.getApplicationContext(),DashboardActivity.class);
-//                openDashBoard.addFlags(FLAG_ACTIVITY_NEW_TASK);
-//                openDashBoard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                context.startActivity(openDashBoard);
-
             }
         });
         return singleMemory;
     }
 
-    private void openDeleteDialog(Integer position){
+    private void openDeleteDialog(int position){
+        Bundle memoryPosition = new Bundle();
+        memoryPosition.putInt("id",position);
         DeleteDialog deleteDialog = new DeleteDialog();
+        deleteDialog.setArguments(memoryPosition);
         deleteDialog.show(this.fragmentManager,"delete dialog");
-
     }
 }

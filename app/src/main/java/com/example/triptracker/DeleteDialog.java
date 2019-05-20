@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
 public class DeleteDialog extends AppCompatDialogFragment {
 
@@ -25,6 +26,7 @@ public class DeleteDialog extends AppCompatDialogFragment {
                 Intent openDashBoard = new Intent(getContext().getApplicationContext(),DashboardActivity.class);
                 openDashBoard.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 openDashBoard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                openDashBoard.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
                 getContext().startActivity(openDashBoard);
             }
         })

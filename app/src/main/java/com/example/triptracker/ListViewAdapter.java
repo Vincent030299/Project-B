@@ -71,7 +71,6 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, final View convertView, ViewGroup parent) {
-
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View singleMemory = layoutInflater.inflate(R.layout.memorylistitem, parent, false);
         openMemoryBtn = singleMemory.findViewById(R.id.open);

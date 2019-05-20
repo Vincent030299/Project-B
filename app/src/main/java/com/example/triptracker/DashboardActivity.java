@@ -1,6 +1,7 @@
 package com.example.triptracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.sip.SipSession;
 import android.os.Bundle;
@@ -22,10 +23,12 @@ import java.util.ArrayList;
 import java.util.EventListener;
 
 public class DashboardActivity extends AppCompatActivity {
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     private ListView memoriesList;
     private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     private ArrayList<Integer> memoryIds;
-    private ListViewAdapter memoryListAdapter;
+    protected ListViewAdapter memoryListAdapter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -49,6 +52,12 @@ public class DashboardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -60,7 +69,6 @@ public class DashboardActivity extends AppCompatActivity {
         memoryDates = new ArrayList<>();
         memoryIds  = new ArrayList<>();
         memoryDiscriptions = new ArrayList<>();
-
 
         while(memories.moveToNext()){
             Integer id = memories.getInt(0);
@@ -86,8 +94,8 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
+//    }
 }

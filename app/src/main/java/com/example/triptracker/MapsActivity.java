@@ -3,6 +3,7 @@ package com.example.triptracker;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
@@ -55,6 +56,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     private GoogleMap mMap;
     private Button createMemoryButton;
     private final int REQUEST_LOCATION_PERMISSION = 1;
@@ -66,9 +69,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<String> memoryBitmaps = new ArrayList<>();
     private EditText mSearchText;
     private static final String TAG = "MapsActivity";
+    private String dbMarkerTitle,dbMarkerDesc;
+    private Integer dbMemoryId;
+    private DatabaseHelper dataBaseHelper;
+    private boolean isInfoWindowOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         mSearchText = (EditText) findViewById(R.id.input_search);
@@ -172,13 +185,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     openActivity(MapsActivity.class);
-                    return true;
+                    break;
                 case R.id.navigation_dashboard:
                     openActivity(DashboardActivity.class);
-                    return true;
+                    break;
                 case R.id.navigation_settings:
                     openActivity(SettingsActivity.class);
-                    return true;
+                    break;
             }
             return false;
         }
@@ -191,7 +204,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                openCreateMemoryActivity(point);
+                if (isInfoWindowOpen){
+                    isInfoWindowOpen = false;
+                }
+                else {
+                    openCreateMemoryActivity(point);
+
+                }
+
             }
         });
         createMemoryButton.setOnClickListener(new View.OnClickListener() {
@@ -230,16 +250,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 TextView markerTitle = (TextView) infoWindow.findViewById(R.id.markerTitle);
                 TextView markerDesc = (TextView) infoWindow.findViewById(R.id.markerDesc);
                 ImageView markerImage = (ImageView) infoWindow.findViewById(R.id.markerImage);
+                isInfoWindowOpen = true;
 
-                final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                dataBaseHelper = new DatabaseHelper(getApplicationContext());
                 LatLng markerPos = marker.getPosition();
 
                 Cursor dbMarker = databaseHelper.getItem(markerPos.latitude,markerPos.longitude);
                 while(dbMarker.moveToNext()){
-                    String dbMarkerTitle = dbMarker.getString(1);
-                    String dbMarkerDesc = dbMarker.getString(2);
-                    Integer dbMemoryId = dbMarker.getInt(0);
+                    dbMarkerTitle = dbMarker.getString(1);
+                    dbMarkerDesc = dbMarker.getString(2);
+                    dbMemoryId = dbMarker.getInt(0);
                     Cursor dbImage = databaseHelper.getImage(dbMemoryId);
+
                     while (dbImage.moveToNext()){
                         String dbImageUriString = dbImage.getString(1);
                         Uri dbImageUri = Uri.parse(dbImageUriString);
@@ -326,7 +348,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void openActivity(Class className) {
         Intent intent = new Intent(this, className);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        overridePendingTransition(0, 0);
         finish();
         startActivity(intent);
     }

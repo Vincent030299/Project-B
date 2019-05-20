@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/AppThemeBlue"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="?attr/colorPrimaryDark">
 
     <LinearLayout
         android:id="@+id/viewMemorymapLayout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/viewMemoryTopBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintTop_toBottomOf="@id/viewMemoryTopBar">
 
         <fragment
             android:id="@+id/viewMemoryMap"
@@ -26,146 +25,143 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/viewMemoryMediaLayout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewMemoryTopBar"
-        android:id="@+id/viewMemoryMediaLayout">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewMemoryTopBar">
+
         <android.support.v4.view.ViewPager
             android:id="@+id/viewMemorySlider"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/viewMemorypageIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/viewMemorymapLayout"
-        android:id="@+id/viewMemorypageIndicator">
+        app:layout_constraintTop_toBottomOf="@id/viewMemorymapLayout">
+
         <com.viewpagerindicator.CirclePageIndicator
-            android:padding="8dp"
+            android:id="@+id/viewMemoryDotsIndicator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/viewMemoryDotsIndicator"/>
+            android:padding="8dp" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/viewMemorySwitchLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/viewMemorypageIndicator"
         android:gravity="end"
-        android:id="@+id/viewMemorySwitchLayout">
+        app:layout_constraintTop_toBottomOf="@id/viewMemorypageIndicator">
 
         <Switch
             android:id="@+id/viewMemoryMediaSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Media files"
-            android:theme="@style/AppThemeBlue"/>
+            android:textColor="?attr/colorAccent" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ViewMemoryTitleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewMemorySwitchLayout"
-        android:orientation="vertical"
-        android:id="@+id/ViewMemoryTitleLayout"
+        android:layout_marginStart="20dp"
         android:gravity="start"
-        android:layout_marginStart="20dp">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewMemorySwitchLayout">
+
         <TextView
+            android:id="@+id/viewMemoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/viewMemoryTitle"
-            android:text="hint"
-            android:textStyle="bold"
-            android:textColor="@color/vpi__background_holo_dark"
             android:maxHeight="35dp"
+            android:scrollbars="horizontal"
+            android:text="hint"
+            android:textColor="?attr/colorAccent"
             android:textSize="22sp"
-            android:scrollbars="horizontal"/>
+            android:textStyle="bold" />
+
         <TextView
+            android:id="@+id/viewMemoryDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/viewMemoryDate"
-            android:layout_marginTop="6dp"/>
+            android:layout_marginTop="6dp"
+            android:textColor="?attr/colorAccent"
+            android:textColorHint="?attr/colorAccent"
+            android:textColorLink="?attr/colorAccent" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/viewMemoryDescription"
         android:layout_width="match_parent"
         android:layout_height="230dp"
-        android:id="@+id/viewMemoryDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ViewMemoryTitleLayout"
-        android:scrollbars="vertical"
-        android:textColor="@color/vpi__background_holo_dark"
         android:paddingStart="20dp"
+        android:paddingTop="5dp"
         android:paddingEnd="20dp"
-        android:paddingTop="5dp"/>
+        android:scrollbars="vertical"
+        android:textColor="?attr/colorAccent"
+        android:textColorLink="?attr/colorAccent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ViewMemoryTitleLayout" />
 
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
         android:background="?android:attr/windowBackground"
+        android:backgroundTint="?attr/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation"
-        android:backgroundTint="@color/blueapp"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"/>
-    <LinearLayout
+        app:menu="@menu/navigation" />
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/viewMemoryTopBar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/blueapp"
+        android:layout_height="45dp"
+        android:background="?attr/colorPrimary"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/viewMemoryMediaLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:text="Memory"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
+            android:id="@+id/viewMemoryShareBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewMemoryDescription"
-            android:id="@+id/viewMemoryShareBtn"
-            android:src="@drawable/sharebutton"
-            android:background="#00000000"
             android:layout_marginStart="250dp"
+            android:adjustViewBounds="true"
+            android:background="#00000000"
             android:maxHeight="42dp"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true"/>
+            android:src="@drawable/sharebutton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/closeViewMemory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginStart="10dp"
+            android:adjustViewBounds="true"
             android:background="#00000000"
-            android:src="@drawable/close_popup"
             android:maxHeight="25dp"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true"/>
+            android:src="@drawable/backbutton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

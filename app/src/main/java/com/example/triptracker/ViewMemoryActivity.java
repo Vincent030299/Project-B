@@ -1,6 +1,12 @@
 package com.example.triptracker;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -23,6 +29,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +48,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     private ViewPager viewMemoryMediaSlider;
     private TextView viewMemoryTitle,viewMemoryDate,viewMemoryDescription;
     private ImageButton viewMemoryShareButton,closeViewMemory;
@@ -50,8 +59,9 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private FragmentManager viewMemoryFragmentManager;
     private GoogleMap mMap;
     private SwipeAdapter viewMemorySwipeAdapter;
-    private ArrayList<Fragment> memoryViewMediaFiles = new ArrayList<>();
+    private ArrayList<Fragment> memoryViewMediaFiles;
     private String memoryTitle, memoryDescription,memoryDate;
+    private ArrayList<Uri> memoryImagesUris;
     private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
     private LinearLayout mediaFilesLayout;
     private LatLng markerLoc;
@@ -77,6 +87,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.memoryviewlayout);
         viewMemoryDate=findViewById(R.id.viewMemoryDate);
@@ -100,7 +116,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         closeViewMemory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent openDashboard = new Intent(getApplicationContext(),DashboardActivity.class);
+                openDashboard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish();
+                startActivity(openDashboard);
             }
         });
 
@@ -110,32 +129,45 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         memoryImages = getIntent().getStringArrayListExtra("images");
         memoryBitmaps = getIntent().getStringArrayListExtra("bitmaps");
         memoryVideos = getIntent().getStringArrayListExtra("videos");
+        memoryImagesUris = new ArrayList<>();
 //        Toast.makeText(getApplicationContext(), String.valueOf(memoryVideos.size()), Toast.LENGTH_SHORT).show();
-
-        for(int i = 0; i<memoryImages.size(); i++){
-            Bundle fragmentArgs = new Bundle();
-            fragmentArgs.putString("the image", memoryImages.get(i));
-            ImageFragment singleImageFragment = new ImageFragment();
-            singleImageFragment.setArguments(fragmentArgs);
-            memoryViewMediaFiles.add(singleImageFragment);
-        }
-        for (int i = 0; i<memoryVideos.size();i++){
-            Bundle fragmentArgs = new Bundle();
-            fragmentArgs.putString("the video", memoryVideos.get(i));
-            VidFragment singleVideoFragment = new VidFragment();
-            singleVideoFragment.setArguments(fragmentArgs);
-            memoryViewMediaFiles.add(singleVideoFragment);
-        }
-
-        if (!memoryBitmaps.isEmpty()){
-            for(int i = 0; i<memoryBitmaps.size(); i++){
-                Bundle fragmentArgs = new Bundle();
-                fragmentArgs.putString("the cam",memoryBitmaps.get(i) );
-                CapImageFragment singleImageBitmap = new CapImageFragment();
-                singleImageBitmap.setArguments(fragmentArgs);
-                memoryViewMediaFiles.add(singleImageBitmap);
+        memoryViewMediaFiles = null;
+        memoryViewMediaFiles = new ArrayList<>();
+        if (memoryViewMediaFiles.isEmpty()){
+            if(!memoryImages.isEmpty()){
+                for(int i = 0; i<memoryImages.size(); i++){
+                    Bundle fragmentArgs = new Bundle();
+                    fragmentArgs.putString("the image", memoryImages.get(i));
+                    ImageFragment singleImageFragment = new ImageFragment();
+                    singleImageFragment.setArguments(fragmentArgs);
+                    memoryViewMediaFiles.add(singleImageFragment);
+                    memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
+                }
+            }
+            if(!memoryVideos.isEmpty()){
+                for (int i = 0; i<memoryVideos.size();i++){
+                    Bundle fragmentArgs = new Bundle();
+                    fragmentArgs.putString("the video", memoryVideos.get(i));
+                    VidFragment singleVideoFragment = new VidFragment();
+                    singleVideoFragment.setArguments(fragmentArgs);
+                    memoryViewMediaFiles.add(singleVideoFragment);
+                    memoryImagesUris.add(Uri.parse(memoryVideos.get(i)));
+                }
+            }
+            if (!memoryBitmaps.isEmpty()){
+                for(int i = 0; i<memoryBitmaps.size(); i++){
+                    Bundle fragmentArgs = new Bundle();
+                    fragmentArgs.putString("the cam",memoryBitmaps.get(i) );
+                    CapImageFragment singleImageBitmap = new CapImageFragment();
+                    singleImageBitmap.setArguments(fragmentArgs);
+                    memoryViewMediaFiles.add(singleImageBitmap);
+                }
             }
         }
+        else {
+            memoryViewMediaFiles.clear();
+        }
+
 
         final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.viewMemoryMap);
         Objects.requireNonNull(spmf).getMapAsync(this);
@@ -154,10 +186,33 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryFragmentManager=getSupportFragmentManager();
         viewmemoryMapFragment=viewMemoryFragmentManager.findFragmentById(R.id.viewMemoryMap);
         viewMemoryMapVisibility(false);
+
         viewMemoryShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                PopupMenu uploadBtnsMenu= new PopupMenu(ViewMemoryActivity.this, viewMemoryShareButton);
+                uploadBtnsMenu.inflate(R.menu.choosesocialmediamenu);
+                uploadBtnsMenu.show();
+                uploadBtnsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.shareTwitter:
+                                shareMemory("twitter");
+                                return true;
+                            case R.id.shareEmail:
+                                shareMemory("email");
+                                return true;
+                            case R.id.shareFacebook:
+                                shareMemory("facebook");
+                                return true;
+                            case R.id.shareInstagram:
+                                shareMemory("instagram");
+                                return true;
+                        }
+                        return false;
+                    }
+                });
             }
         });
 
@@ -192,6 +247,108 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
+    private void shareMemory(String socialMedia) {
+        switch (socialMedia) {
+            case "twitter":
+                Intent twitter = new Intent();
+                try {
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.twitter.android", 0);
+                    twitter.setPackage("com.twitter.android");
+                    twitter.setAction(Intent.ACTION_SEND);
+                    if (!memoryImages.isEmpty()) {
+                        twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
+                        twitter.setType("image/jpeg");
+                    }
+                    else if (!memoryVideos.isEmpty()) {
+                        twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryVideos.get(0)));
+                        twitter.setType("video/*");
+                    }
+                    twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
+                    twitter.setType("text/plain");
+
+                    startActivity(twitter);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "email":
+                try {
+                    Intent shareEmail = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.google.android.gm", 0);
+                    shareEmail.setPackage("com.google.android.gm");
+
+                    if (!memoryImages.isEmpty()) {
+                        shareEmail.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareEmail.setType("image/jpeg");
+                    }
+
+                    else if (!memoryVideos.isEmpty()) {
+                        shareEmail.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareEmail.setType("video/*");
+                    }
+                    shareEmail.putExtra(Intent.EXTRA_SUBJECT, memoryTitle);
+                    shareEmail.putExtra(Intent.EXTRA_TEXT, memoryDescription);
+                    shareEmail.setType("text/plain");
+
+                    startActivity(shareEmail);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have gmail installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "facebook":
+                try {
+                    Intent shareFacebook = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.facebook.katana", 0);
+                    shareFacebook.setPackage("com.facebook.katana");
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("title + description", memoryTitle + " \n" + memoryDescription);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getApplicationContext(), "Title and description added to clipboard", Toast.LENGTH_LONG).show();
+
+                    if (!memoryImages.isEmpty()) {
+                        shareFacebook.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareFacebook.setType("image/jpeg");
+                    }
+
+                    else if (!memoryVideos.isEmpty()) {
+                        shareFacebook.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareFacebook.setType("video/*");
+                    }
+
+                    startActivity(shareFacebook);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have Facebook installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "instagram":
+                try {
+                    Intent shareInstagram = new Intent(Intent.ACTION_SEND);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.instagram.android", 0);
+                    shareInstagram.setPackage("com.instagram.android");
+
+                    if (!memoryImages.isEmpty()) {
+                        shareInstagram.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
+                        shareInstagram.setType("image/jpeg");
+                    }
+                    else if (!memoryVideos.isEmpty()) {
+                        shareInstagram.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryVideos.get(0)));
+                        shareInstagram.setType("video/*");
+                    }
+
+
+                    startActivity(shareInstagram);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have Instagram installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -217,7 +374,11 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
+        Intent openDashboard = new Intent(getApplicationContext(),DashboardActivity.class);
+        openDashboard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(openDashboard);
     }
 
     //open a given activity

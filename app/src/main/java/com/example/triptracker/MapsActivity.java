@@ -73,7 +73,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DatabaseHelper dataBaseHelper;
     private boolean isInfoWindowOpen = false;
     private int[] feelingsEmojis = {R.drawable.happy_emoji,R.drawable.relaxed_emoji,R.drawable.blessed_emoji
-            ,R.drawable.loved_emoji,R.drawable.crazy_emoji,R.drawable.sad_emoji,R.drawable.tired_emoji,R.drawable.thankful_emoji,R.drawable.hopeful_emoji,R.drawable.fantastic_emoji};
+            ,R.drawable.loved_emoji,R.drawable.crazy_emoji,R.drawable.sad_emoji,R.drawable.tired_emoji,
+            R.drawable.thankful_emoji,R.drawable.hopeful_emoji,R.drawable.fantastic_emoji,R.drawable.peaceful_emoji,
+            R.drawable.disappointed_emoji,R.drawable.lost_emoji,R.drawable.inspired_emoji,R.drawable.optimistic_emoji};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

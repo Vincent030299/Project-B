@@ -59,7 +59,7 @@
             android:background="#00000000"
             android:maxHeight="42dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/open_icon" />
+            android:src="@drawable/edit_icon" />
 
         <ImageButton
             android:id="@+id/delete"

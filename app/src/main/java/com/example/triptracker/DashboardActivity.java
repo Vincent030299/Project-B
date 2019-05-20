@@ -73,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity {
             memoryTitles.add(title);
             memoryDiscriptions.add(discription);
         }
-        memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds,memoryDiscriptions);
+        memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds,memoryDiscriptions,getSupportFragmentManager());
         memoriesList.setAdapter(memoryListAdapter);
     }
 

@@ -474,7 +474,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             Toast.makeText(getApplicationContext(), "The title is too long, try again", Toast.LENGTH_SHORT).show();
         }
         else if (feeling == 1000){
-            Toast.makeText(getApplicationContext(), "Please choose a feeling, click on the icon in the top right corner", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please choose a feeling, click on the smile icon", Toast.LENGTH_LONG).show();
         }
         else {
             String currentMemoryTitle=memoryTitle.getEditText().getText().toString();

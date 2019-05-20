@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,16 +81,14 @@ public class ListViewAdapter extends BaseAdapter {
         memoryTitle.setText(memoryTitles.get(position));
         memoryDate.setText(memoryDates.get(position));
 
-        openMemoryBtn.setOnClickListener(new View.OnClickListener() {
+        singleMemory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(context.getApplicationContext(), String.valueOf(memoryIds.get(position)), Toast.LENGTH_LONG).show();
                 DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
                 Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps(memoryIds.get(position));
 
-//                Toast.makeText(context.getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
                 while(allImagesForMemory.moveToNext()){
                     String singleImage = allImagesForMemory.getString(1);
                     memoryImages.add(singleImage);

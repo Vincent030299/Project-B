@@ -38,6 +38,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -71,6 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String dbMarkerTitle,dbMarkerDesc;
     private Integer dbMemoryId;
     private DatabaseHelper dataBaseHelper;
+    private Float color;
     private boolean isInfoWindowOpen = false;
     private int[] feelingsEmojis = {R.drawable.happy_emoji,R.drawable.relaxed_emoji,R.drawable.blessed_emoji
             ,R.drawable.loved_emoji,R.drawable.crazy_emoji,R.drawable.sad_emoji,R.drawable.tired_emoji,
@@ -228,9 +230,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         while(markers.moveToNext()){
             Double lat = markers.getDouble(4);
             Double lng = markers.getDouble(5);
+            Integer color = markers.getInt(6);
             String title = markers.getString(1);
             LatLng point = new LatLng(lat,lng);
-            createMarker(point,title);
+            createMarker(point,title,color);
         }
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -259,8 +262,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     dbMarkerTitle = dbMarker.getString(1);
                     dbMarkerDesc = dbMarker.getString(2);
                     dbMemoryId = dbMarker.getInt(0);
-                    feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(6)]);
-                    feelingDescription.setText(" - Was feeling " + dbMarker.getString(7));
+                    feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(7)]);
+                    feelingDescription.setText(" - Was feeling " + dbMarker.getString(8));
                     Cursor dbImage = databaseHelper.getImage(dbMemoryId);
 
                     while (dbImage.moveToNext()){
@@ -329,6 +332,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             openMemory.putExtra("title", dbMarkerInfo.getString(1));
             openMemory.putExtra("date", dbMarkerInfo.getString(3));
             openMemory.putExtra("location", markerLoc);
+            openMemory.putExtra("color", dbMarkerInfo.getInt(6));
+            Toast.makeText(getApplicationContext(), Integer.toString(dbMarkerInfo.getInt(6)), Toast.LENGTH_SHORT).show();
             startActivity(openMemory);
         }
 
@@ -340,10 +345,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtra("location", point);
         startActivityForResult(intent, CREATE_MARKER);
     }
-    public void createMarker(LatLng point, String title) {
+    public void createMarker(LatLng point, String title, Integer markerColor) {
+
         mMap.addMarker(new MarkerOptions()
                 .position(point)
-                .title(title));
+                .title(title)
+                .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
     }
 
     public void openActivity(Class className) {
@@ -378,7 +385,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (requestCode == CREATE_MARKER && resultCode == RESULT_OK) {
             LatLng point = data.getParcelableExtra("location");
             String title = data.getStringExtra("title");
-            createMarker(point, title);
+            Integer color = data.getIntExtra("color", 1);
+            createMarker(point, title, color);
         }
     }
 

@@ -6,7 +6,7 @@
     <string name="title_home">Startpagina</string>
     <string name="title_memories">Herinneringen</string>
     <string name="title_settings">Instellingen</string>
-    <string name="title_activity_settings">InstellingenActiviteit</string>
+    <string name="title_activity_settings">Instellingen</string>
     <string name="title_activity_dashboard">DashboardActiviteit</string>
     <string name="title_notifications">Notificaties</string>
     <string name="hint_memory_description">Beschrijving</string>

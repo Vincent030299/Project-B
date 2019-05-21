@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.FragmentManager;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,14 +34,16 @@ public class ListViewAdapter extends BaseAdapter {
     private TextView memoryTitle,memoryDate;
     private ImageButton openMemoryBtn,deleteMemoryBtn;
     private Context context;
+    private FragmentManager fragmentManager;
 
-    public ListViewAdapter(Context context,ArrayList<String> memoryTitles, ArrayList<String> memoryDates, ArrayList<Integer> memoryIds, ArrayList<String> memoryDiscriptions) {
+    public ListViewAdapter(Context context,ArrayList<String> memoryTitles, ArrayList<String> memoryDates, ArrayList<Integer> memoryIds, ArrayList<String> memoryDiscriptions, FragmentManager fragmentManager) {
         this.memoryTitles = memoryTitles;
         this.memoryDates = memoryDates;
         this.memoryIds = memoryIds;
         this.context = context;
         this.memoryBitmaps = memoryBitmaps;
         this.memoryDiscriptions = memoryDiscriptions;
+        this.fragmentManager = fragmentManager;
     }
 
     public boolean addDate(String s) {
@@ -87,17 +92,14 @@ public class ListViewAdapter extends BaseAdapter {
         memoryTitle.setText(memoryTitles.get(position));
         memoryDate.setText(memoryDates.get(position));
 
-
-        openMemoryBtn.setOnClickListener(new View.OnClickListener() {
+        singleMemory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(context.getApplicationContext(), String.valueOf(memoryIds.get(position)), Toast.LENGTH_LONG).show();
                 DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
                 Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps(memoryIds.get(position));
 
-//                Toast.makeText(context.getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
                 while(allImagesForMemory.moveToNext()){
                     String singleImage = allImagesForMemory.getString(1);
                     memoryImages.add(singleImage);
@@ -134,15 +136,17 @@ public class ListViewAdapter extends BaseAdapter {
         deleteMemoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
-                mDataBaseHelper.deleteName(memoryIds.get(position));
-                Intent openDashBoard = new Intent(context.getApplicationContext(),DashboardActivity.class);
-                openDashBoard.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                openDashBoard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                context.startActivity(openDashBoard);
-
+                openDeleteDialog(memoryIds.get(position));
             }
         });
         return singleMemory;
+    }
+
+    private void openDeleteDialog(int position){
+        Bundle memoryPosition = new Bundle();
+        memoryPosition.putInt("id",position);
+        DeleteDialog deleteDialog = new DeleteDialog();
+        deleteDialog.setArguments(memoryPosition);
+        deleteDialog.show(this.fragmentManager,"delete dialog");
     }
 }

@@ -189,7 +189,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/memoryDescription"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -209,7 +208,7 @@
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/linearLayout"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
@@ -223,16 +222,31 @@
                 android:layout_marginTop="5dp"
                 android:background="?attr/colorPrimaryDark"
                 android:calendarViewShown="false"
-                android:datePickerMode="spinner" />
+                android:datePickerMode="spinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageButton
+                android:id="@+id/feelingEmojiBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/feelingicon"
+                android:background="#00000000"
+                app:layout_constraintEnd_toStartOf="@id/saveMemoryBtn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/memoryDate"/>
 
             <ImageButton
                 android:id="@+id/saveMemoryBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="82dp"
                 android:background="#00000000"
-                android:src="@drawable/savememoryiconblue" />
-        </LinearLayout>
+                android:src="@drawable/savememoryiconblue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
 
@@ -272,17 +286,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/feelingEmojiBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:background="#00000000"
-            android:maxHeight="25dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/emotebutton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/customMarkerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:adjustViewBounds="true"
+                android:background="#00000000"
+                android:maxHeight="25dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/custom_marker_btn"
+                android:layout_marginRight="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
     </android.support.constraint.ConstraintLayout>
 
     <Button
@@ -302,11 +318,11 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="start|center"-->
-    <!--android:text="Create Memory"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="24sp"-->
-    <!--android:textStyle="bold" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="start|center"-->
+        <!--android:text="Create Memory"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold" />-->
 </android.support.constraint.ConstraintLayout>

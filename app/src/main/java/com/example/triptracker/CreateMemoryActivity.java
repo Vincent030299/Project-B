@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,6 +32,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.Menu;
 import android.util.Log;
 import android.view.MenuItem;
@@ -57,6 +59,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.tooltip.Tooltip;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
@@ -79,9 +82,12 @@ these links helped with learning to be able to write the code for this class
 */
 public class CreateMemoryActivity extends FragmentActivity implements OnMapReadyCallback{
 
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     private GoogleMap mMap;
     private LatLng point;
     ViewPager createMemorySlider;
+    private Button toolTip;
     private ArrayList<Fragment> chosenViewsArrayList = new ArrayList<>();
     private SwipeAdapter chosenViewsAdapter;
     private Switch mapMediaToggle;
@@ -130,6 +136,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_memory);
         takenPictureUri = null;
@@ -148,6 +160,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
 
         //initialize the used components in the layout file
+        toolTip = findViewById(R.id.toolTipButton);
         createMemorySlider =findViewById(R.id.createMemorySlider);
         mapMediaToggle =findViewById(R.id.mediaSwitch);
         uploadMediaFilesMenu=findViewById(R.id.uploadBtns);
@@ -216,13 +229,18 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         pageIndicator.setStrokeColor(Color.rgb(20,145,218));
         pageIndicator.setViewPager(createMemorySlider);
 
-
         //all of the click listeners in the layout
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         closePopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        toolTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createToolTip(v);
             }
         });
         saveMemoryButton.setOnClickListener(new View.OnClickListener() {
@@ -259,7 +277,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 });
             }
         });
-
 
         //the functionality to delete a media file
         createMemorySlider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -435,6 +452,18 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         // Save a file: path for use with ACTION_VIEW intents
         takenPicturePath = image.getAbsolutePath();
         return image;
+    }
+
+    private void createToolTip(View v) {
+        Button btn = (Button)v;
+        Tooltip tooltip = new Tooltip.Builder(btn)
+                .setText("To move the marker simply long-press the marker and drag it to the location you wish.")
+                .setTextColor(Color.BLACK)
+                .setGravity(Gravity.BOTTOM)
+                .setCornerRadius(8f)
+                .setDismissOnClick(true)
+                .show();
+
     }
 
     //the function for deleting a certain media file
@@ -767,7 +796,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
 
         });
-
     }
 
     public void changeMarkerColor(Integer markerColor){

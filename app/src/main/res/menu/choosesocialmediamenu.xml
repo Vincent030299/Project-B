@@ -12,6 +12,19 @@
         android:id="@+id/shareEmail"
         android:checkable="false"
         android:enabled="true"
-        android:title="Share via.."
+        android:title="Share on GMail"
         android:visible="true" />
+
+    <item
+        android:id="@+id/shareFacebook"
+        android:checkable="false"
+        android:enabled="true"
+        android:title="Share on Facebook"
+        android:visible="true"  />
+    <item
+        android:id="@+id/shareInstagram"
+        android:checkable="false"
+        android:enabled="true"
+        android:title="Share on Instagram"
+        android:visible="true"  />
 </menu>

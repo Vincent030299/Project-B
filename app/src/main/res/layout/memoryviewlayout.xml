@@ -131,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="?attr/colorPrimary"
-        android:padding="8dp"
+        android:padding="3dp"
         app:layout_constraintBottom_toTopOf="@+id/viewMemoryMediaLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -157,11 +157,25 @@
             android:layout_gravity="end|center_vertical"
             android:adjustViewBounds="true"
             android:background="#00000000"
-            android:maxHeight="25dp"
+            android:maxHeight="28dp"
             android:scaleType="fitCenter"
             android:src="@drawable/backbutton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/toolTipButton2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/ic_info_outline_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.001" />
 </android.support.constraint.ConstraintLayout>

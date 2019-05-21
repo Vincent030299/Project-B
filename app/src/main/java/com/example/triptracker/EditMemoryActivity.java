@@ -6,7 +6,6 @@ import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -21,6 +20,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,7 +32,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.Menu;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,6 +41,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -59,7 +59,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.tooltip.Tooltip;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
@@ -80,14 +79,11 @@ import java.util.zip.Inflater;
 these links helped with learning to be able to write the code for this class
     https://www.youtube.com/watch?v=LpL9akTG4hI
 */
-public class CreateMemoryActivity extends FragmentActivity implements OnMapReadyCallback{
+public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCallback{
 
-    private static final String PREFS_NAME = "prefs";
-    private static final String PREF_DARK_THEME = "dark_theme";
     private GoogleMap mMap;
     private LatLng point;
     ViewPager createMemorySlider;
-    private Button toolTip;
     private ArrayList<Fragment> chosenViewsArrayList = new ArrayList<>();
     private SwipeAdapter chosenViewsAdapter;
     private Switch mapMediaToggle;
@@ -115,6 +111,11 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private int feeling = 1000;
     private String feelingDescription;
     private String takenPicturePath;
+    private ArrayList<String> memoryImages,memoryVideos;
+    private int[] feelingsEmojis = {R.drawable.happy_emoji,R.drawable.relaxed_emoji,R.drawable.blessed_emoji
+            ,R.drawable.loved_emoji,R.drawable.crazy_emoji,R.drawable.sad_emoji,R.drawable.tired_emoji,
+            R.drawable.thankful_emoji,R.drawable.hopeful_emoji,R.drawable.fantastic_emoji,R.drawable.peaceful_emoji,
+            R.drawable.disappointed_emoji,R.drawable.lost_emoji,R.drawable.inspired_emoji,R.drawable.optimistic_emoji};
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -136,12 +137,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
-
-        if(useDarkTheme) {
-            setTheme(R.style.AppThemeNight);
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_memory);
         takenPictureUri = null;
@@ -160,17 +155,16 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
 
         //initialize the used components in the layout file
-        toolTip = findViewById(R.id.toolTipButton);
         createMemorySlider =findViewById(R.id.createMemorySlider);
         mapMediaToggle =findViewById(R.id.mediaSwitch);
         uploadMediaFilesMenu=findViewById(R.id.uploadBtns);
         saveMemoryButton=findViewById(R.id.saveMemoryBtn);
         memoryDescription=findViewById(R.id.memoryDescription);
-        memoryTitle=findViewById(R.id.memoryTitle);
+        memoryTitle = findViewById(R.id.memoryTitle);
         memoryDate=findViewById(R.id.memoryDate);
         closePopup =findViewById(R.id.closeCreateMemory);
         pageIndicatorView =findViewById(R.id.pageIndicator);
-        mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
+        mapFragment=getSupportFragmentManager().findFragmentById(R.id.editMapFragView);
         mapLayout= findViewById(R.id.mapLayout);
         mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -180,6 +174,44 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         createMemoryLayout = findViewById(R.id.createMemoryLayout);
         chooseMarkerMenuBtn=findViewById(R.id.customMarkerBtn);
         feelingEmojiBtn = findViewById(R.id.feelingEmojiBtn);
+
+        // Set all the default
+        Intent result = getIntent();
+        String title = result.getStringExtra("title");
+        String description = result.getStringExtra("description");
+        String date = result.getStringExtra("date");
+        String[] dates = date.split("-");
+        Integer emoji = result.getIntExtra("emoji",1);
+        feeling = emoji;
+        feelingDescription = result.getStringExtra("emoji_description");
+
+        int day = Integer.parseInt(dates[0]);
+        int month = Integer.parseInt(dates[1]) - 1;
+        int year = Integer.parseInt(dates[2]);
+
+        memoryTitle.getEditText().setText(title);
+        memoryDescription.getEditText().setText(description);
+        memoryDate.updateDate(year,month,day);
+        feelingEmojiBtn.setImageResource(feelingsEmojis[emoji]);
+        memoryImages = getIntent().getStringArrayListExtra("images");
+        memoryVideos = getIntent().getStringArrayListExtra("videos");
+
+        for(int i = 0; i<memoryImages.size(); i++){
+            Bundle fragmentArgs = new Bundle();
+            fragmentArgs.putString("the image", memoryImages.get(i));
+            ImageFragment singleImageFragment = new ImageFragment();
+            singleImageFragment.setArguments(fragmentArgs);
+            chosenViewsArrayList.add(singleImageFragment);
+        }
+        for (int i = 0; i<memoryVideos.size();i++) {
+            Bundle fragmentArgs = new Bundle();
+            fragmentArgs.putString("the video", memoryVideos.get(i));
+            VidFragment singleVideoFragment = new VidFragment();
+            singleVideoFragment.setArguments(fragmentArgs);
+            chosenViewsArrayList.add(singleVideoFragment);
+        }
+        chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+        createMemorySlider.setAdapter(chosenViewsAdapter);
 
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
@@ -229,18 +261,13 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         pageIndicator.setStrokeColor(Color.rgb(20,145,218));
         pageIndicator.setViewPager(createMemorySlider);
 
+
         //all of the click listeners in the layout
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         closePopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-        toolTip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createToolTip(v);
             }
         });
         saveMemoryButton.setOnClickListener(new View.OnClickListener() {
@@ -252,7 +279,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         uploadMediaFilesMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu uploadBtnsMenu= new PopupMenu(CreateMemoryActivity.this, uploadMediaFilesMenu);
+                PopupMenu uploadBtnsMenu= new PopupMenu(EditMemoryActivity.this, uploadMediaFilesMenu);
                 uploadBtnsMenu.inflate(R.menu.choosemediafilemenu);
                 uploadBtnsMenu.show();
                 uploadBtnsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -277,6 +304,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 });
             }
         });
+
 
         //the functionality to delete a media file
         createMemorySlider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -319,7 +347,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         chooseMarkerMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu markerBtnsMenu= new PopupMenu(CreateMemoryActivity.this, chooseMarkerMenuBtn);
+                PopupMenu markerBtnsMenu= new PopupMenu(EditMemoryActivity.this, chooseMarkerMenuBtn);
                 markerBtnsMenu.inflate(R.menu.choosemarkermenu);
 
                 Menu menu = markerBtnsMenu.getMenu();
@@ -353,7 +381,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View v) {
                 Log.d("clicked", "feelings");
-                final PopupMenu feelingEmojisMenu = new PopupMenu(CreateMemoryActivity.this, feelingEmojiBtn);
+                final PopupMenu feelingEmojisMenu = new PopupMenu(EditMemoryActivity.this, feelingEmojiBtn);
                 feelingEmojisMenu.inflate(R.menu.feelingemojismenu);
                 feelingEmojisMenu.show();
                 feelingEmojisMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -454,18 +482,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         return image;
     }
 
-    private void createToolTip(View v) {
-        Button btn = (Button)v;
-        Tooltip tooltip = new Tooltip.Builder(btn)
-                .setText("To move the marker simply long-press the marker and drag it to the location you wish.")
-                .setTextColor(Color.BLACK)
-                .setGravity(Gravity.BOTTOM)
-                .setCornerRadius(8f)
-                .setDismissOnClick(true)
-                .show();
-
-    }
-
     //the function for deleting a certain media file
     private void deleteMediaFile(final int position){
         deleteMediaBtn.setOnClickListener(new View.OnClickListener() {
@@ -534,7 +550,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 |(chosenDay>currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
                 |(chosenDay>currentDay & chosenMonth<=currentMonth & chosenYear>currentYear)
                 |(chosenDay>currentDay & chosenMonth>currentMonth & chosenYear>currentYear))
-                {
+        {
             Toast.makeText(getApplicationContext(),"Please choose another date",Toast.LENGTH_SHORT).show();
         }
         else if(chosenViewsArrayList.size()==0){
@@ -551,18 +567,18 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             String currentMemoryDescription= memoryDescription.getEditText().getText().toString();
             String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
-
-            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude, color,feeling,feelingDescription)){
-                Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
+            Intent singleMemory = getIntent();
+            Integer id = singleMemory.getIntExtra("id", 0);
+            try{
+                memoryDatabase.updateName(currentMemoryTitle,id, currentMemoryDate, currentMemoryDescription,point.latitude, point.longitude, color,feeling,feelingDescription);
+                Toast.makeText(getApplicationContext(), "Memory updated successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);
                 resultIntent.putExtra("title", currentMemoryTitle);
                 resultIntent.putExtra("color", color);
                 setResult(RESULT_OK, resultIntent);
                 finish();
-
-            }
-            else{
+            } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();
             }
         }
@@ -577,11 +593,11 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         startActivityForResult(upload,PICK_IMAGE_CODE);
     }
 
-//asks for permission to use camera and storage
+    //asks for permission to use camera and storage
     private void askCameraRequest() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED
-                || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED ){
+                    || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED ){
                 String[] permissionrequest = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
                 requestPermissions(permissionrequest, PERMISSION_REQUEST_CODE);
             }
@@ -623,7 +639,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
     }
 
-//starts the activity of choosing a video from the gallery
+    //starts the activity of choosing a video from the gallery
     private void uploadVid() {
         Intent upload_vid= new Intent(Intent.ACTION_OPEN_DOCUMENT);
         upload_vid.setType("video/*");
@@ -768,11 +784,13 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         Intent intent = getIntent();
+        Integer markerColor = intent.getIntExtra("color",1);
+        color = markerColor;
         point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
                 .position(point)
                 .draggable(true)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
 
         //Create camera zoom to show marker close
         CameraPosition cameraPosition = new CameraPosition.Builder().
@@ -796,6 +814,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
 
         });
+
     }
 
     public void changeMarkerColor(Integer markerColor){

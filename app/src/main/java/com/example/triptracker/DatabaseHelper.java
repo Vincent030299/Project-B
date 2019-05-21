@@ -26,6 +26,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_MEMORY_DESCRIPTION = "memory_description";
     private static final String COL_MARKER_LAT = "marker_lat";
     private static final String COL_MARKER_LONG = "marker_long";
+    private static final String COL_MARKER_COLOR = "marker_color";
+    private static final String COL_MEMORY_FEELING = "memory_feeling";
+    private static final String COL_MEMORY_FEELING_DESCRIPTION = "memory_feeling_description";
 
     // The image database
     private static final String IMAGE_NAME = "image";
@@ -42,6 +45,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_IMAGE_CAPTURE_ID = "id";
     private static final String COL_IMAGE_CAPTURE_BITMAP = "image_capture_bitmap";
 
+    // The custom marker datanabse
+    private static final String CUSTOM_MARKER_TABLE_NAME = "custom_marker";
+    private static final String CUSTOM_MARKER_NAME = "custom_marker_name";
+    private static final String CUSTOM_MARKER_ID = "custom_marker_id";
+    private static final String CUSTOM_MARKER_COLOR = "custom_marker_color";
+
     /*
     constructor is getting used when i implement the one to many relation thats why the error at super
     */
@@ -52,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " TEXT," + COL_MARKER_LONG + " TEXT)";
+                COL_MEMORY_NAME +" TEXT,"+ COL_MEMORY_DESCRIPTION + " TEXT," + COL_MEMORY_DATE + " TEXT," + COL_MARKER_LAT + " TEXT," + COL_MARKER_LONG + " TEXT," + COL_MARKER_COLOR + " INTEGER," + COL_MEMORY_FEELING + " INTEGER," + COL_MEMORY_FEELING_DESCRIPTION + " TEXT)";
 
         String tableImage = "CREATE TABLE " + IMAGE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_URI + " TEXT," + COL_MEMORY_ID + " INTEGER)";
 
@@ -60,10 +69,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String tableImageCapture = "CREATE TABLE " + IMAGE_CAPTURE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_IMAGE_CAPTURE_BITMAP + " BLOB, memory_id INTEGER)";
 
+        String tableCustomMarker = "CREATE TABLE " + CUSTOM_MARKER_TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + CUSTOM_MARKER_NAME + " TEXT," + CUSTOM_MARKER_COLOR + " INTEGER)";
+
         db.execSQL(createTable);
         db.execSQL(tableImage);
         db.execSQL(tableImageCapture);
         db.execSQL(tableVideo);
+        db.execSQL(tableCustomMarker);
     }
 
     @Override
@@ -72,8 +84,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public boolean addCustomMarker(String markerName, Integer markerColor){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CUSTOM_MARKER_NAME, markerName);
+        contentValues.put(CUSTOM_MARKER_COLOR, markerColor);
+        long result = db.insert(CUSTOM_MARKER_TABLE_NAME, null, contentValues);
+
+        //if date as inserted incorrectly it will return -1
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+
+    };
+
     // Insert 1 memory to the database
-    public boolean addData(String memoryName, String memoryDate, String memoryDescription, ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures, Double markerLat, Double markerLong) {
+    public boolean addData(String memoryName, String memoryDate, String memoryDescription, ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures, Double markerLat, Double markerLong, Integer markerColor, int feeling,String feelingDescription) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_MEMORY_NAME, memoryName);
@@ -81,6 +109,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MEMORY_DESCRIPTION, memoryDescription);
         contentValues.put(COL_MARKER_LAT, markerLat);
         contentValues.put(COL_MARKER_LONG, markerLong);
+        contentValues.put(COL_MEMORY_FEELING, feeling);
+        contentValues.put(COL_MEMORY_FEELING_DESCRIPTION, feelingDescription);
+        contentValues.put(COL_MARKER_COLOR, markerColor);
         Log.d(TAG, "addData: Adding " + memoryName + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -152,6 +183,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public Cursor getCustomMarker(String markerName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + CUSTOM_MARKER_TABLE_NAME + " WHERE " + CUSTOM_MARKER_NAME + " =?";
+        Cursor data = db.rawQuery(query, new String[] {markerName});
+        return data;
+    }
+
     /**
      * Returns one Memory
      * @param markerLat
@@ -175,22 +213,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public Cursor getCustomMarkers(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + CUSTOM_MARKER_TABLE_NAME;
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
     /**
      * Updates the memory
-     * @param newName
-     * @param id
-     * @param oldName
      */
-    public void updateName(String newName, int id, String oldName, String newDate, String newDescription, String newImageUri,String newImageBitmap,String newVideoUri, Double newMarkerLat, Double newMarkerLong){
+    public void updateName(String newName, int id, String newDate, String newDescription, Double newMarkerLat, Double newMarkerLong, Integer markerColor, int feeling,String feelingDescription){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + TABLE_NAME + " SET " + COL_MEMORY_NAME +
                 " = '" + newName + "'," + COL_MEMORY_DATE + " = '"+ newDate +
                 "', " + COL_MEMORY_DESCRIPTION + "= '" + newDescription +
                 "', " + COL_MARKER_LAT + "= '" + newMarkerLat +
                 "', " + COL_MARKER_LONG + "= '" + newMarkerLong +
-                "' WHERE " + COL_MEMORY_ID + " = '" + id + "'" +
-                " AND " + COL_MEMORY_NAME + " = '" + oldName + "'";
-        Log.d(TAG, "updateName: query: " + query);
+                "', " + COL_MEMORY_FEELING + "= '" + feeling +
+                "', " + COL_MEMORY_FEELING_DESCRIPTION + "= '" + feelingDescription +
+                "', " + COL_MARKER_COLOR + "= '" + markerColor +
+                "' WHERE id = '" + id + "'";
         Log.d(TAG, "updateName: Setting name to " + newName);
         db.execSQL(query);
     }

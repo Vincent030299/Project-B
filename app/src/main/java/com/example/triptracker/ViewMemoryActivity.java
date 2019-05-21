@@ -1,6 +1,7 @@
 package com.example.triptracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -19,9 +20,11 @@ import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -39,6 +42,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.tooltip.Tooltip;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.net.URI;
@@ -46,9 +50,12 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     private ViewPager viewMemoryMediaSlider;
     private TextView viewMemoryTitle,viewMemoryDate,viewMemoryDescription;
     private ImageButton viewMemoryShareButton,closeViewMemory;
+    private Button toolTipButton;
     private Fragment viewmemoryMapFragment;
     private CirclePageIndicator viewMemoryDotsIndicator;
     private Switch viewMemoryMediaSwitch;
@@ -84,6 +91,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.memoryviewlayout);
         viewMemoryDate=findViewById(R.id.viewMemoryDate);
@@ -96,7 +109,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         mediaFilesLayout = findViewById(R.id.viewMemoryMediaLayout);
         closeViewMemory = findViewById(R.id.closeViewMemory);
         mDataBaseHelper = new DatabaseHelper(getApplicationContext());
-
+        toolTipButton = findViewById(R.id.toolTipButton2);
         memoryTitle = getIntent().getStringExtra("title");
         memoryDescription = getIntent().getStringExtra("description");
         memoryDate = getIntent().getStringExtra("date");
@@ -177,7 +190,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryFragmentManager=getSupportFragmentManager();
         viewmemoryMapFragment=viewMemoryFragmentManager.findFragmentById(R.id.viewMemoryMap);
         viewMemoryMapVisibility(false);
-
+        toolTipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createToolTip(v);
+            }
+        });
         viewMemoryShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +212,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                             case R.id.shareEmail:
                                 shareMemory("email");
                                 return true;
-
+                            case R.id.shareFacebook:
+                                shareMemory("facebook");
+                                return true;
+                            case R.id.shareInstagram:
+                                shareMemory("instagram");
+                                return true;
                         }
                         return false;
                     }
@@ -232,40 +255,78 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             viewMemoryMediaSwitch.setChecked(true);
         }
     }
+    private void createToolTip(View v) {
+        Button btn = (Button)v;
+        Tooltip tooltip = new Tooltip.Builder(btn)
+                .setText("To move the marker simply long-press the marker and drag it to the location you wish.")
+                .setTextColor(Color.BLACK)
+                .setGravity(Gravity.BOTTOM)
+                .setCornerRadius(8f)
+                .setDismissOnClick(true)
+                .show();
+
+    }
 
     private void shareMemory(String socialMedia) {
         switch (socialMedia) {
             case "twitter":
-            Intent twitter = new Intent();
-            try{
-                ApplicationInfo info = getPackageManager().
-                        getApplicationInfo("com.twitter.android", 0 );
-                twitter.setPackage("com.twitter.android");
-                twitter.setAction(Intent.ACTION_SEND);
-                if(!memoryImages.isEmpty()) {
-                    twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
-                    twitter.setType("image/jpeg");
-                }
-                twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
-                twitter.setType("text/plain");
+                Intent twitter = new Intent();
+                try {
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.twitter.android", 0);
+                    twitter.setPackage("com.twitter.android");
+                    twitter.setAction(Intent.ACTION_SEND);
+                    if (!memoryImages.isEmpty()) {
+                        twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
+                        twitter.setType("image/jpeg");
+                    }
+                    twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
+                    twitter.setType("text/plain");
 
-                startActivity(twitter);
-            } catch( PackageManager.NameNotFoundException e ){
-                Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
-            }
-            break;
+                    startActivity(twitter);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case "email":
-                if (!memoryImagesUris.isEmpty()) {
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                    shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, memoryTitle);
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, memoryDescription);
-                    shareIntent.setType("image/*");
-                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    startActivity(Intent.createChooser(shareIntent, "Share"));
-                }
+                try {
+                    Intent shareEmail = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.google.android.gm", 0);
+                    shareEmail.setPackage("com.google.android.gm");
 
+                    if (!memoryImages.isEmpty()) {
+                        shareEmail.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareEmail.setType("image/jpeg");
+                    }
+                    shareEmail.putExtra(Intent.EXTRA_SUBJECT, memoryTitle);
+                    shareEmail.putExtra(Intent.EXTRA_TEXT, memoryDescription);
+                    shareEmail.setType("text/plain");
+
+                    startActivity(shareEmail);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have gmail installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "facebook":
+                break;
+            case "instagram":
+                try {
+                    Intent shareInstagram = new Intent(Intent.ACTION_SEND);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.instagram.android", 0);
+                    shareInstagram.setPackage("com.instagram.android");
+
+                    if (!memoryImages.isEmpty()) {
+                        shareInstagram.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
+                        shareInstagram.setType("image/jpeg");
+                    }
+
+
+                    startActivity(shareInstagram);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have Instagram installed on your device.", Toast.LENGTH_SHORT).show();
+                }
         }
     }
 

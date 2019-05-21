@@ -2,6 +2,7 @@ package com.example.triptracker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import java.util.zip.Inflater;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class ListViewAdapter extends BaseAdapter {
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     ArrayList<String> memoryImages = new ArrayList<>();
     ArrayList<String> memoryVideos = new ArrayList<>();
@@ -75,7 +78,16 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, final View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View singleMemory = layoutInflater.inflate(R.layout.memorylistitem, parent, false);
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, context.MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+        final View singleMemory;
+        if(useDarkTheme) {
+            singleMemory = layoutInflater.inflate(R.layout.memorylistitemnight, parent, false);
+
+        }  else {
+
+            singleMemory = layoutInflater.inflate(R.layout.memorylistitem, parent, false);
+        }
         openMemoryBtn = singleMemory.findViewById(R.id.open);
         deleteMemoryBtn = singleMemory.findViewById(R.id.delete);
         memoryDate = singleMemory.findViewById(R.id.singleMemoryDate);

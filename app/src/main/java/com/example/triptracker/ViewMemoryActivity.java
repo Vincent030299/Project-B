@@ -34,6 +34,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -59,6 +61,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
     private LinearLayout mediaFilesLayout;
     private LatLng markerLoc;
+    private Float color;
     private DatabaseHelper mDataBaseHelper;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -139,7 +142,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     VidFragment singleVideoFragment = new VidFragment();
                     singleVideoFragment.setArguments(fragmentArgs);
                     memoryViewMediaFiles.add(singleVideoFragment);
-                    memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
+                    memoryImagesUris.add(Uri.parse(memoryVideos.get(i)));
                 }
             }
             if (!memoryBitmaps.isEmpty()){
@@ -266,20 +269,22 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         Intent intent = getIntent();
         markerLoc = intent.getParcelableExtra("location");
+        Integer markerColor = intent.getIntExtra("color",1);
         if (markerLoc==null){
             markerLoc = new LatLng(getIntent().getDoubleExtra("lat", 0.0), getIntent().getDoubleExtra("lng", 0.0));
         }
 
+        Toast.makeText(getApplicationContext(), Integer.toString(markerColor), Toast.LENGTH_SHORT).show();
         mMap.addMarker(new MarkerOptions()
                 .position(markerLoc)
-                .draggable(true));
+                .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
 
         //Create camera zoom to show marker close
         CameraPosition cameraPosition = new CameraPosition.Builder().

@@ -212,6 +212,7 @@
                 style="@android:style/Widget.DatePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="65dp"
+                android:layout_marginTop="5dp"
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner"
                 app:layout_constraintStart_toStartOf="parent"
@@ -273,9 +274,20 @@
                 android:src="@drawable/backbutton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:maxHeight="28dp"
+                android:maxHeight="28dp" />
+
+            <ImageButton
+                android:id="@+id/customMarkerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:adjustViewBounds="true"
+                android:background="#00000000"
+                android:maxHeight="25dp"
                 android:scaleType="fitCenter"
-                android:adjustViewBounds="true"/>
+                android:src="@drawable/custom_marker_btn"
+                android:layout_marginRight="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 

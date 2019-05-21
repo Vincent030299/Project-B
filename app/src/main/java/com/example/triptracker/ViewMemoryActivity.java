@@ -20,9 +20,11 @@ import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -38,6 +40,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.tooltip.Tooltip;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.net.URI;
@@ -50,6 +53,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private ViewPager viewMemoryMediaSlider;
     private TextView viewMemoryTitle,viewMemoryDate,viewMemoryDescription;
     private ImageButton viewMemoryShareButton,closeViewMemory;
+    private Button toolTipButton;
     private Fragment viewmemoryMapFragment;
     private CirclePageIndicator viewMemoryDotsIndicator;
     private Switch viewMemoryMediaSwitch;
@@ -102,7 +106,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         mediaFilesLayout = findViewById(R.id.viewMemoryMediaLayout);
         closeViewMemory = findViewById(R.id.closeViewMemory);
         mDataBaseHelper = new DatabaseHelper(getApplicationContext());
-
+        toolTipButton = findViewById(R.id.toolTipButton2);
         memoryTitle = getIntent().getStringExtra("title");
         memoryDescription = getIntent().getStringExtra("description");
         memoryDate = getIntent().getStringExtra("date");
@@ -183,7 +187,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryFragmentManager=getSupportFragmentManager();
         viewmemoryMapFragment=viewMemoryFragmentManager.findFragmentById(R.id.viewMemoryMap);
         viewMemoryMapVisibility(false);
-
+        toolTipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createToolTip(v);
+            }
+        });
         viewMemoryShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,6 +251,17 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             fragmentTransaction.commit();
             viewMemoryMediaSwitch.setChecked(true);
         }
+    }
+    private void createToolTip(View v) {
+        Button btn = (Button)v;
+        Tooltip tooltip = new Tooltip.Builder(btn)
+                .setText("To move the marker simply long-press the marker and drag it to the location you wish.")
+                .setTextColor(Color.BLACK)
+                .setGravity(Gravity.BOTTOM)
+                .setCornerRadius(8f)
+                .setDismissOnClick(true)
+                .show();
+
     }
 
     private void shareMemory(String socialMedia) {

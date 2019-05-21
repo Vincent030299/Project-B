@@ -29,6 +29,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -51,6 +52,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.tooltip.Tooltip;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
@@ -74,6 +76,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private GoogleMap mMap;
     private LatLng point;
     ViewPager createMemorySlider;
+    private Button toolTip;
     private ArrayList<Fragment> chosenViewsArrayList = new ArrayList<>();
     private SwipeAdapter chosenViewsAdapter;
     private Switch mapMediaToggle;
@@ -141,6 +144,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
 
         //initialize the used components in the layout file
+        toolTip = findViewById(R.id.toolTipButton);
         createMemorySlider =findViewById(R.id.createMemorySlider);
         mapMediaToggle =findViewById(R.id.mediaSwitch);
         uploadMediaFilesMenu=findViewById(R.id.uploadBtns);
@@ -215,6 +219,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 finish();
             }
         });
+        toolTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createToolTip(v);
+            }
+        });
         saveMemoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,6 +297,18 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 }
             }
         });
+    }
+
+    private void createToolTip(View v) {
+        Button btn = (Button)v;
+        Tooltip tooltip = new Tooltip.Builder(btn)
+                .setText("To move the marker simply long-press the marker and drag it to the location you wish.")
+                .setTextColor(Color.BLACK)
+                .setGravity(Gravity.BOTTOM)
+                .setCornerRadius(8f)
+                .setDismissOnClick(true)
+                .show();
+
     }
 
     //the function for deleting a certain media file

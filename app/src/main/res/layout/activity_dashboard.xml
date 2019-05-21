@@ -10,10 +10,9 @@
 
     <ListView
         android:id="@+id/memoriesList"
-        style="@android:style/Widget.Material.Light.ListView"
+        style="@style/ListviewStyle"
         android:layout_width="411dp"
         android:layout_height="675dp"
-        android:cacheColorHint="@color/white"
         android:padding="5dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"

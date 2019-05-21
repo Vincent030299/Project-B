@@ -135,6 +135,7 @@
         android:background="@color/vpi__background_holo_dark"
         android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TopBar">
 
@@ -151,7 +152,7 @@
     <LinearLayout
         android:id="@+id/inputAndDateLayout"
         android:layout_width="wrap_content"
-        android:layout_height="302dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -173,20 +174,21 @@
                 android:layout_height="50dp"
                 android:hint="@string/hint_memory_title"
                 android:textColorHint="@color/blueapp"
-                app:boxBackgroundColor="?attr/colorError"
                 app:boxStrokeColor="@color/blueapp"
                 app:counterEnabled="true"
-                app:counterMaxLength="20">
+                app:counterMaxLength="20"
+                app:errorEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
+                    android:padding="3dp"
                     android:textColor="?attr/colorAccent"
-                    android:textColorLink="?attr/colorAccent"
                     android:textStyle="bold" />
 
             </android.support.design.widget.TextInputLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/memoryDescription"
@@ -195,15 +197,14 @@
                 android:layout_height="180dp"
                 android:hint="@string/hint_memory_description"
                 android:textColorHint="@color/blueapp"
-                app:boxBackgroundColor="?attr/colorError"
+                android:theme="@style/AppThemeBlue"
                 app:boxStrokeColor="@color/blueapp">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textMultiLine"
-                    android:textColor="?attr/colorAccent"
-                    android:textColorLink="?attr/colorAccent" />
+                    android:textColor="?attr/colorAccent" />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -216,15 +217,13 @@
 
             <DatePicker
                 android:id="@+id/memoryDate"
-                style="@android:style/Widget.DatePicker"
+                style="@style/datePickerStyleDark"
                 android:layout_width="wrap_content"
                 android:layout_height="65dp"
                 android:layout_marginTop="5dp"
-                android:background="?attr/colorError"
-                android:calendarTextColor="?attr/colorAccent"
+                android:background="?attr/colorPrimaryDark"
                 android:calendarViewShown="false"
-                android:datePickerMode="spinner"
-                android:headerBackground="?attr/colorAccent" />
+                android:datePickerMode="spinner" />
 
             <ImageButton
                 android:id="@+id/saveMemoryBtn"
@@ -258,7 +257,6 @@
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/mediaFilesLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -286,6 +284,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/toolTipButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/ic_info_outline_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/mapLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/mapLayout"
+        app:layout_constraintTop_toBottomOf="@+id/TopBar"
+        app:layout_constraintVertical_bias="0.0" />
 
     <!--<TextView-->
     <!--android:layout_width="wrap_content"-->

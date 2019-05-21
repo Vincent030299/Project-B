@@ -24,6 +24,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.TimeUtils;
 import android.support.v4.view.ViewPager;
@@ -31,6 +32,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,6 +44,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -58,13 +61,17 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.Objects;
 import java.util.Timer;
+import java.util.TooManyListenersException;
+import java.util.zip.Inflater;
 
 /*
 these links helped with learning to be able to write the code for this class
@@ -83,7 +90,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
     private final int PERMISSION_REQUEST_CODE = 14;
-    private ImageButton closePopup,saveMemoryButton,deleteMediaBtn, chooseMarkerMenuBtn;
+    private ImageButton closePopup,saveMemoryButton,deleteMediaBtn,feelingEmojiBtn,chooseMarkerMenuBtn;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
     private ArrayList<Uri> imageUri = new ArrayList<>();
@@ -99,6 +106,9 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private Integer color;
     private int screenHeightInPx;
     private ConstraintLayout createMemoryLayout;
+    private int feeling = 1000;
+    private String feelingDescription;
+    private String takenPicturePath;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -156,6 +166,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         switchAndMediaLayout = findViewById(R.id.switchAndMediaLayout);
         createMemoryLayout = findViewById(R.id.createMemoryLayout);
         chooseMarkerMenuBtn=findViewById(R.id.customMarkerBtn);
+        feelingEmojiBtn = findViewById(R.id.feelingEmojiBtn);
 
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
@@ -205,6 +216,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         pageIndicator.setStrokeColor(Color.rgb(20,145,218));
         pageIndicator.setViewPager(createMemorySlider);
 
+
         //all of the click listeners in the layout
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         closePopup.setOnClickListener(new View.OnClickListener() {
@@ -247,6 +259,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 });
             }
         });
+
 
         //the functionality to delete a media file
         createMemorySlider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -319,6 +332,109 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
             }
         });
+        feelingEmojiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("clicked", "feelings");
+                final PopupMenu feelingEmojisMenu = new PopupMenu(CreateMemoryActivity.this, feelingEmojiBtn);
+                feelingEmojisMenu.inflate(R.menu.feelingemojismenu);
+                feelingEmojisMenu.show();
+                feelingEmojisMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.happyEmoji:
+                                feeling = 0;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.happy_emoji);
+                                return true;
+                            case R.id.relaxedEmoji:
+                                feeling = 1;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.relaxed_emoji);
+                                return true;
+                            case R.id.blessedEmoji:
+                                feeling = 2;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.blessed_emoji);
+                                return true;
+                            case R.id.lovedEmoji:
+                                feeling = 3;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.loved_emoji);
+                                return true;
+                            case R.id.crazyEmoji:
+                                feeling = 4;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.crazy_emoji);
+                                return true;
+                            case R.id.sadEmoji:
+                                feeling = 5;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.sad_emoji);
+                                return true;
+                            case R.id.tiredEmoji:
+                                feeling = 6;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.tired_emoji);
+                                return true;
+                            case R.id.thankfulEmoji:
+                                feeling = 7;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.thankful_emoji);
+                                return true;
+                            case R.id.hopefulEmoji:
+                                feeling = 8;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.hopeful_emoji);
+                                return true;
+                            case R.id.fantasticEmoji:
+                                feeling = 9;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.fantastic_emoji);
+                                return true;
+                            case R.id.peacefulEmoji:
+                                feeling = 10;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.peaceful_emoji);
+                                return true;
+                            case R.id.disappointedEmoji:
+                                feeling = 11;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.disappointed_emoji);
+                                return true;
+                            case R.id.lostEmoji:
+                                feeling = 12;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.lost_emoji);
+                                return true;
+                            case R.id.inspiredEmoji:
+                                feeling = 13;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.inspired_emoji);
+                                return true;
+                            case R.id.optimisticEmoji:
+                                feeling = 14;
+                                feelingDescription = item.getTitle().toString();
+                                feelingEmojiBtn.setImageResource(R.drawable.optimistic_emoji);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+        });
+    }
+
+    private File createTakenPictureFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        // Save a file: path for use with ACTION_VIEW intents
+        takenPicturePath = image.getAbsolutePath();
+        return image;
     }
 
     //the function for deleting a certain media file
@@ -398,13 +514,16 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         else if (memoryTitle.getEditText().getText().length()>20){
             Toast.makeText(getApplicationContext(), "The title is too long, try again", Toast.LENGTH_SHORT).show();
         }
+        else if (feeling == 1000){
+            Toast.makeText(getApplicationContext(), "Please choose a feeling, click on the smile icon", Toast.LENGTH_LONG).show();
+        }
         else {
             String currentMemoryTitle=memoryTitle.getEditText().getText().toString();
             String currentMemoryDescription= memoryDescription.getEditText().getText().toString();
             String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
 
-            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude, color)){
+            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude, color,feeling,feelingDescription)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);
@@ -457,9 +576,22 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 //        takenPictureUri = Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
 //                "TripTracker" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
         Intent openCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        openCamera.putExtra(MediaStore.EXTRA_OUTPUT, takenPictureUri);
-        startActivityForResult(openCamera, TAKE_PIC_CODE);
-        mapViewVisibility(false);
+        if (openCamera.resolveActivity(getPackageManager()) != null){
+            File takenPictureFile = null;
+            try {
+                takenPictureFile = createTakenPictureFile();
+            }
+            catch (IOException ex){
+                Toast.makeText(getApplicationContext(), "Failed creating an image file", Toast.LENGTH_SHORT).show();
+            }
+            if (takenPictureFile != null){
+                takenPictureUri = FileProvider.getUriForFile(getApplicationContext(), "com.example.android.fileprovider", takenPictureFile);
+                openCamera.putExtra(MediaStore.EXTRA_OUTPUT, takenPictureUri);
+                startActivityForResult(openCamera, TAKE_PIC_CODE);
+                mapViewVisibility(false);
+            }
+        }
+
     }
 
 //starts the activity of choosing a video from the gallery
@@ -552,23 +684,34 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
 
         else if (requestCode==TAKE_PIC_CODE && resultCode==Activity.RESULT_OK){
-            if(data.getExtras()==null){
-                Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
-            }
-            else{
-                optionsTab.setVisibility(View.VISIBLE);
-                imageBitmaps.add((Bitmap) data.getExtras().get("data"));
-                Bundle args=new Bundle();
-                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
-                imageBitmaps.get(imageBitmaps.size()-1).compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
-                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
-                args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
-                CapImageFragment capturedImageFragment= new CapImageFragment();
-                capturedImageFragment.setArguments(args);
-                chosenViewsArrayList.add(capturedImageFragment);
-                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
-                createMemorySlider.setAdapter(chosenViewsAdapter);
-            }
+
+            optionsTab.setVisibility(View.VISIBLE);
+            imageUri.add(takenPictureUri);
+            Bundle args=new Bundle();
+            args.putString("the image", imageUri.get(imageUri.size()-1).toString());
+            ImageFragment chosenImageFragment= new ImageFragment();
+            chosenImageFragment.setArguments(args);
+            chosenViewsArrayList.add(chosenImageFragment);
+            chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+            createMemorySlider.setAdapter(chosenViewsAdapter);
+
+//            if(data.getExtras()==null){
+//                Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
+//            }
+//            else{
+//                optionsTab.setVisibility(View.VISIBLE);
+//                imageBitmaps.add((Bitmap) data.getExtras().get("data"));
+//                Bundle args=new Bundle();
+//                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
+//                imageBitmaps.get(imageBitmaps.size()-1).compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+//                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
+//                args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
+//                CapImageFragment capturedImageFragment= new CapImageFragment();
+//                capturedImageFragment.setArguments(args);
+//                chosenViewsArrayList.add(capturedImageFragment);
+//                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+//                createMemorySlider.setAdapter(chosenViewsAdapter);
+//            }
         }
         else if (requestCode==RECORD_VIDEO_CODE && resultCode== Activity.RESULT_OK){
             if (data.getData() ==null){

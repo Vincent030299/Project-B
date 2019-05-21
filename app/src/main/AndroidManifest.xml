@@ -28,6 +28,7 @@
         <activity
             android:name=".CreateMemoryActivity"
             android:theme="@style/AppTheme.PopUpTheme" />
+        <activity android:name=".EditMemoryActivity" android:theme="@style/AppTheme.PopUpTheme"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

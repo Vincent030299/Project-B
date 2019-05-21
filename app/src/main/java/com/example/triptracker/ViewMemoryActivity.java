@@ -281,7 +281,6 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             markerLoc = new LatLng(getIntent().getDoubleExtra("lat", 0.0), getIntent().getDoubleExtra("lng", 0.0));
         }
 
-        Toast.makeText(getApplicationContext(), Integer.toString(markerColor), Toast.LENGTH_SHORT).show();
         mMap.addMarker(new MarkerOptions()
                 .position(markerLoc)
                 .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));

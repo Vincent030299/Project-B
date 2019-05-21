@@ -20,6 +20,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -40,6 +41,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -109,6 +111,11 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private int feeling = 1000;
     private String feelingDescription;
     private String takenPicturePath;
+    private ArrayList<String> memoryImages,memoryVideos;
+    private int[] feelingsEmojis = {R.drawable.happy_emoji,R.drawable.relaxed_emoji,R.drawable.blessed_emoji
+            ,R.drawable.loved_emoji,R.drawable.crazy_emoji,R.drawable.sad_emoji,R.drawable.tired_emoji,
+            R.drawable.thankful_emoji,R.drawable.hopeful_emoji,R.drawable.fantastic_emoji,R.drawable.peaceful_emoji,
+            R.drawable.disappointed_emoji,R.drawable.lost_emoji,R.drawable.inspired_emoji,R.drawable.optimistic_emoji};
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -153,11 +160,11 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         uploadMediaFilesMenu=findViewById(R.id.uploadBtns);
         saveMemoryButton=findViewById(R.id.saveMemoryBtn);
         memoryDescription=findViewById(R.id.memoryDescription);
-        memoryTitle=findViewById(R.id.memoryTitle);
+        memoryTitle = findViewById(R.id.memoryTitle);
         memoryDate=findViewById(R.id.memoryDate);
         closePopup =findViewById(R.id.closeCreateMemory);
         pageIndicatorView =findViewById(R.id.pageIndicator);
-        mapFragment=getSupportFragmentManager().findFragmentById(R.id.mapFragView);
+        mapFragment=getSupportFragmentManager().findFragmentById(R.id.editMapFragView);
         mapLayout= findViewById(R.id.mapLayout);
         mediaFilesLayout= findViewById(R.id.mediaFilesLayout);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -167,6 +174,44 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         createMemoryLayout = findViewById(R.id.createMemoryLayout);
         chooseMarkerMenuBtn=findViewById(R.id.customMarkerBtn);
         feelingEmojiBtn = findViewById(R.id.feelingEmojiBtn);
+
+        // Set all the default
+        Intent result = getIntent();
+        String title = result.getStringExtra("title");
+        String description = result.getStringExtra("description");
+        String date = result.getStringExtra("date");
+        String[] dates = date.split("-");
+        Integer emoji = result.getIntExtra("emoji",1);
+
+        int day = Integer.parseInt(dates[0]);
+        int month = Integer.parseInt(dates[1]) - 1;
+        int year = Integer.parseInt(dates[2]);
+
+        memoryTitle.getEditText().setText(title);
+        memoryDescription.getEditText().setText(description);
+        memoryDate.updateDate(year,month,day);
+        feelingEmojiBtn.setImageResource(feelingsEmojis[emoji]);
+        memoryImages = getIntent().getStringArrayListExtra("images");
+        memoryVideos = getIntent().getStringArrayListExtra("videos");
+        Log.e("length", String.valueOf(memoryImages.size()));
+        Log.e("length", String.valueOf(memoryVideos.size()));
+
+        for(int i = 0; i<memoryImages.size(); i++){
+            Bundle fragmentArgs = new Bundle();
+            fragmentArgs.putString("the image", memoryImages.get(i));
+            ImageFragment singleImageFragment = new ImageFragment();
+            singleImageFragment.setArguments(fragmentArgs);
+            chosenViewsArrayList.add(singleImageFragment);
+        }
+        for (int i = 0; i<memoryVideos.size();i++) {
+            Bundle fragmentArgs = new Bundle();
+            fragmentArgs.putString("the video", memoryVideos.get(i));
+            VidFragment singleVideoFragment = new VidFragment();
+            singleVideoFragment.setArguments(fragmentArgs);
+            chosenViewsArrayList.add(singleVideoFragment);
+        }
+        chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
+        createMemorySlider.setAdapter(chosenViewsAdapter);
 
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
@@ -739,11 +784,12 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         Intent intent = getIntent();
+        Integer markerColor = intent.getIntExtra("color",1);
         point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
                 .position(point)
                 .draggable(true)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
 
         //Create camera zoom to show marker close
         CameraPosition cameraPosition = new CameraPosition.Builder().

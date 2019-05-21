@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentManager;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -118,6 +121,43 @@ public class ListViewAdapter extends BaseAdapter {
                 openMemory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.getApplicationContext().startActivity(openMemory);
 
+            }
+        });
+
+        openMemoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editMemory = new Intent(context.getApplicationContext(), EditMemoryActivity.class);
+                editMemory.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
+                Cursor singleMemoryInfos = mDataBaseHelper.getSingleMemoryData(memoryIds.get(position));
+                Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
+                Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
+
+                while(allImagesForMemory.moveToNext()){
+                    String singleImage = allImagesForMemory.getString(1);
+                    memoryImages.add(singleImage);
+                }
+                while (allVideosForMemory.moveToNext()){
+                    String singleVideo = allVideosForMemory.getString(1);
+                    memoryVideos.add(singleVideo);
+                }
+
+                if (singleMemoryInfos.moveToFirst()) {
+                    Double lat = singleMemoryInfos.getDouble(4);
+                    Double lng = singleMemoryInfos.getDouble(5);
+                    editMemory.putExtra("location", new LatLng(lat,lng));
+                    Integer color = singleMemoryInfos.getInt(6);
+                    editMemory.putExtra("color", color);
+                    Integer emoji = singleMemoryInfos.getInt(7);
+                    editMemory.putExtra("emoji", emoji);
+                    editMemory.putStringArrayListExtra("images", memoryImages);
+                    editMemory.putStringArrayListExtra("videos", memoryVideos);
+                }
+                editMemory.putExtra("title", memoryTitles.get(position));
+                editMemory.putExtra("description", memoryDiscriptions.get(position));
+                editMemory.putExtra("date", memoryDates.get(position));
+                context.getApplicationContext().startActivity(editMemory);
             }
         });
 

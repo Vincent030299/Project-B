@@ -146,13 +146,17 @@ public class ListViewAdapter extends BaseAdapter {
                 if (singleMemoryInfos.moveToFirst()) {
                     Double lat = singleMemoryInfos.getDouble(4);
                     Double lng = singleMemoryInfos.getDouble(5);
+                    Integer id = singleMemoryInfos.getInt(0);
                     editMemory.putExtra("location", new LatLng(lat,lng));
                     Integer color = singleMemoryInfos.getInt(6);
                     editMemory.putExtra("color", color);
                     Integer emoji = singleMemoryInfos.getInt(7);
                     editMemory.putExtra("emoji", emoji);
+                    String emojiDescription = singleMemoryInfos.getString(8);
+                    editMemory.putExtra("emoji_description", emojiDescription);
                     editMemory.putStringArrayListExtra("images", memoryImages);
                     editMemory.putStringArrayListExtra("videos", memoryVideos);
+                    editMemory.putExtra("id", id);
                 }
                 editMemory.putExtra("title", memoryTitles.get(position));
                 editMemory.putExtra("description", memoryDiscriptions.get(position));

@@ -182,6 +182,8 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         String date = result.getStringExtra("date");
         String[] dates = date.split("-");
         Integer emoji = result.getIntExtra("emoji",1);
+        feeling = emoji;
+        feelingDescription = result.getStringExtra("emoji_description");
 
         int day = Integer.parseInt(dates[0]);
         int month = Integer.parseInt(dates[1]) - 1;
@@ -193,8 +195,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         feelingEmojiBtn.setImageResource(feelingsEmojis[emoji]);
         memoryImages = getIntent().getStringArrayListExtra("images");
         memoryVideos = getIntent().getStringArrayListExtra("videos");
-        Log.e("length", String.valueOf(memoryImages.size()));
-        Log.e("length", String.valueOf(memoryVideos.size()));
 
         for(int i = 0; i<memoryImages.size(); i++){
             Bundle fragmentArgs = new Bundle();
@@ -567,18 +567,18 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             String currentMemoryDescription= memoryDescription.getEditText().getText().toString();
             String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
-
-            if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri, imageBitmaps,point.latitude, point.longitude, color,feeling,feelingDescription)){
-                Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
+            Intent singleMemory = getIntent();
+            Integer id = singleMemory.getIntExtra("id", 0);
+            try{
+                memoryDatabase.updateName(currentMemoryTitle,id, currentMemoryDate, currentMemoryDescription,point.latitude, point.longitude, color,feeling,feelingDescription);
+                Toast.makeText(getApplicationContext(), "Memory updated successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);
                 resultIntent.putExtra("title", currentMemoryTitle);
                 resultIntent.putExtra("color", color);
                 setResult(RESULT_OK, resultIntent);
                 finish();
-
-            }
-            else{
+            } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();
             }
         }
@@ -785,6 +785,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         mMap.getUiSettings().setZoomControlsEnabled(true);
         Intent intent = getIntent();
         Integer markerColor = intent.getIntExtra("color",1);
+        color = markerColor;
         point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
                 .position(point)

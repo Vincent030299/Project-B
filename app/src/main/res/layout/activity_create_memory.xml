@@ -207,7 +207,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             >
-
             <DatePicker
                 android:id="@+id/memoryDate"
                 style="@android:style/Widget.DatePicker"
@@ -240,7 +239,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
-
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -281,12 +279,4 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="start|center"-->
-        <!--android:text="Create Memory"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="24sp"-->
-        <!--android:textStyle="bold" />-->
 </android.support.constraint.ConstraintLayout>

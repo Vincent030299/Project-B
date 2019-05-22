@@ -1,5 +1,8 @@
 package com.example.triptracker;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -280,6 +283,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                         twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryImages.get(0)));
                         twitter.setType("image/jpeg");
                     }
+                    else if (!memoryVideos.isEmpty()) {
+                        twitter.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryVideos.get(0)));
+                        twitter.setType("video/*");
+                    }
                     twitter.putExtra(Intent.EXTRA_TEXT, memoryTitle + " on " + memoryDate);
                     twitter.setType("text/plain");
 
@@ -299,6 +306,11 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                         shareEmail.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
                         shareEmail.setType("image/jpeg");
                     }
+
+                    else if (!memoryVideos.isEmpty()) {
+                        shareEmail.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareEmail.setType("video/*");
+                    }
                     shareEmail.putExtra(Intent.EXTRA_SUBJECT, memoryTitle);
                     shareEmail.putExtra(Intent.EXTRA_TEXT, memoryDescription);
                     shareEmail.setType("text/plain");
@@ -309,6 +321,30 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 }
                 break;
             case "facebook":
+                try {
+                    Intent shareFacebook = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.facebook.katana", 0);
+                    shareFacebook.setPackage("com.facebook.katana");
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("title + description", memoryTitle + " \n" + memoryDescription);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getApplicationContext(), "Title and description added to clipboard", Toast.LENGTH_LONG).show();
+
+                    if (!memoryImages.isEmpty()) {
+                        shareFacebook.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareFacebook.setType("image/jpeg");
+                    }
+
+                    else if (!memoryVideos.isEmpty()) {
+                        shareFacebook.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareFacebook.setType("video/*");
+                    }
+
+                    startActivity(shareFacebook);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have Facebook installed on your device.", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case "instagram":
                 try {
@@ -320,6 +356,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     if (!memoryImages.isEmpty()) {
                         shareInstagram.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
                         shareInstagram.setType("image/jpeg");
+                    }
+                    else if (!memoryVideos.isEmpty()) {
+                        shareInstagram.putExtra(Intent.EXTRA_STREAM, Uri.parse(memoryVideos.get(0)));
+                        shareInstagram.setType("video/*");
                     }
 
 

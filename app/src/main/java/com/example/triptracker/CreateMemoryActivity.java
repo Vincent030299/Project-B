@@ -115,6 +115,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private int feeling = 1000;
     private String feelingDescription;
     private String takenPicturePath;
+    private int tooltipCounter=0;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -240,7 +241,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         toolTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createToolTip(v);
+                if(tooltipCounter==0){
+                    createToolTip(v);
+                    tooltipCounter=1;
+                }
+                else{
+                    tooltipCounter=0;
+                }
+
             }
         });
         saveMemoryButton.setOnClickListener(new View.OnClickListener() {

@@ -26,7 +26,7 @@
     <style name="AppThemeNight" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
-        <item name="colorAccent">@color/blueapp</item>
+        <item name="colorAccent">@color/white</item>
         <item name="colorError">@color/colorPrimaryNight</item>
         <item name="android:textColorPrimary">@color/blueapp</item>
         <item name="android:itemBackground">@color/colorPrimaryDarkNight</item>

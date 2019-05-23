@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="75dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:theme="@style/ListItems"
-    android:layout_gravity="center_vertical">
+    android:theme="@style/ListItems">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/memoryInformation"
-        android:layout_width="285dp"
+        android:layout_width="170dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical|start"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/singleMemoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:visibility="visible" />
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/singleMemoryDate"/>
 
         <TextView
             android:id="@+id/singleMemoryDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/singleMemoryTitle" />
-    </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/singleMemoryTitle"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/memoryInformation"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/memoryInformation">
 
         <ImageButton
             android:id="@+id/open"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
             android:adjustViewBounds="true"
             android:background="#00000000"
             android:maxHeight="42dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/edit_icon" />
+            android:src="@drawable/edit_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/delete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="15dp"/>
 
         <ImageButton
             android:id="@+id/delete"
@@ -70,7 +70,11 @@
             android:background="#00000000"
             android:maxHeight="42dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/delete_icon" />
-    </LinearLayout>
+            android:src="@drawable/delete_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/open"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

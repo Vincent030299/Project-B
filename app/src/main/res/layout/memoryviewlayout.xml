@@ -141,7 +141,6 @@
             android:id="@+id/viewMemoryShareBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="250dp"
             android:adjustViewBounds="true"
             android:background="#00000000"
             android:maxHeight="42dp"
@@ -149,12 +148,23 @@
             android:src="@drawable/sharebutton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/streetViewBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/viewMemoryShareBtn"
+            android:src="@drawable/streetviewicon"
+            android:background="#00000000"
+            android:layout_marginEnd="15dp"
+            android:maxHeight="40dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
 
         <ImageButton
             android:id="@+id/closeViewMemory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
             android:adjustViewBounds="true"
             android:background="#00000000"
             android:maxHeight="28dp"

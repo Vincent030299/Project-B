@@ -57,7 +57,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private static final String PREF_DARK_THEME = "dark_theme";
     private ViewPager viewMemoryMediaSlider;
     private TextView viewMemoryTitle,viewMemoryDate,viewMemoryDescription;
-    private ImageButton viewMemoryShareButton,closeViewMemory;
+    private ImageButton viewMemoryShareButton,closeViewMemory,streetViewBtn;
     private Button toolTipButton;
     private Fragment viewmemoryMapFragment;
     private CirclePageIndicator viewMemoryDotsIndicator;
@@ -113,6 +113,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         closeViewMemory = findViewById(R.id.closeViewMemory);
         mDataBaseHelper = new DatabaseHelper(getApplicationContext());
         toolTipButton = findViewById(R.id.toolTipButton2);
+        streetViewBtn=findViewById(R.id.streetViewBtn);
         memoryTitle = getIntent().getStringExtra("title");
         memoryDescription = getIntent().getStringExtra("description");
         memoryDate = getIntent().getStringExtra("date");
@@ -227,7 +228,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 });
             }
         });
-
+        streetViewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openStreetView();
+            }
+        });
         viewMemoryMediaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -240,6 +246,13 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
     }
+
+    private void openStreetView() {
+        Intent openStreetViewActivity = new Intent(this,StreetViewActivity.class);
+        openStreetViewActivity.putExtra("memory location", markerLoc);
+        startActivity(openStreetViewActivity);
+    }
+
     private void viewMemoryMapVisibility(boolean visible) {
         if (visible){
             viewMemoryDotsIndicator.setVisibility(View.INVISIBLE);

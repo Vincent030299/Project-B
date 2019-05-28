@@ -196,14 +196,14 @@
                 android:layout_height="180dp"
                 android:hint="@string/hint_memory_description"
                 android:textColorHint="@color/blueapp"
-                android:theme="@style/AppThemeBlue"
                 app:boxStrokeColor="@color/blueapp">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textMultiLine"
-                    android:textColor="?attr/colorAccent" />
+                    android:textColor="?attr/colorAccent"
+                    />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -248,7 +248,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
-
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

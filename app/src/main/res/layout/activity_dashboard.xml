@@ -11,7 +11,7 @@
     <ListView
         android:id="@+id/memoriesList"
         style="@style/ListviewStyle"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="675dp"
         android:padding="5dp"
         android:scrollbars="vertical"

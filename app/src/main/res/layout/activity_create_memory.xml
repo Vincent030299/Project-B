@@ -128,7 +128,7 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/optionsTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -145,8 +145,23 @@
             android:layout_height="26dp"
             android:layout_gravity="end"
             android:background="#00000000"
-            android:src="@drawable/trash_btn" />
-    </LinearLayout>
+            android:src="@drawable/trash_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/openInFullScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            app:layout_constraintEnd_toStartOf="@+id/deleteMediaBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/fullscreenicon"
+            android:maxHeight="25dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
+    </android.support.constraint.ConstraintLayout>
 
 
     <LinearLayout

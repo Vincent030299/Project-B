@@ -30,6 +30,7 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.3</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@drawable/fullsizeimages_bg</item>
     </style>
 
     <style name="ListviewStyle" parent="android:style/Widget.Material.Light.ListView">    </style>

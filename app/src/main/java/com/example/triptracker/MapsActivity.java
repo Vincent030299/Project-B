@@ -191,9 +191,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    openActivity(MapsActivity.class);
-                    break;
                 case R.id.navigation_dashboard:
                     openActivity(DashboardActivity.class);
                     break;

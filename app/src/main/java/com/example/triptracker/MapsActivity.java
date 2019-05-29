@@ -318,7 +318,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerId = dbMarkerInfo.getInt(0);
             Cursor allImagesForMemory = mDataBaseHelper.getImages(markerId);
             Cursor allVideosForMemory = mDataBaseHelper.getVideos(markerId);
-            Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps(markerId);
             while(allImagesForMemory.moveToNext()){
                 String singleImage = allImagesForMemory.getString(1);
                 memoryImages.add(singleImage);
@@ -326,10 +325,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             while (allVideosForMemory.moveToNext()){
                 String singleVideo = allVideosForMemory.getString(1);
                 memoryVideos.add(singleVideo);
-            }
-            while(allBitmapsForMemory.moveToNext()){
-                byte[] singleBitmap = allBitmapsForMemory.getBlob(1);
-                memoryBitmaps.add(Base64.encodeToString(singleBitmap, Base64.DEFAULT));
             }
             LatLng markerLoc = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
             Intent openMemory = new Intent(getApplicationContext(), ViewMemoryActivity.class);

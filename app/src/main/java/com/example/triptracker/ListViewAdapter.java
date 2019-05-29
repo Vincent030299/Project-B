@@ -32,7 +32,6 @@ public class ListViewAdapter extends BaseAdapter {
     ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     ArrayList<String> memoryImages = new ArrayList<>();
     ArrayList<String> memoryVideos = new ArrayList<>();
-    ArrayList<String> memoryBitmaps = new ArrayList<>();
     ArrayList<Integer> memoryIds;
     private TextView memoryTitle,memoryDate;
     private ImageButton openMemoryBtn,deleteMemoryBtn;
@@ -45,7 +44,6 @@ public class ListViewAdapter extends BaseAdapter {
         this.memoryDates = memoryDates;
         this.memoryIds = memoryIds;
         this.context = context;
-        this.memoryBitmaps = memoryBitmaps;
         this.memoryDiscriptions = memoryDiscriptions;
         this.fragmentManager = fragmentManager;
     }
@@ -105,7 +103,6 @@ public class ListViewAdapter extends BaseAdapter {
                 DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
-                Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps(memoryIds.get(position));
 
                 while(allImagesForMemory.moveToNext()){
                     String singleImage = allImagesForMemory.getString(1);
@@ -115,14 +112,9 @@ public class ListViewAdapter extends BaseAdapter {
                     String singleVideo = allVideosForMemory.getString(1);
                     memoryVideos.add(singleVideo);
                 }
-                while(allBitmapsForMemory.moveToNext()){
-                    byte[] singleBitmap = allBitmapsForMemory.getBlob(1);
-                    memoryBitmaps.add(Base64.encodeToString(singleBitmap, Base64.DEFAULT));
-                }
                 Intent openMemory = new Intent(context.getApplicationContext(), ViewMemoryActivity.class);
                 openMemory.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 openMemory.putStringArrayListExtra("images", memoryImages);
-                openMemory.putStringArrayListExtra("bitmaps", memoryBitmaps);
                 openMemory.putStringArrayListExtra("videos", memoryVideos);
                 openMemory.putExtra("description", memoryDiscriptions.get(position));
                 openMemory.putExtra("title", memoryTitles.get(position));

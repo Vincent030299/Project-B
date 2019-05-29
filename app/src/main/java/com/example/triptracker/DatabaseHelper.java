@@ -245,13 +245,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return images;
     }
 
-    public Cursor getPicturesBitmaps(int id){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + IMAGE_CAPTURE_NAME +
-                " WHERE " + COL_MEMORY_ID + " = " + id;
-        Cursor imagesBitmaps = db.rawQuery(query, null);
-        return imagesBitmaps;
-    }
 
     public Cursor getVideos(int id){
         SQLiteDatabase db = this.getWritableDatabase();

@@ -68,7 +68,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private ArrayList<Fragment> memoryViewMediaFiles;
     private String memoryTitle, memoryDescription,memoryDate;
     private ArrayList<Uri> memoryImagesUris;
-    private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
+    private ArrayList<String> memoryImages,memoryVideos;
     private LinearLayout mediaFilesLayout;
     private LatLng markerLoc;
     private Float color;
@@ -135,7 +135,6 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryTitle.setText(memoryTitle);
         viewMemoryDescription.setText(memoryDescription);
         memoryImages = getIntent().getStringArrayListExtra("images");
-        memoryBitmaps = getIntent().getStringArrayListExtra("bitmaps");
         memoryVideos = getIntent().getStringArrayListExtra("videos");
         memoryImagesUris = new ArrayList<>();
 //        Toast.makeText(getApplicationContext(), String.valueOf(memoryVideos.size()), Toast.LENGTH_SHORT).show();
@@ -160,15 +159,6 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     singleVideoFragment.setArguments(fragmentArgs);
                     memoryViewMediaFiles.add(singleVideoFragment);
                     memoryImagesUris.add(Uri.parse(memoryVideos.get(i)));
-                }
-            }
-            if (!memoryBitmaps.isEmpty()){
-                for(int i = 0; i<memoryBitmaps.size(); i++){
-                    Bundle fragmentArgs = new Bundle();
-                    fragmentArgs.putString("the cam",memoryBitmaps.get(i) );
-                    CapImageFragment singleImageBitmap = new CapImageFragment();
-                    singleImageBitmap.setArguments(fragmentArgs);
-                    memoryViewMediaFiles.add(singleImageBitmap);
                 }
             }
         }

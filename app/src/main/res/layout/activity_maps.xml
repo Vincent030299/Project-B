@@ -73,27 +73,12 @@
         android:background="@drawable/white_border"
         android:id="@+id/relLayout">
 
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:id="@+id/magnify"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_magnify"
-            />
-
-        <EditText
+        <fragment
+            android:id="@+id/autocomplete_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/magnify"
-            android:layout_centerVertical="true"
-            android:textSize="15sp"
-            android:textColor="#000"
-            android:id="@+id/input_search"
-            android:background="@null"
-            android:hint="@string/searchHint"
-            android:imeOptions="actionSearch"
-            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:name=
+                "com.google.android.libraries.places.widget.AutocompleteSupportFragment"
             />
 
     </RelativeLayout>

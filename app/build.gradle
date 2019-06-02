@@ -33,4 +33,5 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'org.quanqi:android-view-pager-indicator:0.9.0'
     compile 'com.github.vihtarb:tooltip:0.1.9'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
 }

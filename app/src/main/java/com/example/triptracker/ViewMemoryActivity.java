@@ -57,7 +57,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private static final String PREF_DARK_THEME = "dark_theme";
     private ViewPager viewMemoryMediaSlider;
     private TextView viewMemoryTitle,viewMemoryDate,viewMemoryDescription;
-    private ImageButton viewMemoryShareButton,closeViewMemory;
+    private ImageButton viewMemoryShareButton,closeViewMemory,streetViewBtn;
     private Button toolTipButton;
     private Fragment viewmemoryMapFragment;
     private CirclePageIndicator viewMemoryDotsIndicator;
@@ -113,6 +113,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         closeViewMemory = findViewById(R.id.closeViewMemory);
         mDataBaseHelper = new DatabaseHelper(getApplicationContext());
         toolTipButton = findViewById(R.id.toolTipButton2);
+        streetViewBtn=findViewById(R.id.streetViewBtn);
         memoryTitle = getIntent().getStringExtra("title");
         memoryDescription = getIntent().getStringExtra("description");
         memoryDate = getIntent().getStringExtra("date");
@@ -224,16 +225,18 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                             case R.id.shareWhatsapp:
                                 shareMemory("whatsapp");
                                 return true;
-                            case R.id.shareSnapchat:
-                                shareMemory("snapchat");
-                                return true;
                         }
                         return false;
                     }
                 });
             }
         });
-
+        streetViewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openStreetView();
+            }
+        });
         viewMemoryMediaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -246,6 +249,13 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
     }
+
+    private void openStreetView() {
+        Intent openStreetViewActivity = new Intent(this,StreetViewActivity.class);
+        openStreetViewActivity.putExtra("memory location", markerLoc);
+        startActivity(openStreetViewActivity);
+    }
+
     private void viewMemoryMapVisibility(boolean visible) {
         if (visible){
             viewMemoryDotsIndicator.setVisibility(View.INVISIBLE);
@@ -358,7 +368,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     ApplicationInfo info = getPackageManager().
                             getApplicationInfo("com.instagram.android", 0);
                     shareInstagram.setPackage("com.instagram.android");
-
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("title + description", memoryTitle + " \n" + memoryDescription);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getApplicationContext(), "Title and description added to clipboard", Toast.LENGTH_LONG).show();
                     if (!memoryImages.isEmpty()) {
                         shareInstagram.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
                         shareInstagram.setType("image/jpeg");
@@ -399,23 +412,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     Toast.makeText(getApplicationContext(), "You don't have whatsapp installed on your device.", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case "snapchat":
-                try {
-                    Intent shareSnapchat = new Intent(Intent.ACTION_SEND);
-                    ApplicationInfo info = getPackageManager().
-                            getApplicationInfo("com.snapchat.android", 0);
-                    shareSnapchat.setPackage("com.snapchat.android");
 
-                    if (!memoryImagesUris.isEmpty()) {
-                        shareSnapchat.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
-                        shareSnapchat.setType("image/jpeg");
-                    }
-
-                    startActivity(shareSnapchat);
-                } catch (PackageManager.NameNotFoundException e) {
-                    Toast.makeText(getApplicationContext(), "You don't have Snapchat installed on your device.", Toast.LENGTH_SHORT).show();
-                }
-                break;
         }
 
     }

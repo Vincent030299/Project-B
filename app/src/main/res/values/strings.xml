@@ -19,4 +19,6 @@
     <string name="share_on_instagram">Share on Instagram</string>
     <string name="share_on_whatsapp">Share on Whatsapp</string>
     <string name="share_on_snapchat">Share on snapchat</string>
+    <string name="create_memory">Create memory</string>
+    <string name="media_files">Media Files</string>
 </resources>

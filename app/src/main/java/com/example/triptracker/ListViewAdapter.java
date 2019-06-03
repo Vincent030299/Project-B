@@ -38,6 +38,7 @@ public class ListViewAdapter extends BaseAdapter {
     private ImageButton openMemoryBtn,deleteMemoryBtn;
     private Context context;
     private FragmentManager fragmentManager;
+    private float displayWidth;
 
     public ListViewAdapter(Context context,ArrayList<String> memoryTitles, ArrayList<String> memoryDates, ArrayList<Integer> memoryIds, ArrayList<String> memoryDiscriptions, FragmentManager fragmentManager) {
         this.memoryTitles = memoryTitles;
@@ -77,6 +78,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, final View convertView, ViewGroup parent) {
+        displayWidth=context.getResources().getDisplayMetrics().xdpi;
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, context.MODE_PRIVATE);
         boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
@@ -85,7 +87,9 @@ public class ListViewAdapter extends BaseAdapter {
             singleMemory = layoutInflater.inflate(R.layout.memorylistitemnight, parent, false);
 
         }  else {
+            if(displayWidth==480.0f){
 
+            }
             singleMemory = layoutInflater.inflate(R.layout.memorylistitem, parent, false);
         }
         openMemoryBtn = singleMemory.findViewById(R.id.open);

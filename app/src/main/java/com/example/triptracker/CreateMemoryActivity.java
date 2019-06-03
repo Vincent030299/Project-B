@@ -115,6 +115,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private int feeling = 1000;
     private String feelingDescription;
     private String takenPicturePath;
+    private int tooltipCounter=0;
+    private Tooltip toolTipBuilder;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -240,7 +242,15 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         toolTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createToolTip(v);
+                if(tooltipCounter==0){
+                    createToolTip(v);
+                    tooltipCounter=1;
+                }
+                else{
+                    toolTipBuilder.dismiss();
+                    tooltipCounter=0;
+                }
+
             }
         });
         saveMemoryButton.setOnClickListener(new View.OnClickListener() {
@@ -456,7 +466,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
     private void createToolTip(View v) {
         Button btn = (Button)v;
-        Tooltip tooltip = new Tooltip.Builder(btn)
+        toolTipBuilder = new Tooltip.Builder(btn)
                 .setText("To move the marker simply long-press the marker and drag it to the location you wish.")
                 .setTextColor(Color.BLACK)
                 .setGravity(Gravity.BOTTOM)

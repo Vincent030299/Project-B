@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.Menu;
 import android.util.Log;
 import android.view.MenuItem;
@@ -59,6 +61,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.tooltip.Tooltip;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
@@ -80,7 +83,8 @@ these links helped with learning to be able to write the code for this class
     https://www.youtube.com/watch?v=LpL9akTG4hI
 */
 public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCallback{
-
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     private GoogleMap mMap;
     private LatLng point;
     ViewPager createMemorySlider;
@@ -92,6 +96,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
     private final int PERMISSION_REQUEST_CODE = 14;
+    private Button toolTip;
     private ImageButton closePopup,saveMemoryButton,deleteMediaBtn,feelingEmojiBtn,chooseMarkerMenuBtn;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
@@ -137,6 +142,12 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_memory);
         takenPictureUri = null;
@@ -155,6 +166,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
 
         //initialize the used components in the layout file
+        toolTip = findViewById(R.id.toolTipButton);
         createMemorySlider =findViewById(R.id.createMemorySlider);
         mapMediaToggle =findViewById(R.id.mediaSwitch);
         uploadMediaFilesMenu=findViewById(R.id.uploadBtns);
@@ -264,6 +276,12 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
         //all of the click listeners in the layout
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        toolTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createToolTip(v);
+            }
+        });
         closePopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -469,6 +487,18 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 });
             }
         });
+    }
+
+    private void createToolTip(View v) {
+        Button btn = (Button)v;
+        Tooltip tooltip = new Tooltip.Builder(btn)
+                .setText("To move the marker simply long-press the marker and drag it to the location you wish.")
+                .setTextColor(Color.BLACK)
+                .setGravity(Gravity.BOTTOM)
+                .setCornerRadius(8f)
+                .setDismissOnClick(true)
+                .show();
+
     }
 
     private File createTakenPictureFile() throws IOException {

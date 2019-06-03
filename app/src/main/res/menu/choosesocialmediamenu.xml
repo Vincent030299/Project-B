@@ -33,10 +33,4 @@
         android:enabled="true"
         android:title="@string/share_on_whatsapp"
         android:visible="true"  />
-    <item
-        android:id="@+id/shareSnapchat"
-        android:checkable="false"
-        android:enabled="true"
-        android:title="@string/share_on_snapchat"
-        android:visible="true" />
 </menu>

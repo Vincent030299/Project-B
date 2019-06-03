@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="156dp"
         android:layout_marginTop="104dp"
-        android:text="@string/title_settings"
+        android:text="Night Mode"
         android:textColor="?attr/colorAccent"
         app:layout_constraintEnd_toStartOf="@+id/nightModeSwitch"
         app:layout_constraintHorizontal_chainStyle="packed"

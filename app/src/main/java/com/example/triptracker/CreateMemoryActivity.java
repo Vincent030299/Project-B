@@ -104,18 +104,18 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private ArrayList<Uri> recordedVideoUri= new ArrayList<>();
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
-    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout,switchAndMediaLayout;
+    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout;
     private FragmentManager createMemoryFragmentManager;
     private android.support.v4.app.Fragment createMemoryMapView;
     private Uri takenPictureUri;
     private String markerColor = "red";
     private Integer color;
     private int screenHeightInPx;
-    private ConstraintLayout createMemoryLayout,optionsTab;
+    private ConstraintLayout createMemoryLayout,optionsTab,switchAndMediaLayout;
     private int feeling = 1000;
     private String feelingDescription;
     private String takenPicturePath;
-    private int tooltipCounter=0;
+    private int tooltipCounter=0,screenWidth,screenHeight;
     private Tooltip toolTipBuilder;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -152,8 +152,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         //Get the height and width of the phone display
-        int screenWidth = dm.widthPixels;
-        int screenHeight = dm.heightPixels;
+        screenWidth = dm.widthPixels;
+        screenHeight = dm.heightPixels;
 
         final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragView);
         Objects.requireNonNull(spmf).getMapAsync(this);
@@ -187,34 +187,8 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         //setting the initial visibility state of pageIndicatorView
         pageIndicatorView.setVisibility(View.INVISIBLE);
 
+        adjustLayouts();
         //Adjusting the layout according to the used phone.
-        if(1920-getResources().getDisplayMetrics().heightPixels >= 100){
-            screenHeight = getResources().getDisplayMetrics().heightPixels;
-            LinearLayout.LayoutParams inputLayoutParams = new LinearLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().heightPixels*0.2));
-            ConstraintLayout.LayoutParams mapFragmentLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels,(int)(getResources().getDisplayMetrics().heightPixels*0.26));
-            ConstraintLayout.LayoutParams mediaFilesLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int)(getResources().getDisplayMetrics().heightPixels*0.26));
-            ConstraintLayout.LayoutParams uploadBtnsLayoutParams = new ConstraintLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().density*40));
-            mapFragmentLayoutParams.topToBottom = R.id.TopBar;
-            mapFragmentLayoutParams.endToEnd = R.id.createMemoryLayout;
-            mapFragmentLayoutParams.startToStart = R.id.createMemoryLayout;
-
-            mediaFilesLayoutParams.topToBottom = R.id.TopBar;
-            mediaFilesLayoutParams.startToStart = R.id.createMemoryLayout;
-            mediaFilesLayoutParams.endToEnd = R.id.createMemoryLayout;
-
-            uploadBtnsLayoutParams.startToStart = R.id.createMemoryLayout;
-            uploadBtnsLayoutParams.endToEnd = R.id.createMemoryLayout;
-            uploadBtnsLayoutParams.topToBottom = R.id.pageIndicator;
-
-            mapLayout.setLayoutParams(mapFragmentLayoutParams);
-            memoryDescription.setLayoutParams(inputLayoutParams);
-            mediaFilesLayout.setLayoutParams(mediaFilesLayoutParams);
-            switchAndMediaLayout.setLayoutParams(uploadBtnsLayoutParams);
-            memoryDescription.requestLayout();
-            mapLayout.requestLayout();
-            mediaFilesLayout.requestLayout();
-            switchAndMediaLayout.requestLayout();
-        }
 
         //getting the values of the current date
         currentDay=memoryDate.getDayOfMonth();
@@ -252,14 +226,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         toolTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tooltipCounter==0){
-                    createToolTip(v);
-                    tooltipCounter=1;
-                }
-                else{
-                    toolTipBuilder.dismiss();
-                    tooltipCounter=0;
-                }
+                createToolTip(v);
 
             }
         });
@@ -326,12 +293,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mapMediaToggle.isChecked()){
-
                     mapViewVisibility(false);
-
+                    mapMediaToggle.setText("Map");
                 }
                 else{
                     mapViewVisibility(true);
+                    mapMediaToggle.setText("Media files");
                 }
             }
         });
@@ -463,6 +430,37 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         });
     }
 
+    private void adjustLayouts() {
+        if(1920-getResources().getDisplayMetrics().heightPixels >= 100){
+            screenHeight = getResources().getDisplayMetrics().heightPixels;
+            LinearLayout.LayoutParams inputLayoutParams = new LinearLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().heightPixels*0.2));
+            ConstraintLayout.LayoutParams mapFragmentLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels,(int)(getResources().getDisplayMetrics().heightPixels*0.26));
+            ConstraintLayout.LayoutParams mediaFilesLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int)(getResources().getDisplayMetrics().heightPixels*0.26));
+            ConstraintLayout.LayoutParams uploadBtnsLayoutParams = new ConstraintLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().density*40));
+            mapFragmentLayoutParams.topToBottom = R.id.TopBar;
+            mapFragmentLayoutParams.endToEnd = R.id.createMemoryLayout;
+            mapFragmentLayoutParams.startToStart = R.id.createMemoryLayout;
+
+            mediaFilesLayoutParams.topToBottom = R.id.TopBar;
+            mediaFilesLayoutParams.startToStart = R.id.createMemoryLayout;
+            mediaFilesLayoutParams.endToEnd = R.id.createMemoryLayout;
+
+            uploadBtnsLayoutParams.startToStart = R.id.createMemoryLayout;
+            uploadBtnsLayoutParams.endToEnd = R.id.createMemoryLayout;
+            uploadBtnsLayoutParams.topToBottom = R.id.pageIndicator;
+
+            mapLayout.setLayoutParams(mapFragmentLayoutParams);
+            memoryDescription.setLayoutParams(inputLayoutParams);
+            mediaFilesLayout.setLayoutParams(mediaFilesLayoutParams);
+            switchAndMediaLayout.setLayoutParams(uploadBtnsLayoutParams);
+            memoryDescription.requestLayout();
+            mapLayout.requestLayout();
+            mediaFilesLayout.requestLayout();
+            switchAndMediaLayout.requestLayout();
+        }
+
+    }
+
     private File createTakenPictureFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -482,6 +480,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 .setGravity(Gravity.BOTTOM)
                 .setCornerRadius(8f)
                 .setDismissOnClick(true)
+                .setCancelable(true)
                 .show();
 
     }
@@ -508,6 +507,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             pageIndicatorView.setVisibility(View.INVISIBLE);
             mediaFilesLayout.setVisibility(View.INVISIBLE);
             optionsTab.setVisibility(View.INVISIBLE);
+            toolTip.setVisibility(View.VISIBLE);
             FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
             fragmentTransaction.show(createMemoryMapView);
             fragmentTransaction.commit();
@@ -518,6 +518,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 optionsTab.setVisibility(View.INVISIBLE);
                 pageIndicatorView.setVisibility(View.VISIBLE);
                 mediaFilesLayout.setVisibility(View.VISIBLE);
+                toolTip.setVisibility(View.INVISIBLE);
                 FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
                 fragmentTransaction.hide(createMemoryMapView);
                 fragmentTransaction.commit();
@@ -527,12 +528,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 pageIndicatorView.setVisibility(View.VISIBLE);
                 mediaFilesLayout.setVisibility(View.VISIBLE);
                 optionsTab.setVisibility(View.VISIBLE);
+                toolTip.setVisibility(View.INVISIBLE);
                 FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
                 fragmentTransaction.hide(createMemoryMapView);
                 fragmentTransaction.commit();
                 mapMediaToggle.setChecked(true);
             }
-
         }
     }
 
@@ -563,15 +564,14 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         else if (memoryTitle.getEditText().getText().length()>20){
             Toast.makeText(getApplicationContext(), "The title is too long, try again", Toast.LENGTH_SHORT).show();
         }
-        else if (feeling == 1000){
-            Toast.makeText(getApplicationContext(), "Please choose a feeling, click on the smile icon", Toast.LENGTH_LONG).show();
-        }
         else {
             String currentMemoryTitle=memoryTitle.getEditText().getText().toString();
             String currentMemoryDescription= memoryDescription.getEditText().getText().toString();
             String currentMemoryDate= String.valueOf(chosenDay)+'-'+String.valueOf(chosenMonth)+'-'+String.valueOf(chosenYear);
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
-
+            if (feeling == 1000){
+                feelingDescription= "";
+            }
             if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri,point.latitude, point.longitude, color,feeling,feelingDescription)){
                 Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();

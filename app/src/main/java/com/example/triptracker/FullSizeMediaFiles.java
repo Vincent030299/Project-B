@@ -1,5 +1,6 @@
 package com.example.triptracker;
 
+import android.app.ActionBar;
 import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -21,8 +23,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import java.util.ArrayList;
 
 public class FullSizeMediaFiles extends FragmentActivity {
-    private ArrayList<Uri> imagesUris;
-    private ArrayList<Uri> videosUris;
+    private ArrayList<Uri> imagesUris,videosUris;
     private ArrayList<Fragment> mediaFilesFragments = new ArrayList<>();
     private ViewPager allMediaFilesSlider;
     private SwipeAdapter fullSizeMediaFilesAdapter;
@@ -66,7 +67,18 @@ public class FullSizeMediaFiles extends FragmentActivity {
     }
 
     private void resizeLayout() {
-        getWindow().setLayout((int)(phoneDisplay.widthPixels*0.7),(int)(phoneDisplay.heightPixels*0.8));
+        int newWindowWidth = (int)(phoneDisplay.widthPixels*0.7);
+        int newWindowHeight = (int)(phoneDisplay.heightPixels*0.8);
+        int newSliderHeight = (int) (newWindowHeight*0.6);
+        ConstraintLayout.LayoutParams sliderDimensions = new ConstraintLayout.LayoutParams(newWindowWidth, newSliderHeight);
+        sliderDimensions.bottomToTop = R.id.fullSizeDotsIndicator;
+        sliderDimensions.startToStart = R.id.fullSizeMediaLayout;
+        sliderDimensions.endToEnd = R.id.fullSizeMediaLayout;
+        sliderDimensions.bottomMargin = 10;
+        sliderDimensions.topMargin = 10;
+        allMediaFilesSlider.setLayoutParams(sliderDimensions);
+        allMediaFilesSlider.requestLayout();
+        getWindow().setLayout(newWindowWidth, FrameLayout.LayoutParams.WRAP_CONTENT);
     }
 
     private void addVideos(ArrayList<Uri> videosUris) {

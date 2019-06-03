@@ -29,23 +29,26 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class ListViewAdapter extends BaseAdapter {
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_THEME = "dark_theme";
-    ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
+    ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions,feelingDescriptions;
     ArrayList<String> memoryImages = new ArrayList<>();
     ArrayList<String> memoryVideos = new ArrayList<>();
-    ArrayList<Integer> memoryIds;
+    ArrayList<Integer> memoryIds,feelingImages;
     private TextView memoryTitle,memoryDate;
     private ImageButton openMemoryBtn,deleteMemoryBtn;
     private Context context;
     private FragmentManager fragmentManager;
     private float displayWidth;
 
-    public ListViewAdapter(Context context,ArrayList<String> memoryTitles, ArrayList<String> memoryDates, ArrayList<Integer> memoryIds, ArrayList<String> memoryDiscriptions, FragmentManager fragmentManager) {
+    public ListViewAdapter(Context context,ArrayList<String> memoryTitles, ArrayList<String> memoryDates, ArrayList<Integer> memoryIds, ArrayList<String> memoryDiscriptions,ArrayList<String> feelingDescriptions,ArrayList<Integer> feelingImages,FragmentManager fragmentManager) {
         this.memoryTitles = memoryTitles;
         this.memoryDates = memoryDates;
         this.memoryIds = memoryIds;
         this.context = context;
         this.memoryDiscriptions = memoryDiscriptions;
         this.fragmentManager = fragmentManager;
+        this.feelingImages = feelingImages;
+        this.feelingDescriptions = feelingDescriptions;
+
     }
 
     public boolean addDate(String s) {
@@ -103,7 +106,8 @@ public class ListViewAdapter extends BaseAdapter {
                 DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
-
+                memoryImages.clear();
+                memoryVideos.clear();
                 while(allImagesForMemory.moveToNext()){
                     String singleImage = allImagesForMemory.getString(1);
                     memoryImages.add(singleImage);
@@ -119,6 +123,8 @@ public class ListViewAdapter extends BaseAdapter {
                 openMemory.putExtra("description", memoryDiscriptions.get(position));
                 openMemory.putExtra("title", memoryTitles.get(position));
                 openMemory.putExtra("date", memoryDates.get(position));
+                openMemory.putExtra("feelingdesc", feelingDescriptions.get(position));
+                openMemory.putExtra("feelingimage", feelingImages.get(position));
                 Cursor singleMemoryInfos = mDataBaseHelper.getSingleMemoryData(memoryIds.get(position));
                 if (singleMemoryInfos.moveToFirst()) {
                     Double lat = singleMemoryInfos.getDouble(4);
@@ -126,7 +132,7 @@ public class ListViewAdapter extends BaseAdapter {
                     openMemory.putExtra("lat", lat);
                     openMemory.putExtra("lng", lng);
                 }
-                openMemory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                openMemory.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 context.getApplicationContext().startActivity(openMemory);
 
             }

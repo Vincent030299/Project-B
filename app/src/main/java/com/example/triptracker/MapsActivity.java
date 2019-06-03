@@ -271,10 +271,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     dbMarkerTitle = dbMarker.getString(1);
                     dbMarkerDesc = dbMarker.getString(2);
                     dbMemoryId = dbMarker.getInt(0);
-                    feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(7)]);
-                    feelingDescription.setText(" - Was feeling " + dbMarker.getString(8));
+                    if(dbMarker.getInt(7) != 1000){
+                        feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(7)]);
+                        feelingDescription.setText(" - Was feeling " + dbMarker.getString(8));
+                    }
                     Cursor dbImage = databaseHelper.getImage(dbMemoryId);
-
                     while (dbImage.moveToNext()){
                         String dbImageUriString = dbImage.getString(1);
                         Uri dbImageUri = Uri.parse(dbImageUriString);

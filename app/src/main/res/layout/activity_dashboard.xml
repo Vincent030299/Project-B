@@ -7,20 +7,23 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryDark"
     tools:context=".DashboardActivity">
-
     <ListView
         android:id="@+id/memoriesList"
         style="@style/ListviewStyle"
         android:layout_width="match_parent"
-        android:layout_height="675dp"
-        android:padding="5dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="50dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

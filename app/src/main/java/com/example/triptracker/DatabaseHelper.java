@@ -229,12 +229,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "DELETE FROM " + TABLE_NAME + " WHERE id =" + id;
         String deleteImages = "DELETE FROM " + IMAGE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
         String deleteVideos = "DELETE FROM " + VIDEO_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
-        String deleteTakenImages = "DELETE FROM " + IMAGE_CAPTURE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
         Log.d(TAG, "deleteName: query: " + query);
         db.execSQL(query);
         db.execSQL(deleteImages);
         db.execSQL(deleteVideos);
-        db.execSQL(deleteTakenImages);
     }
 
     public Cursor getImages(int id){

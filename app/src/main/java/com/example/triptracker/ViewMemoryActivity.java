@@ -66,7 +66,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private GoogleMap mMap;
     private SwipeAdapter viewMemorySwipeAdapter;
     private ArrayList<Fragment> memoryViewMediaFiles;
-    private String memoryTitle, memoryDescription,memoryDate;
+    private String memoryTitle, memoryDescription,memoryDate,whatsAppShareString;
     private ArrayList<Uri> memoryImagesUris;
     private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
     private LinearLayout mediaFilesLayout;
@@ -221,6 +221,12 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                             case R.id.shareInstagram:
                                 shareMemory("instagram");
                                 return true;
+                            case R.id.shareWhatsapp:
+                                shareMemory("whatsapp");
+                                return true;
+                            case R.id.shareSnapchat:
+                                shareMemory("snapchat");
+                                return true;
                         }
                         return false;
                     }
@@ -367,7 +373,51 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 } catch (PackageManager.NameNotFoundException e) {
                     Toast.makeText(getApplicationContext(), "You don't have Instagram installed on your device.", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case "whatsapp":
+                try {
+                    Intent shareWhatsapp = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.whatsapp", 0);
+                    shareWhatsapp.setPackage("com.whatsapp");
+
+                    if (!memoryImages.isEmpty()) {
+                        shareWhatsapp.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareWhatsapp.setType("image/jpeg");
+                    }
+
+                    else if (!memoryVideos.isEmpty()) {
+                        shareWhatsapp.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareWhatsapp.setType("video/*");
+                    }
+                    whatsAppShareString = memoryTitle + "," + memoryDescription;
+                    shareWhatsapp.putExtra(Intent.EXTRA_TEXT, whatsAppShareString);
+                    shareWhatsapp.setType("text/plain");
+
+                    startActivity(shareWhatsapp);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have whatsapp installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "snapchat":
+                try {
+                    Intent shareSnapchat = new Intent(Intent.ACTION_SEND);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.snapchat.android", 0);
+                    shareSnapchat.setPackage("com.snapchat.android");
+
+                    if (!memoryImagesUris.isEmpty()) {
+                        shareSnapchat.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
+                        shareSnapchat.setType("image/jpeg");
+                    }
+
+                    startActivity(shareSnapchat);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have Snapchat installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
+
     }
 
     @Override

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimaryDark">
+    android:background="?attr/colorPrimaryDark"
+    android:id="@+id/viewMemoryLayout">
 
     <LinearLayout
         android:id="@+id/viewMemorymapLayout"
@@ -57,14 +58,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        app:layout_constraintTop_toBottomOf="@id/viewMemorypageIndicator">
+        app:layout_constraintTop_toBottomOf="@id/viewMemorypageIndicator"
+        android:theme="@style/AppThemeBlue">
 
         <Switch
             android:id="@+id/viewMemoryMediaSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Media files"
-            android:textColor="?attr/colorAccent" />
+            android:textColor="@color/blueapp" />
     </LinearLayout>
 
     <LinearLayout
@@ -188,4 +190,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.001" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/viewMemorytOptionsTab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/vpi__background_holo_dark"
+        android:gravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewMemoryTopBar"
+        android:padding="3dp">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/viewMemoryOpenInFullScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/fullscreenicon"
+            android:maxHeight="25dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
+    </android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/viewMemoryFeelingDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewMemoryDescription"
+        app:layout_constraintBottom_toTopOf="@id/navigation"
+        android:textColor="?attr/colorAccent"/>
+    <ImageView
+        android:id="@+id/viewMemoryFeelingImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/viewMemoryFeelingDescription"
+        app:layout_constraintTop_toBottomOf="@id/viewMemoryDescription"
+        app:layout_constraintBottom_toTopOf="@id/navigation"/>
 </android.support.constraint.ConstraintLayout>

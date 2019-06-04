@@ -29,8 +29,8 @@ public class DashboardActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_THEME = "dark_theme";
     private ListView memoriesList;
-    private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
-    private ArrayList<Integer> memoryIds;
+    private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions,memoryFeelingsDescription;
+    private ArrayList<Integer> memoryIds,memoryFeelings;
     protected ListViewAdapter memoryListAdapter;
     private LinearLayout sortLayout;
 
@@ -85,6 +85,8 @@ public class DashboardActivity extends AppCompatActivity {
         memoryDates = new ArrayList<>();
         memoryIds  = new ArrayList<>();
         memoryDiscriptions = new ArrayList<>();
+        memoryFeelings = new ArrayList<>();
+        memoryFeelingsDescription = new ArrayList<>();
 
         sortLayout = findViewById(R.id.sortLayout);
         sortLayout.setOnClickListener(new View.OnClickListener() {
@@ -127,14 +129,19 @@ public class DashboardActivity extends AppCompatActivity {
             String title = memories.getString(1);
             String date = memories.getString(3);
             String discription = memories.getString(2);
+            String feelingDescription = memories.getString(8);
+            Integer memoryFeeling = memories.getInt(7);
+
             Log.e("date", date);
             Log.e("title",title);
             memoryDates.add(date);
             memoryIds.add(id);
             memoryTitles.add(title);
             memoryDiscriptions.add(discription);
+            memoryFeelings.add(memoryFeeling);
+            memoryFeelingsDescription.add(feelingDescription);
         }
-        memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds,memoryDiscriptions,getSupportFragmentManager());
+        memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds,memoryDiscriptions,memoryFeelingsDescription,memoryFeelings,getSupportFragmentManager());
         memoriesList.setAdapter(memoryListAdapter);
     }
 

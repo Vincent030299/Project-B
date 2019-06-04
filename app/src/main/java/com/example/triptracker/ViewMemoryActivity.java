@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.BundleCompat;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Switch;
@@ -56,8 +58,8 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_THEME = "dark_theme";
     private ViewPager viewMemoryMediaSlider;
-    private TextView viewMemoryTitle,viewMemoryDate,viewMemoryDescription;
-    private ImageButton viewMemoryShareButton,closeViewMemory,streetViewBtn;
+    private TextView viewMemoryTitle,viewMemoryDate,viewMemoryDescription,viewMemoryFeelingDescription;
+    private ImageButton viewMemoryShareButton,closeViewMemory,streetViewBtn,openInFullScreen;
     private Button toolTipButton;
     private Fragment viewmemoryMapFragment;
     private CirclePageIndicator viewMemoryDotsIndicator;
@@ -67,12 +69,18 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private SwipeAdapter viewMemorySwipeAdapter;
     private ArrayList<Fragment> memoryViewMediaFiles;
     private String memoryTitle, memoryDescription,memoryDate;
-    private ArrayList<Uri> memoryImagesUris;
-    private ArrayList<String> memoryImages,memoryBitmaps,memoryVideos;
+    private ArrayList<Uri> memoryImagesUris,imagesUris,videosUris;
+    private ArrayList<String> memoryImages,memoryVideos;
     private LinearLayout mediaFilesLayout;
     private LatLng markerLoc;
     private Float color;
     private DatabaseHelper mDataBaseHelper;
+    private ConstraintLayout viewMemoryOptionsTab;
+    private ImageView feelingImageView;
+    private int[] feelingsEmojis = {R.drawable.happy_emoji,R.drawable.relaxed_emoji,R.drawable.blessed_emoji
+            ,R.drawable.loved_emoji,R.drawable.crazy_emoji,R.drawable.sad_emoji,R.drawable.tired_emoji,
+            R.drawable.thankful_emoji,R.drawable.hopeful_emoji,R.drawable.fantastic_emoji,R.drawable.peaceful_emoji,
+            R.drawable.disappointed_emoji,R.drawable.lost_emoji,R.drawable.inspired_emoji,R.drawable.optimistic_emoji};
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -111,6 +119,8 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryMediaSwitch=findViewById(R.id.viewMemoryMediaSwitch);
         mediaFilesLayout = findViewById(R.id.viewMemoryMediaLayout);
         closeViewMemory = findViewById(R.id.closeViewMemory);
+        feelingImageView = findViewById(R.id.viewMemoryFeelingImage);
+        viewMemoryFeelingDescription = findViewById(R.id.viewMemoryFeelingDescription);
         mDataBaseHelper = new DatabaseHelper(getApplicationContext());
         toolTipButton = findViewById(R.id.toolTipButton2);
         streetViewBtn=findViewById(R.id.streetViewBtn);
@@ -119,7 +129,9 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         memoryDate = getIntent().getStringExtra("date");
         markerLoc = new LatLng(getIntent().getExtras().getDouble("lat"), getIntent().getExtras().getDouble("lng"));
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
+        openInFullScreen = findViewById(R.id.viewMemoryOpenInFullScreen);
+        viewMemoryOptionsTab = findViewById(R.id.viewMemorytOptionsTab);
+        resizeLayout();
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         closeViewMemory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,13 +146,19 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryDate.setText(memoryDate);
         viewMemoryTitle.setText(memoryTitle);
         viewMemoryDescription.setText(memoryDescription);
+        if(getIntent().getIntExtra("feelingimage", 1000)!= 1000){
+            feelingImageView.setImageResource(feelingsEmojis[getIntent().getIntExtra("feelingimage", 1000)]);
+            viewMemoryFeelingDescription.setText("Was feeling " + getIntent().getStringExtra("feelingdesc") + " - ");
+        }
+
         memoryImages = getIntent().getStringArrayListExtra("images");
-        memoryBitmaps = getIntent().getStringArrayListExtra("bitmaps");
         memoryVideos = getIntent().getStringArrayListExtra("videos");
         memoryImagesUris = new ArrayList<>();
-//        Toast.makeText(getApplicationContext(), String.valueOf(memoryVideos.size()), Toast.LENGTH_SHORT).show();
-        memoryViewMediaFiles = null;
+        imagesUris = new ArrayList<>();
+        videosUris = new ArrayList<>();
         memoryViewMediaFiles = new ArrayList<>();
+
+
         if (memoryViewMediaFiles.isEmpty()){
             if(!memoryImages.isEmpty()){
                 for(int i = 0; i<memoryImages.size(); i++){
@@ -150,6 +168,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     singleImageFragment.setArguments(fragmentArgs);
                     memoryViewMediaFiles.add(singleImageFragment);
                     memoryImagesUris.add(Uri.parse(memoryImages.get(i)));
+                    imagesUris.add(Uri.parse(memoryImages.get(i)));
                 }
             }
             if(!memoryVideos.isEmpty()){
@@ -160,15 +179,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     singleVideoFragment.setArguments(fragmentArgs);
                     memoryViewMediaFiles.add(singleVideoFragment);
                     memoryImagesUris.add(Uri.parse(memoryVideos.get(i)));
-                }
-            }
-            if (!memoryBitmaps.isEmpty()){
-                for(int i = 0; i<memoryBitmaps.size(); i++){
-                    Bundle fragmentArgs = new Bundle();
-                    fragmentArgs.putString("the cam",memoryBitmaps.get(i) );
-                    CapImageFragment singleImageBitmap = new CapImageFragment();
-                    singleImageBitmap.setArguments(fragmentArgs);
-                    memoryViewMediaFiles.add(singleImageBitmap);
+                    videosUris.add(Uri.parse(memoryVideos.get(i)));
                 }
             }
         }
@@ -177,19 +188,22 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         }
 
 
+
         final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.viewMemoryMap);
         Objects.requireNonNull(spmf).getMapAsync(this);
 
         viewMemorySwipeAdapter = new SwipeAdapter(getSupportFragmentManager(), memoryViewMediaFiles);
+        viewMemorySwipeAdapter.notifyDataSetChanged();
         viewMemoryMediaSlider.setAdapter(viewMemorySwipeAdapter);
         viewMemoryDotsIndicator.setFillColor(Color.rgb(20,145,218));
         viewMemoryDotsIndicator.setRadius(8.0F);
         viewMemoryDotsIndicator.setStrokeColor(Color.rgb(20,145,218));
-        viewMemoryDotsIndicator.setVisibility(View.INVISIBLE);
-        viewMemoryMediaSlider.setVisibility(View.INVISIBLE);
+        viewMemoryOptionsTab.getBackground().setAlpha(75);
+        toolTipButton.setVisibility(View.INVISIBLE);
         viewMemoryDotsIndicator.setViewPager(viewMemoryMediaSlider);
         viewMemoryDescription.setMovementMethod(new ScrollingMovementMethod());
         viewMemoryTitle.setMovementMethod(new ScrollingMovementMethod());
+        viewMemoryMediaSwitch.setText("Map");
 
         viewMemoryFragmentManager=getSupportFragmentManager();
         viewmemoryMapFragment=viewMemoryFragmentManager.findFragmentById(R.id.viewMemoryMap);
@@ -239,12 +253,33 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (viewMemoryMediaSwitch.isChecked()){
                     viewMemoryMapVisibility(false);
+                    viewMemoryMediaSwitch.setText("Map");
                 }
                 else{
                     viewMemoryMapVisibility(true);
+                    viewMemoryMediaSwitch.setText("Media files");
                 }
             }
         });
+        openInFullScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openFullSizeMedia = new Intent(ViewMemoryActivity.this,FullSizeMediaFiles.class);
+                openFullSizeMedia.putParcelableArrayListExtra("images", imagesUris);
+                openFullSizeMedia.putParcelableArrayListExtra("videos", videosUris);
+                startActivity(openFullSizeMedia);
+            }
+        });
+    }
+
+    private void resizeLayout() {
+        if(1920-getResources().getDisplayMetrics().heightPixels >= 100){
+            ConstraintLayout.LayoutParams newMemoryDescriptionDimensions = new ConstraintLayout.LayoutParams((getResources().getDisplayMetrics().widthPixels),(int)(getResources().getDisplayMetrics().heightPixels*0.2));
+            newMemoryDescriptionDimensions.topToBottom = R.id.ViewMemoryTitleLayout;
+            newMemoryDescriptionDimensions.startToStart = R.id.viewMemoryLayout;
+            viewMemoryDescription.setLayoutParams(newMemoryDescriptionDimensions);
+            viewMemoryDescription.requestLayout();
+        }
     }
 
     private void openStreetView() {
@@ -257,6 +292,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         if (visible){
             viewMemoryDotsIndicator.setVisibility(View.INVISIBLE);
             viewMemoryMediaSlider.setVisibility(View.INVISIBLE);
+            viewMemoryOptionsTab.setVisibility(View.INVISIBLE);
             FragmentTransaction fragmentTransaction = viewMemoryFragmentManager.beginTransaction();
             fragmentTransaction.show(viewmemoryMapFragment);
             fragmentTransaction.commit();
@@ -265,6 +301,8 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         else {
             viewMemoryDotsIndicator.setVisibility(View.VISIBLE);
             viewMemoryMediaSlider.setVisibility(View.VISIBLE);
+            viewMemoryOptionsTab.setVisibility(View.VISIBLE);
+            viewMemoryOptionsTab.getBackground().setAlpha(75);
             FragmentTransaction fragmentTransaction = viewMemoryFragmentManager.beginTransaction();
             fragmentTransaction.hide(viewmemoryMapFragment);
             fragmentTransaction.commit();
@@ -279,6 +317,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 .setGravity(Gravity.BOTTOM)
                 .setCornerRadius(8f)
                 .setDismissOnClick(true)
+                .setCancelable(true)
                 .show();
 
     }
@@ -406,15 +445,6 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-    }
-
-    @Override
-    public void onBackPressed() {
-//        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
-        Intent openDashboard = new Intent(getApplicationContext(),DashboardActivity.class);
-        openDashboard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-        startActivity(openDashboard);
     }
 
     //open a given activity

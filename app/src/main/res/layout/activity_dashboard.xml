@@ -8,12 +8,33 @@
     android:background="?attr/colorPrimaryDark"
     tools:context=".DashboardActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="320dp"
+        android:paddingTop="10dp"
+        >
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:id="@+id/sortButton"
+            android:background="@color/blueapp"
+            android:textColor="@color/white"
+            android:textSize="10dp"
+            android:text="Sort"
+            android:drawableRight="@drawable/sortingg"
+            />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/memoriesList"
         style="@style/ListviewStyle"
         android:layout_width="match_parent"
         android:layout_height="675dp"
-        android:padding="5dp"
+        android:paddingTop="50dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"

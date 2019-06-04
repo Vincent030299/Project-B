@@ -14,8 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ public class DashboardActivity extends AppCompatActivity {
     private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     private ArrayList<Integer> memoryIds;
     protected ListViewAdapter memoryListAdapter;
+    private Button sortButton;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -68,6 +72,16 @@ public class DashboardActivity extends AppCompatActivity {
         memoryDates = new ArrayList<>();
         memoryIds  = new ArrayList<>();
         memoryDiscriptions = new ArrayList<>();
+
+        sortButton = findViewById(R.id.sortButton);
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu sortMenu = new PopupMenu(DashboardActivity.this, sortButton);
+                sortMenu.inflate(R.menu.sort_menu);
+                sortMenu.show();
+            }
+        });
 
         while(memories.moveToNext()){
             Integer id = memories.getInt(0);

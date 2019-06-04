@@ -148,6 +148,9 @@ public class ListViewAdapter extends BaseAdapter {
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
 
+                memoryImages.clear();
+                memoryVideos.clear();
+
                 while(allImagesForMemory.moveToNext()){
                     String singleImage = allImagesForMemory.getString(1);
                     memoryImages.add(singleImage);

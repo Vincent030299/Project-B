@@ -332,6 +332,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerId = dbMarkerInfo.getInt(0);
             Cursor allImagesForMemory = mDataBaseHelper.getImages(markerId);
             Cursor allVideosForMemory = mDataBaseHelper.getVideos(markerId);
+
+            memoryImages.clear();
+            memoryVideos.clear();
+
             while(allImagesForMemory.moveToNext()){
                 String singleImage = allImagesForMemory.getString(1);
                 memoryImages.add(singleImage);

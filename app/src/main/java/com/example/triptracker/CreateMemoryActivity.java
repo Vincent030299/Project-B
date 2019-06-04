@@ -433,7 +433,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private void adjustLayouts() {
         if(1920-getResources().getDisplayMetrics().heightPixels >= 100){
             screenHeight = getResources().getDisplayMetrics().heightPixels;
-            LinearLayout.LayoutParams inputLayoutParams = new LinearLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().heightPixels*0.2));
+            LinearLayout.LayoutParams inputLayoutParams = new LinearLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().heightPixels*0.19));
             ConstraintLayout.LayoutParams mapFragmentLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels,(int)(getResources().getDisplayMetrics().heightPixels*0.26));
             ConstraintLayout.LayoutParams mediaFilesLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int)(getResources().getDisplayMetrics().heightPixels*0.26));
             ConstraintLayout.LayoutParams uploadBtnsLayoutParams = new ConstraintLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().density*40));
@@ -547,16 +547,6 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
         else if (memoryDescription.getEditText().getText().length()==0){
             Toast.makeText(getApplicationContext(),"Please enter a description",Toast.LENGTH_SHORT).show();
-        }
-        else if ((chosenDay>currentDay & chosenMonth==currentMonth & currentYear==chosenYear)
-                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
-                |(chosenDay==currentDay & currentMonth==chosenMonth & chosenYear>currentYear)
-                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear>currentYear)
-                |(chosenDay>currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
-                |(chosenDay>currentDay & chosenMonth<=currentMonth & chosenYear>currentYear)
-                |(chosenDay>currentDay & chosenMonth>currentMonth & chosenYear>currentYear))
-                {
-            Toast.makeText(getApplicationContext(),"Please choose another date",Toast.LENGTH_SHORT).show();
         }
         else if(chosenViewsArrayList.size()==0){
             Toast.makeText(getApplicationContext(),"Please choose an image or a video",Toast.LENGTH_SHORT).show();

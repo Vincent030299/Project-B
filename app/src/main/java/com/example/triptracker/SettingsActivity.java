@@ -168,12 +168,16 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatabaseHelper customMarkerDatabase = new DatabaseHelper(getApplicationContext());
-                if (customMarkerDatabase.addCustomMarker(markerName.getEditText().getText().toString(), markerColor)) {
-                    Toast.makeText(getApplicationContext(), "Marker succesfully saved", Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(getIntent());
+                if(markerName.getEditText().getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please give the marker a name", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Marker unsuccesfully saved", Toast.LENGTH_SHORT).show();
+                    if (customMarkerDatabase.addCustomMarker(markerName.getEditText().getText().toString(), markerColor)) {
+                        Toast.makeText(getApplicationContext(), "Marker succesfully saved", Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(getIntent());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Marker unsuccesfully saved", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }

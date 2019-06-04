@@ -285,7 +285,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(deleteVideo, new String[]{mediaUri});
     }
 
-    public void updateMediaFiles(int id,ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures){
+    public void updateMediaFiles(int id,ArrayList<Uri> images, ArrayList<Uri> videos){
         SQLiteDatabase db = this.getWritableDatabase();
 
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = " + id;
@@ -312,21 +312,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
 
                 db.insert(VIDEO_NAME, null, videoValues);
-            }
-        }
-
-        if (!imageCaptures.isEmpty()) {
-            for (int x = 0; x < imageCaptures.size(); x++) {
-                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
-                imageCaptures.get(x).compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
-                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
-
-                ContentValues imageCaptureValues = new ContentValues();
-                imageCaptureValues.put(COL_IMAGE_CAPTURE_BITMAP, takenImageByteArray);
-                if (data.moveToFirst()){
-                    imageCaptureValues.put(COL_MEMORY_ID, data.getInt(0));
-                }
-                db.insert(IMAGE_CAPTURE_NAME, null, imageCaptureValues);
             }
         }
     }

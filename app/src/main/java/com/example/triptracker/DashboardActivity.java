@@ -31,7 +31,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     private ArrayList<Integer> memoryIds;
     protected ListViewAdapter memoryListAdapter;
-    private Button sortButton;
+    private ImageButton sortButton;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -67,7 +67,17 @@ public class DashboardActivity extends AppCompatActivity {
         memoriesList = findViewById(R.id.memoriesList);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        Cursor memories = databaseHelper.getData();
+        Intent sort = getIntent();
+        Cursor memories;
+        if (sort.getStringExtra("name") != null) {
+            memories = databaseHelper.getDataOrderName();
+        } else if (sort.getStringExtra("date") != null ) {
+            memories = databaseHelper.getDataOrderDate();
+        } else if (sort.getStringExtra("description") != null ) {
+            memories = databaseHelper.getDataOrderDescription();
+        } else {
+            memories = databaseHelper.getData();
+        }
         memoryTitles = new ArrayList<>();
         memoryDates = new ArrayList<>();
         memoryIds  = new ArrayList<>();
@@ -80,6 +90,32 @@ public class DashboardActivity extends AppCompatActivity {
                 PopupMenu sortMenu = new PopupMenu(DashboardActivity.this, sortButton);
                 sortMenu.inflate(R.menu.sort_menu);
                 sortMenu.show();
+                sortMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.name:
+                                Intent sortName = new Intent(getApplicationContext(), DashboardActivity.class);
+                                sortName.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                sortName.putExtra("name","name");
+                                getApplicationContext().startActivity(sortName);
+                                break;
+                            case R.id.date:
+                                Intent sortDate = new Intent(getApplicationContext(), DashboardActivity.class);
+                                sortDate.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                sortDate.putExtra("date","date");
+                                getApplicationContext().startActivity(sortDate);
+                                break;
+                            case R.id.description:
+                                Intent sortDescription = new Intent(getApplicationContext(), DashboardActivity.class);
+                                sortDescription.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                sortDescription.putExtra("description","description");
+                                getApplicationContext().startActivity(sortDescription);
+                                break;
+                        }
+                        return false;
+                    }
+                });
             }
         });
 

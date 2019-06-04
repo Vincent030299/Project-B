@@ -6,41 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryDark"
-    tools:context=".DashboardActivity">
+    tools:context=".DashboardActivity"
+    >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="320dp"
-        android:paddingTop="10dp"
-        >
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:id="@+id/sortButton"
-            android:background="@color/blueapp"
-            android:textColor="@color/white"
-            android:textSize="10dp"
-            android:text="Sort"
-            android:drawableRight="@drawable/sortingg"
-            />
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/sortButton"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/blueapp"
+        android:src="@drawable/sortingg"
+        app:layout_constraintBottom_toTopOf="@id/memoriesList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/memoriesList"
         style="@style/ListviewStyle"
         android:layout_width="match_parent"
-        android:layout_height="675dp"
-        android:paddingTop="50dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="5dp"
+        android:layout_height="600dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sortButton"
         app:layout_constraintVertical_bias="0.0" />
 
     <android.support.design.widget.BottomNavigationView

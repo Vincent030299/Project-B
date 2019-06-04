@@ -205,6 +205,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public void deleteCustomMarker(Integer id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + CUSTOM_MARKER_TABLE_NAME + " WHERE ID = " + id;
+        Log.d(TAG, "deleteName: query: " + query);
+        db.execSQL(query);
+    }
     public Cursor getImage(Integer id){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + IMAGE_NAME +

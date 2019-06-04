@@ -12,14 +12,12 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="156dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
         android:text="Night Mode"
         android:textColor="?attr/colorAccent"
-        app:layout_constraintEnd_toStartOf="@+id/nightModeSwitch"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/markersList" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -40,17 +38,19 @@
         android:id="@+id/nightModeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.025"
         app:layout_constraintStart_toEndOf="@+id/message"
-        app:layout_constraintTop_toTopOf="@+id/message" />
+        app:layout_constraintTop_toBottomOf="@+id/markersList" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/custom_marker_name"
         android:layout_width="252dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
         android:hint="@string/custom_marker_name"
         android:inputType="text"
         app:counterEnabled="true"
@@ -68,8 +68,8 @@
         android:id="@+id/hueValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="92dp"
         android:src="@drawable/default_marker"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -78,18 +78,18 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="92dp"
         android:src="@drawable/default_marker_overlay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/hueBar"
-        android:layout_width="220dp"
-        android:layout_height="45dp"
+        android:layout_width="227dp"
+        android:layout_height="43dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="92dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -100,12 +100,65 @@
         android:id="@+id/saveMarkerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="68dp"
         android:background="#00000000"
         android:src="@drawable/add_btn"
         app:layout_constraintStart_toEndOf="@+id/hueBar"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/markersList"
+        style="@style/ListviewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hueBar"
+        app:layout_constraintVertical_bias="0.194" />
+
+    <TextView
+        android:id="@+id/myMarkersHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/blueapp"
+        android:text="@string/my_markers_hint"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/markersList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hueBar"
+        app:layout_constraintVertical_bias="0.835" />
+
+    <TextView
+        android:id="@+id/createMarkerHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/create_marker_hint"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/blueapp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/otherSettingsHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/other_settings_hint"
+        android:textColor="@color/blueapp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/markersList" />
 
 
 </android.support.constraint.ConstraintLayout>

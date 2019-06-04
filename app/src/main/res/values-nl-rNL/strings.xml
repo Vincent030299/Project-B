@@ -13,4 +13,10 @@
     <string name="hint_memory_title">Titel</string>
     <string name="media_files">Media bestanden</string>
     <string name="create_memory">Maak herinnering</string>
+    <string name="title_dashboard">Herinneringen</string>
+    <string name="searchHint">Vul een adres, stad, of postcode in</string>
+    <string name="custom_marker_name">Marker naam</string>
+    <string name="other_settings_hint">Overige instellingen</string>
+    <string name="create_marker_hint">Creëer aangepaste marker</string>
+    <string name="my_markers_hint">Mijn markers</string>
 </resources>

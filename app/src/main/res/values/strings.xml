@@ -10,7 +10,12 @@
     <string name="title_notifications">Notifications</string>
     <string name="hint_memory_description">Description</string>
     <string name="hint_memory_title">Title</string>
+    <string name="media_files">Media files</string>
+    <string name="create_memory">Create memory</string>
     <string name="title_dashboard">Memories</string>
     <string name="searchHint">Enter Address, City or Zip Code</string>
     <string name="custom_marker_name">Marker name</string>
+    <string name="other_settings_hint">Other settings</string>
+    <string name="create_marker_hint">Create custom marker</string>
+    <string name="my_markers_hint">My markers</string>
 </resources>

@@ -274,6 +274,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(7)]);
                     feelingDescription.setText(" - Was feeling " + dbMarker.getString(8));
                     Cursor dbImage = databaseHelper.getImage(dbMemoryId);
+                    markerImage.setImageResource(R.drawable.video_image);
 
                     while (dbImage.moveToNext()){
                         String dbImageUriString = dbImage.getString(1);

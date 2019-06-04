@@ -103,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return; }
+            return;}
 
         // get initial user location
         Location currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -138,7 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        createMemoryButton = findViewById(R.id.createMemoryButton);
+
     }
 
     private void init(){
@@ -222,17 +222,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+        createMemoryButton = findViewById(R.id.createMemoryButton);
         createMemoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),  String.valueOf(userLocation), Toast.LENGTH_SHORT).show();
                 if(userLocation == null) {
-                    Toast.makeText(getApplicationContext(), "No known location, try turning on GPS", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No known location, try turning on GPS or restarting the application", Toast.LENGTH_SHORT).show();
                 } else {
                     openMemoryActivity(userLocation);
                     Toast.makeText(getApplicationContext(), "Placed marker on current location", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         Cursor markers = databaseHelper.getData();

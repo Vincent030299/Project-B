@@ -274,11 +274,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     dbMarkerTitle = dbMarker.getString(1);
                     dbMarkerDesc = dbMarker.getString(2);
                     dbMemoryId = dbMarker.getInt(0);
-                    feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(7)]);
-                    feelingDescription.setText(" - Was feeling " + dbMarker.getString(8));
+                    if(dbMarker.getInt(7) != 1000){
+                        feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(7)]);
+                        feelingDescription.setText(" - Was feeling " + dbMarker.getString(8));
+                    }
                     Cursor dbImage = databaseHelper.getImage(dbMemoryId);
-                    markerImage.setImageResource(R.drawable.video_image);
-
                     while (dbImage.moveToNext()){
                         String dbImageUriString = dbImage.getString(1);
                         Uri dbImageUri = Uri.parse(dbImageUriString);
@@ -322,7 +322,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerId = dbMarkerInfo.getInt(0);
             Cursor allImagesForMemory = mDataBaseHelper.getImages(markerId);
             Cursor allVideosForMemory = mDataBaseHelper.getVideos(markerId);
-            Cursor allBitmapsForMemory = mDataBaseHelper.getPicturesBitmaps(markerId);
             while(allImagesForMemory.moveToNext()){
                 String singleImage = allImagesForMemory.getString(1);
                 memoryImages.add(singleImage);
@@ -330,10 +329,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             while (allVideosForMemory.moveToNext()){
                 String singleVideo = allVideosForMemory.getString(1);
                 memoryVideos.add(singleVideo);
-            }
-            while(allBitmapsForMemory.moveToNext()){
-                byte[] singleBitmap = allBitmapsForMemory.getBlob(1);
-                memoryBitmaps.add(Base64.encodeToString(singleBitmap, Base64.DEFAULT));
             }
             LatLng markerLoc = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
             Intent openMemory = new Intent(getApplicationContext(), ViewMemoryActivity.class);
@@ -346,7 +341,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             openMemory.putExtra("date", dbMarkerInfo.getString(3));
             openMemory.putExtra("location", markerLoc);
             openMemory.putExtra("color", dbMarkerInfo.getInt(6));
-            Toast.makeText(getApplicationContext(), Integer.toString(dbMarkerInfo.getInt(6)), Toast.LENGTH_SHORT).show();
             startActivity(openMemory);
         }
 

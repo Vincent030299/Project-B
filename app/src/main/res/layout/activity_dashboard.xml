@@ -8,18 +8,45 @@
     android:background="?attr/colorPrimaryDark"
     tools:context=".DashboardActivity"
     >
-
-    <ImageButton
-        android:id="@+id/sortButton"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/blueapp"
-        android:src="@drawable/sortingg"
-        app:layout_constraintBottom_toTopOf="@id/memoriesList"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="?attr/colorPrimary"
+        android:padding="5dp"
+        android:id="@+id/memoryActionBar">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:id="@+id/sortLayout"
+            android:focusable="true"
+            android:clickable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sort"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"
+                />
+
+            <ImageView
+                android:id="@+id/sortButton"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="#00000000"
+                android:src="@drawable/sortingg"/>
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
     <ListView
         android:id="@+id/memoriesList"
@@ -31,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sortButton"
+        app:layout_constraintTop_toBottomOf="@id/memoryActionBar"
         app:layout_constraintVertical_bias="0.0" />
 
     <android.support.design.widget.BottomNavigationView

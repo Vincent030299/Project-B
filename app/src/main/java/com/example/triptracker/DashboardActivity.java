@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ArrayList<String> memoryTitles,memoryDates,memoryDiscriptions;
     private ArrayList<Integer> memoryIds;
     protected ListViewAdapter memoryListAdapter;
-    private ImageButton sortButton;
+    private LinearLayout sortLayout;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -59,7 +60,9 @@ public class DashboardActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
         if(useDarkTheme) {
-            setTheme(R.style.AppThemeNight);
+            setTheme(R.style.memoriesThemeDark);
+        } else {
+            setTheme(R.style.memoriesTheme);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
@@ -83,11 +86,11 @@ public class DashboardActivity extends AppCompatActivity {
         memoryIds  = new ArrayList<>();
         memoryDiscriptions = new ArrayList<>();
 
-        sortButton = findViewById(R.id.sortButton);
-        sortButton.setOnClickListener(new View.OnClickListener() {
+        sortLayout = findViewById(R.id.sortLayout);
+        sortLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu sortMenu = new PopupMenu(DashboardActivity.this, sortButton);
+                PopupMenu sortMenu = new PopupMenu(DashboardActivity.this, sortLayout);
                 sortMenu.inflate(R.menu.sort_menu);
                 sortMenu.show();
                 sortMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

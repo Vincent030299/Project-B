@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,10 +45,16 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -70,7 +77,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<String> memoryImages = new ArrayList<>();
     private ArrayList<String> memoryVideos = new ArrayList<>();
     private ArrayList<String> memoryBitmaps = new ArrayList<>();
-    private EditText mSearchText;
     private static final String TAG = "MapsActivity";
     private String dbMarkerTitle,dbMarkerDesc;
     private Integer dbMemoryId;
@@ -81,6 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ,R.drawable.loved_emoji,R.drawable.crazy_emoji,R.drawable.sad_emoji,R.drawable.tired_emoji,
             R.drawable.thankful_emoji,R.drawable.hopeful_emoji,R.drawable.fantastic_emoji,R.drawable.peaceful_emoji,
             R.drawable.disappointed_emoji,R.drawable.lost_emoji,R.drawable.inspired_emoji,R.drawable.optimistic_emoji};
+    PlacesClient placesClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +99,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        mSearchText = (EditText) findViewById(R.id.input_search);
+        String apiKey = "AIzaSyDZO_RlGpm--AvmbRSE4QcQcGGHAQEr5To";
+
+        //Initialize Places api
+        if (!Places.isInitialized()){
+            Places.initialize(getApplicationContext(),apiKey);
+        }
+
+        placesClient = Places.createClient(this);
+
+        final AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                moveCamera(place.getLatLng(),16);
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -141,42 +173,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         createMemoryButton = findViewById(R.id.createMemoryButton);
     }
 
-    private void init(){
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH
-                    || actionId == EditorInfo.IME_ACTION_DONE
-                    || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                    || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
-
-                    geoLocate();
-                }
-
-                return false;
-            }
-        });
-    }
-
-    private void geoLocate(){
-        String searchString = mSearchText.getText().toString();
-
-        Geocoder geocoder = new Geocoder(MapsActivity.this);
-        List<Address> list = new ArrayList<>();
-        try{
-            list = geocoder.getFromLocationName(searchString, 1);
-        }catch (IOException e){
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
-        }
-
-        if(list.size() > 0){
-            Address address = list.get(0);
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), 16);
-        }
-    }
 
     private void moveCamera(LatLng latLng, float zoom){
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
     }
 
     public void openMemoryActivity(LatLng point) {
@@ -191,9 +191,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    openActivity(MapsActivity.class);
-                    break;
                 case R.id.navigation_dashboard:
                     openActivity(DashboardActivity.class);
                     break;
@@ -376,7 +373,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
         if(EasyPermissions.hasPermissions(this, perms)) {
             mMap.setMyLocationEnabled(true);
-            init();
         } else {
             EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
         }

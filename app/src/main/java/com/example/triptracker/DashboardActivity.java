@@ -44,9 +44,6 @@ public class DashboardActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     openActivity(MapsActivity.class);
                     return true;
-                case R.id.navigation_dashboard:
-                    openActivity(DashboardActivity.class);
-                    return true;
                 case R.id.navigation_settings:
                     openActivity(SettingsActivity.class);
                     return true;
@@ -153,8 +150,12 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
-//    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(DashboardActivity.this, MapsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
-        android:paddingBottom="50dp"
+        android:paddingBottom="120dp"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
         android:scrollbars="vertical"

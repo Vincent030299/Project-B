@@ -53,9 +53,6 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     openActivity(DashboardActivity.class);
                     return true;
-                case R.id.navigation_settings:
-                    openActivity(SettingsActivity.class);
-                    return true;
             }
             return false;
         }
@@ -74,7 +71,16 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
-    
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SettingsActivity.this, MapsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);

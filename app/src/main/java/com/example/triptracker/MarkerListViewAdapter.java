@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MarkerListViewAdapter extends BaseAdapter {
@@ -71,6 +72,16 @@ public class MarkerListViewAdapter extends BaseAdapter {
         final View singleMarker;
 
         singleMarker = layoutInflater.inflate(R.layout.markerlistitem, parent, false);
+
+
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            TextView markerNameColor = singleMarker.findViewById(R.id.markerName);
+            markerNameColor.setTextColor(Color.rgb(20,145,218));
+        }
+
 
         deleteMarkerBtn = singleMarker.findViewById(R.id.delete);
         markerName = singleMarker.findViewById(R.id.markerName);

@@ -96,6 +96,7 @@ public class SettingsActivity extends AppCompatActivity {
         if(useDarkTheme) {
             setTheme(R.style.AppThemeNight);
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         view = this.getWindow().getDecorView();

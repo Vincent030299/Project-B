@@ -338,7 +338,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             openMemory.putExtra("date", dbMarkerInfo.getString(3));
             openMemory.putExtra("location", markerLoc);
             openMemory.putExtra("color", dbMarkerInfo.getInt(6));
-            Toast.makeText(getApplicationContext(), Integer.toString(dbMarkerInfo.getInt(6)), Toast.LENGTH_SHORT).show();
             startActivity(openMemory);
         }
 

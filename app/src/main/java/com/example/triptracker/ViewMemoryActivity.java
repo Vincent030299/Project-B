@@ -179,7 +179,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     singleVideoFragment.setArguments(fragmentArgs);
                     memoryViewMediaFiles.add(singleVideoFragment);
                     memoryImagesUris.add(Uri.parse(memoryVideos.get(i)));
-                    videosUris.add(Uri.parse(memoryImages.get(i)));
+                    videosUris.add(Uri.parse(memoryVideos.get(i)));
                 }
             }
         }
@@ -198,9 +198,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryDotsIndicator.setFillColor(Color.rgb(20,145,218));
         viewMemoryDotsIndicator.setRadius(8.0F);
         viewMemoryDotsIndicator.setStrokeColor(Color.rgb(20,145,218));
-        viewMemoryDotsIndicator.setVisibility(View.INVISIBLE);
-        viewMemoryMediaSlider.setVisibility(View.INVISIBLE);
-        viewMemoryOptionsTab.setVisibility(View.INVISIBLE);
+        viewMemoryOptionsTab.getBackground().setAlpha(75);
         toolTipButton.setVisibility(View.INVISIBLE);
         viewMemoryDotsIndicator.setViewPager(viewMemoryMediaSlider);
         viewMemoryDescription.setMovementMethod(new ScrollingMovementMethod());
@@ -304,6 +302,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
             viewMemoryDotsIndicator.setVisibility(View.VISIBLE);
             viewMemoryMediaSlider.setVisibility(View.VISIBLE);
             viewMemoryOptionsTab.setVisibility(View.VISIBLE);
+            viewMemoryOptionsTab.getBackground().setAlpha(75);
             FragmentTransaction fragmentTransaction = viewMemoryFragmentManager.beginTransaction();
             fragmentTransaction.hide(viewmemoryMapFragment);
             fragmentTransaction.commit();

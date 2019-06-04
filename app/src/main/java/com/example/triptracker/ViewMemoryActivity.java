@@ -236,6 +236,9 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                             case R.id.shareInstagram:
                                 shareMemory("instagram");
                                 return true;
+                            case R.id.shareWhatsapp:
+                                shareMemory("whatsapp");
+                                return true;
                         }
                         return false;
                     }
@@ -404,7 +407,10 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     ApplicationInfo info = getPackageManager().
                             getApplicationInfo("com.instagram.android", 0);
                     shareInstagram.setPackage("com.instagram.android");
-
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("title + description", memoryTitle + " \n" + memoryDescription);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getApplicationContext(), "Title and description added to clipboard", Toast.LENGTH_LONG).show();
                     if (!memoryImages.isEmpty()) {
                         shareInstagram.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
                         shareInstagram.setType("image/jpeg");
@@ -419,6 +425,33 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 } catch (PackageManager.NameNotFoundException e) {
                     Toast.makeText(getApplicationContext(), "You don't have Instagram installed on your device.", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case "whatsapp":
+                try {
+                    Intent shareWhatsapp = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ApplicationInfo info = getPackageManager().
+                            getApplicationInfo("com.whatsapp", 0);
+                    shareWhatsapp.setPackage("com.whatsapp");
+
+                    if (!memoryImages.isEmpty()) {
+                        shareWhatsapp.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareWhatsapp.setType("image/jpeg");
+                    }
+
+                    else if (!memoryVideos.isEmpty()) {
+                        shareWhatsapp.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
+                        shareWhatsapp.setType("video/*");
+                    }
+                    String whatsAppShareString = memoryTitle + "," + memoryDescription;
+                    shareWhatsapp.putExtra(Intent.EXTRA_TEXT, whatsAppShareString);
+                    shareWhatsapp.setType("text/plain");
+
+                    startActivity(shareWhatsapp);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "You don't have whatsapp installed on your device.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
         }
     }
 

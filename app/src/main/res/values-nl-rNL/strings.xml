@@ -13,6 +13,12 @@
     <string name="hint_memory_title">Titel</string>
     <string name="media_files">Media bestanden</string>
     <string name="create_memory">Maak herinnering</string>
+    <string name="share_on_whatsapp">Deel op Whatsapp</string>
+    <string name="share_on_twitter">Deel op Twitter</string>
+    <string name="share_on_snapchat">Deel op Snapchat</string>
+    <string name="share_on_instagram">Deel op Instagram</string>
+    <string name="share_on_gmail">Deel op GMail</string>
+    <string name="share_on_facebook">Deel op Facebook</string>
     <string name="title_dashboard">Herinneringen</string>
     <string name="searchHint">Vul een adres, stad, of postcode in</string>
     <string name="custom_marker_name">Marker naam</string>

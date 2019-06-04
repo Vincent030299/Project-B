@@ -44,9 +44,6 @@ public class DashboardActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     openActivity(MapsActivity.class);
                     return true;
-                case R.id.navigation_dashboard:
-                    openActivity(DashboardActivity.class);
-                    return true;
                 case R.id.navigation_settings:
                     openActivity(SettingsActivity.class);
                     return true;
@@ -104,18 +101,21 @@ public class DashboardActivity extends AppCompatActivity {
                                 sortName.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 sortName.putExtra("name","name");
                                 getApplicationContext().startActivity(sortName);
+                                finish();
                                 break;
                             case R.id.date:
                                 Intent sortDate = new Intent(getApplicationContext(), DashboardActivity.class);
                                 sortDate.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 sortDate.putExtra("date","date");
                                 getApplicationContext().startActivity(sortDate);
+                                finish();
                                 break;
                             case R.id.description:
                                 Intent sortDescription = new Intent(getApplicationContext(), DashboardActivity.class);
                                 sortDescription.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 sortDescription.putExtra("description","description");
                                 getApplicationContext().startActivity(sortDescription);
+                                finish();
                                 break;
                         }
                         return false;
@@ -153,8 +153,13 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        Toast.makeText(getApplicationContext(), "Please use the navigation bar to navigate", Toast.LENGTH_LONG).show();
-//    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(DashboardActivity.this, MapsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
 }

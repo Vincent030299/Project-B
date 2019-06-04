@@ -176,6 +176,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery(query, null);
         return data;
     }
+
+    public Cursor getDataOrderDate(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_MEMORY_DATE + " ASC";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public Cursor getDataOrderDescription(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_MEMORY_DESCRIPTION + " ASC";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public Cursor getDataOrderName(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_MEMORY_NAME + " ASC";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
     public Cursor getSingleMemoryData(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + "ID" + " = " + id;
@@ -253,6 +275,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(deleteImages);
         db.execSQL(deleteVideos);
         db.execSQL(deleteTakenImages);
+    }
+
+    public void deleteOldData(String mediaUri, int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String deleteImage = "DELETE FROM " + IMAGE_NAME + " WHERE " + COL_IMAGE_URI + " = ? AND " + COL_MEMORY_ID + " = " + id;
+        String deleteVideo = "DELETE FROM " + VIDEO_NAME + " WHERE " + COL_VIDEO_URI + " = ? AND " + COL_MEMORY_ID + " = " + id;
+        db.execSQL(deleteImage, new String[]{mediaUri});
+        db.execSQL(deleteVideo, new String[]{mediaUri});
+    }
+
+    public void updateMediaFiles(int id,ArrayList<Uri> images, ArrayList<Uri> videos){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = " + id;
+        Cursor data = db.rawQuery(query, null);
+
+        if (!images.isEmpty()) {
+            for (int x = 0; x < images.size(); x++) {
+                ContentValues imageValues = new ContentValues();
+                imageValues.put(COL_IMAGE_URI, images.get(x).toString());
+                if (data.moveToFirst()){
+                    imageValues.put(COL_MEMORY_ID, data.getInt(0));
+                }
+                db.insert(IMAGE_NAME, null, imageValues);
+            }
+        }
+
+        if (!videos.isEmpty()) {
+            for (int x = 0; x < videos.size(); x++) {
+                Log.d("this is the video strin", videos.get(x).toString());
+                ContentValues videoValues = new ContentValues();
+                videoValues.put(COL_VIDEO_URI, videos.get(x).toString());
+                if (data.moveToFirst()){
+                    videoValues.put(COL_MEMORY_ID, data.getInt(0));
+                }
+
+                db.insert(VIDEO_NAME, null, videoValues);
+            }
+        }
     }
 
     public Cursor getImages(int id){

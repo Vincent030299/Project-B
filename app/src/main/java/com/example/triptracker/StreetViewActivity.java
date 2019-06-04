@@ -31,16 +31,15 @@ public class StreetViewActivity extends FragmentActivity implements OnStreetView
     @Override
     public void onStreetViewPanoramaReady(final StreetViewPanorama streetViewPanorama) {
         final LatLng viewLocation = getIntent().getParcelableExtra("memory location");
-        streetViewPanorama.setPosition(viewLocation,20,StreetViewSource.OUTDOOR);
+        streetViewPanorama.setPosition(viewLocation,StreetViewSource.OUTDOOR);
+        streetViewPanorama.setUserNavigationEnabled(true);
+
         streetViewPanorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
             @Override
             public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
                 if(streetViewPanoramaLocation==null){
                     finish();
                     Toast.makeText(getApplicationContext(), "This feature is not available in this location", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    streetViewPanorama.setPosition(viewLocation,20,StreetViewSource.OUTDOOR);
                 }
             }
         });

@@ -52,6 +52,8 @@
         </activity>
         <activity android:name=".ViewMemoryActivity" />
         <activity android:name=".StreetViewActivity" />
+        <activity android:name=".FullSizeMediaFiles"
+            android:theme="@style/AppTheme.PopUpTheme"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

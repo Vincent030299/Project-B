@@ -517,9 +517,15 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         deleteMediaBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent singleMemory = getIntent();
+                DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+                Integer id = singleMemory.getIntExtra("id", 0);
+                db.deleteOldData(chosenViewsArrayList.get(position).getArguments().getString("the image"),id);
+                db.deleteOldData(chosenViewsArrayList.get(position).getArguments().getString("the video"),id);
                 chosenViewsArrayList.remove(position);
                 chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
                 createMemorySlider.setAdapter(chosenViewsAdapter);
+
                 Toast.makeText(getApplicationContext(), "Chosen media file deleted successfully", Toast.LENGTH_SHORT).show();
                 if (chosenViewsArrayList.isEmpty()){
                     mapViewVisibility(true);
@@ -601,6 +607,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             Integer id = singleMemory.getIntExtra("id", 0);
             try{
                 memoryDatabase.updateName(currentMemoryTitle,id, currentMemoryDate, currentMemoryDescription,point.latitude, point.longitude, color,feeling,feelingDescription);
+                memoryDatabase.updateMediaFiles(id,imageUri,recordedVideoUri);
                 Toast.makeText(getApplicationContext(), "Memory updated successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <VideoView
@@ -10,6 +10,51 @@
         android:id="@+id/chosenVideoFrag"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/customMediaPLayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/vpi__background_holo_dark"
+        android:padding="3dp">
+
+        <ImageButton
+            android:id="@+id/rewindbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/playBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/rewindbtn"
+            android:background="#00000000"/>
+        <ImageButton
+            android:id="@+id/forwardBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/playBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/fastforwardbtn"
+            android:background="#00000000" />
+        <ImageButton
+            android:id="@+id/playBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rewindbtn"
+            app:layout_constraintEnd_toStartOf="@+id/forwardBtn"
+            android:src="@drawable/videoplaybtn"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:maxHeight="40dp"
+            android:background="#00000000"
+            />
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

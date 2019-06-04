@@ -593,6 +593,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             Integer id = singleMemory.getIntExtra("id", 0);
             try{
                 memoryDatabase.updateName(currentMemoryTitle,id, currentMemoryDate, currentMemoryDescription,point.latitude, point.longitude, color,feeling,feelingDescription);
+                memoryDatabase.updateMediaFiles(id,imageUri,recordedVideoUri,imageBitmaps);
                 Toast.makeText(getApplicationContext(), "Memory updated successfully", Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);

@@ -255,6 +255,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(deleteTakenImages);
     }
 
+    public void updateMediaFiles(int id,ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String deleteImages = "DELETE FROM " + IMAGE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+        String deleteVideos = "DELETE FROM " + VIDEO_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+        String deleteTakenImages = "DELETE FROM " + IMAGE_CAPTURE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+        db.execSQL(deleteImages);
+        db.execSQL(deleteVideos);
+        db.execSQL(deleteTakenImages);
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = " + id;
+        Cursor data = db.rawQuery(query, null);
+
+        if (!images.isEmpty()) {
+            for (int x = 0; x < images.size(); x++) {
+                ContentValues imageValues = new ContentValues();
+                imageValues.put(COL_IMAGE_URI, images.get(x).toString());
+                if (data.moveToFirst()){
+                    imageValues.put(COL_MEMORY_ID, data.getInt(0));
+                }
+                db.insert(IMAGE_NAME, null, imageValues);
+            }
+        }
+
+        if (!videos.isEmpty()) {
+            for (int x = 0; x < videos.size(); x++) {
+                Log.d("this is the video strin", videos.get(x).toString());
+                ContentValues videoValues = new ContentValues();
+                videoValues.put(COL_VIDEO_URI, videos.get(x).toString());
+                if (data.moveToFirst()){
+                    videoValues.put(COL_MEMORY_ID, data.getInt(0));
+                }
+
+                db.insert(VIDEO_NAME, null, videoValues);
+            }
+        }
+
+        if (!imageCaptures.isEmpty()) {
+            for (int x = 0; x < imageCaptures.size(); x++) {
+                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
+                imageCaptures.get(x).compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
+                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
+
+                ContentValues imageCaptureValues = new ContentValues();
+                imageCaptureValues.put(COL_IMAGE_CAPTURE_BITMAP, takenImageByteArray);
+                if (data.moveToFirst()){
+                    imageCaptureValues.put(COL_MEMORY_ID, data.getInt(0));
+                }
+                db.insert(IMAGE_CAPTURE_NAME, null, imageCaptureValues);
+            }
+        }
+    }
+
     public Cursor getImages(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + IMAGE_NAME +

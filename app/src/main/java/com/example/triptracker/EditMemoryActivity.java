@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -82,7 +83,8 @@ these links helped with learning to be able to write the code for this class
     https://www.youtube.com/watch?v=LpL9akTG4hI
 */
 public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCallback{
-
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
     private GoogleMap mMap;
     private LatLng point;
     ViewPager createMemorySlider;
@@ -140,6 +142,12 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+
+        if(useDarkTheme) {
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_memory);
         takenPictureUri = null;

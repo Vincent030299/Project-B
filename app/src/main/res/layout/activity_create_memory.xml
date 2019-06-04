@@ -173,6 +173,22 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/optionsTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/vpi__background_holo_dark"
+                android:gravity="end">
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/deleteMediaBtn"
+                    android:layout_width="25dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="end"
+                    android:background="#00000000"
+                    android:src="@drawable/trash_btn" />
+            </LinearLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/memoryTitle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -191,7 +207,7 @@
                     android:layout_height="match_parent"
                     android:inputType="text"
                     android:padding="3dp"
-                    android:textColor="@color/blueapp"
+                    android:textColor="?attr/colorAccent"
                     android:textStyle="bold" />
 
             </android.support.design.widget.TextInputLayout>
@@ -202,7 +218,6 @@
                 android:layout_width="350dp"
                 android:layout_height="180dp"
                 android:hint="@string/hint_memory_description"
-                android:theme="@style/AppThemeBlue"
                 android:textColorHint="@color/blueapp"
                 app:boxStrokeColor="@color/blueapp">
 
@@ -210,7 +225,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textMultiLine"
-                    android:textColor="@color/blueapp"
+                    android:textColor="?attr/colorAccent"
                     />
 
             </android.support.design.widget.TextInputLayout>
@@ -296,12 +311,13 @@
             <ImageButton
                 android:id="@+id/customMarkerBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:adjustViewBounds="true"
                 android:background="#00000000"
                 android:maxHeight="25dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/custom_marker_btn"
+                android:layout_marginRight="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -311,7 +327,23 @@
         android:id="@+id/toolTipButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/ic_info_outline_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TopBar" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="start|center"-->
+        <!--android:text="Create Memory"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold" />-->
 </android.support.constraint.ConstraintLayout>

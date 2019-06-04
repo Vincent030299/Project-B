@@ -5,26 +5,32 @@
         android:id="@+id/shareTwitter"
         android:checkable="false"
         android:enabled="true"
-        android:title="Share on Twitter"
+        android:title="@string/share_on_twitter"
         android:visible="true" />
 
     <item
         android:id="@+id/shareEmail"
         android:checkable="false"
         android:enabled="true"
-        android:title="Share on GMail"
+        android:title="@string/share_on_gmail"
         android:visible="true" />
 
     <item
         android:id="@+id/shareFacebook"
         android:checkable="false"
         android:enabled="true"
-        android:title="Share on Facebook"
+        android:title="@string/share_on_facebook"
         android:visible="true"  />
     <item
         android:id="@+id/shareInstagram"
         android:checkable="false"
         android:enabled="true"
-        android:title="Share on Instagram"
+        android:title="@string/share_on_instagram"
+        android:visible="true" />
+    <item
+        android:id="@+id/shareWhatsapp"
+        android:checkable="false"
+        android:enabled="true"
+        android:title="@string/share_on_whatsapp"
         android:visible="true"  />
 </menu>

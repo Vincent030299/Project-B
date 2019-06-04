@@ -279,12 +279,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updateMediaFiles(int id,ArrayList<Uri> images, ArrayList<Uri> videos, ArrayList<Bitmap> imageCaptures){
         SQLiteDatabase db = this.getWritableDatabase();
-        String deleteImages = "DELETE FROM " + IMAGE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
-        String deleteVideos = "DELETE FROM " + VIDEO_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
-        String deleteTakenImages = "DELETE FROM " + IMAGE_CAPTURE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
-        db.execSQL(deleteImages);
-        db.execSQL(deleteVideos);
-        db.execSQL(deleteTakenImages);
+//        String deleteImages = "DELETE FROM " + IMAGE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+//        String deleteVideos = "DELETE FROM " + VIDEO_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+//        String deleteTakenImages = "DELETE FROM " + IMAGE_CAPTURE_NAME + " WHERE " + COL_MEMORY_ID + " = " + id;
+//        db.execSQL(deleteImages);
+//        db.execSQL(deleteVideos);
+//        db.execSQL(deleteTakenImages);
 
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = " + id;
         Cursor data = db.rawQuery(query, null);

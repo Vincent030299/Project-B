@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:text="Night Mode"
-        android:textColor="?attr/colorAccent"
+        android:textColor="@color/blueapp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/markersList" />
 
@@ -57,12 +57,14 @@
         app:counterMaxLength="16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:counterTextAppearance="@style/counterTextAppearance">
+        app:counterTextAppearance="@style/counterTextAppearance"
+        android:theme="@style/AppThemeBlue">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/blueapp"/>
     </android.support.design.widget.TextInputLayout>
 
     <ImageView

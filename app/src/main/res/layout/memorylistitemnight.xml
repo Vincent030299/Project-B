@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="75dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:theme="@style/ListItems">
+    android:orientation="horizontal">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/memoryInformation"
@@ -19,7 +18,7 @@
             android:id="@+id/singleMemoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/blueapp"
             android:textSize="15sp"
             android:textStyle="bold"
             android:visibility="visible"
@@ -32,7 +31,7 @@
             android:id="@+id/singleMemoryDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/blueapp"
             android:textSize="12sp"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"

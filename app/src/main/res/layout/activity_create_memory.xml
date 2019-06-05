@@ -76,8 +76,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 android:text="Add media files"
-                android:textColor="?attr/colorAccent"
-                android:textColorLink="?attr/colorAccent"
+                android:textColor="@color/blueapp"
+                android:textColorLink="@color/blueapp"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -202,13 +202,14 @@
                 android:layout_height="180dp"
                 android:hint="@string/hint_memory_description"
                 android:textColorHint="@color/blueapp"
-                app:boxStrokeColor="@color/blueapp">
+                app:boxStrokeColor="@color/blueapp"
+                android:theme="@style/AppThemeBlue">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textMultiLine"
-                    android:textColor="?attr/colorAccent"
+                    android:textColor="@color/blueapp"
                     />
 
             </android.support.design.widget.TextInputLayout>

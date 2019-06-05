@@ -1,6 +1,8 @@
 package com.example.triptracker;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.media.Image;
 import android.content.SharedPreferences;
@@ -11,19 +13,24 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -35,8 +42,13 @@ public class SettingsActivity extends AppCompatActivity {
     Switch nightMode;
     View view;
     TextView text;
+    private ListView markerList;
+    private ArrayList<String> markerNames;
+    private ArrayList<Integer> markerColors;
+    private ArrayList<Integer> markerIds;
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_THEME = "dark_theme";
+    protected MarkerListViewAdapter markerListViewAdapter;
 
 
     private Integer markerColor;
@@ -90,11 +102,35 @@ public class SettingsActivity extends AppCompatActivity {
         if(useDarkTheme) {
             setTheme(R.style.AppThemeNight);
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         view = this.getWindow().getDecorView();
         text = findViewById(R.id.message);
 
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+        markerList = findViewById(R.id.markersList);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        Cursor markers = databaseHelper.getCustomMarkers();
+        markerNames = new ArrayList<>();
+        markerColors = new ArrayList<>();
+        markerIds = new ArrayList<>();
+
+
+        while(markers.moveToNext()){
+            Integer markerId = markers.getInt(0);
+            String markerName = markers.getString(1);
+            Integer markerColor = markers.getInt(2);
+            markerNames.add(markerName);
+            markerColors.add(markerColor);
+            markerIds.add(markerId);
+        }
+        markerListViewAdapter = new MarkerListViewAdapter(getApplicationContext(),markerNames,markerColors,markerIds,getSupportFragmentManager());
+        markerList.setAdapter(markerListViewAdapter);
+
+        ViewGroup.LayoutParams params = markerList.getLayoutParams();
 
         nightMode = findViewById(R.id.nightModeSwitch);
         nightMode.setChecked(useDarkTheme);
@@ -105,7 +141,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         final TextInputLayout markerName = findViewById(R.id.custom_marker_name);
 
@@ -139,13 +174,17 @@ public class SettingsActivity extends AppCompatActivity {
         saveMarkerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseHelper customMarkerDatabase=new DatabaseHelper(getApplicationContext());
-                if(customMarkerDatabase.addCustomMarker(markerName.getEditText().getText().toString(), markerColor)) {
-                    Toast.makeText(getApplicationContext(), "Marker succesfully saved", Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(getIntent());
+                DatabaseHelper customMarkerDatabase = new DatabaseHelper(getApplicationContext());
+                if(markerName.getEditText().getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please give the marker a name", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Marker unsuccesfully saved", Toast.LENGTH_SHORT).show();
+                    if (customMarkerDatabase.addCustomMarker(markerName.getEditText().getText().toString(), markerColor)) {
+                        Toast.makeText(getApplicationContext(), "Marker succesfully saved", Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(getIntent());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Marker unsuccesfully saved", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }

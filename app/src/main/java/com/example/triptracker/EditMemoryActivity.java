@@ -105,14 +105,14 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private ArrayList<Bitmap> imageBitmaps= new ArrayList<>();
     private int currentDay,currentMonth,currentYear;
     private Fragment mapFragment;
-    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout,optionsTab,switchAndMediaLayout;
+    private LinearLayout pageIndicatorView,uploadMediaFilesMenu,mapLayout,mediaFilesLayout;
     private FragmentManager createMemoryFragmentManager;
     private android.support.v4.app.Fragment createMemoryMapView;
     private Uri takenPictureUri;
     private String markerColor = "red";
     private Integer color;
-    private int screenHeightInPx;
-    private ConstraintLayout createMemoryLayout;
+    private int screenHeight;
+    private ConstraintLayout createMemoryLayout,optionsTab,switchAndMediaLayout;
     private int feeling = 1000;
     private String feelingDescription;
     private String takenPicturePath;
@@ -229,33 +229,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         pageIndicatorView.setVisibility(View.INVISIBLE);
 
         //Adjusting the layout according to the used phone.
-        if(1920-getResources().getDisplayMetrics().heightPixels >= 100){
-            screenHeight = getResources().getDisplayMetrics().heightPixels;
-            LinearLayout.LayoutParams inputLayoutParams = new LinearLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().heightPixels*0.2));
-            ConstraintLayout.LayoutParams mapFragmentLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels,(int)(getResources().getDisplayMetrics().heightPixels*0.26));
-            ConstraintLayout.LayoutParams mediaFilesLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int)(getResources().getDisplayMetrics().heightPixels*0.26));
-            ConstraintLayout.LayoutParams uploadBtnsLayoutParams = new ConstraintLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().density*40));
-            mapFragmentLayoutParams.topToBottom = R.id.TopBar;
-            mapFragmentLayoutParams.endToEnd = R.id.createMemoryLayout;
-            mapFragmentLayoutParams.startToStart = R.id.createMemoryLayout;
-
-            mediaFilesLayoutParams.topToBottom = R.id.TopBar;
-            mediaFilesLayoutParams.startToStart = R.id.createMemoryLayout;
-            mediaFilesLayoutParams.endToEnd = R.id.createMemoryLayout;
-
-            uploadBtnsLayoutParams.startToStart = R.id.createMemoryLayout;
-            uploadBtnsLayoutParams.endToEnd = R.id.createMemoryLayout;
-            uploadBtnsLayoutParams.topToBottom = R.id.pageIndicator;
-
-            mapLayout.setLayoutParams(mapFragmentLayoutParams);
-            memoryDescription.setLayoutParams(inputLayoutParams);
-            mediaFilesLayout.setLayoutParams(mediaFilesLayoutParams);
-            switchAndMediaLayout.setLayoutParams(uploadBtnsLayoutParams);
-            memoryDescription.requestLayout();
-            mapLayout.requestLayout();
-            mediaFilesLayout.requestLayout();
-            switchAndMediaLayout.requestLayout();
-        }
+        adjustLayouts();
 
         //getting the values of the current date
         currentDay=memoryDate.getDayOfMonth();
@@ -352,12 +326,12 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mapMediaToggle.isChecked()){
-
                     mapViewVisibility(false);
-
+                    mapMediaToggle.setText("Map");
                 }
                 else{
                     mapViewVisibility(true);
+                    mapMediaToggle.setText("Media files");
                 }
             }
         });
@@ -489,6 +463,37 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         });
     }
 
+    private void adjustLayouts() {
+        if(1920-getResources().getDisplayMetrics().heightPixels >= 100){
+            screenHeight = getResources().getDisplayMetrics().heightPixels;
+            LinearLayout.LayoutParams inputLayoutParams = new LinearLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().heightPixels*0.19));
+            ConstraintLayout.LayoutParams mapFragmentLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels,(int)(getResources().getDisplayMetrics().heightPixels*0.26));
+            ConstraintLayout.LayoutParams mediaFilesLayoutParams = new ConstraintLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int)(getResources().getDisplayMetrics().heightPixels*0.26));
+            ConstraintLayout.LayoutParams uploadBtnsLayoutParams = new ConstraintLayout.LayoutParams((int)(getResources().getDisplayMetrics().widthPixels*0.972),(int)(getResources().getDisplayMetrics().density*40));
+            mapFragmentLayoutParams.topToBottom = R.id.TopBar;
+            mapFragmentLayoutParams.endToEnd = R.id.createMemoryLayout;
+            mapFragmentLayoutParams.startToStart = R.id.createMemoryLayout;
+
+            mediaFilesLayoutParams.topToBottom = R.id.TopBar;
+            mediaFilesLayoutParams.startToStart = R.id.createMemoryLayout;
+            mediaFilesLayoutParams.endToEnd = R.id.createMemoryLayout;
+
+            uploadBtnsLayoutParams.startToStart = R.id.createMemoryLayout;
+            uploadBtnsLayoutParams.endToEnd = R.id.createMemoryLayout;
+            uploadBtnsLayoutParams.topToBottom = R.id.pageIndicator;
+
+            mapLayout.setLayoutParams(mapFragmentLayoutParams);
+            memoryDescription.setLayoutParams(inputLayoutParams);
+            mediaFilesLayout.setLayoutParams(mediaFilesLayoutParams);
+            switchAndMediaLayout.setLayoutParams(uploadBtnsLayoutParams);
+            memoryDescription.requestLayout();
+            mapLayout.requestLayout();
+            mediaFilesLayout.requestLayout();
+            switchAndMediaLayout.requestLayout();
+        }
+
+    }
+
     private void createToolTip(View v) {
         Button btn = (Button)v;
         Tooltip tooltip = new Tooltip.Builder(btn)
@@ -497,6 +502,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 .setGravity(Gravity.BOTTOM)
                 .setCornerRadius(8f)
                 .setDismissOnClick(true)
+                .setCancelable(true)
                 .show();
 
     }
@@ -540,6 +546,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             pageIndicatorView.setVisibility(View.INVISIBLE);
             mediaFilesLayout.setVisibility(View.INVISIBLE);
             optionsTab.setVisibility(View.INVISIBLE);
+            toolTip.setVisibility(View.VISIBLE);
             FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
             fragmentTransaction.show(createMemoryMapView);
             fragmentTransaction.commit();
@@ -550,6 +557,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 optionsTab.setVisibility(View.INVISIBLE);
                 pageIndicatorView.setVisibility(View.VISIBLE);
                 mediaFilesLayout.setVisibility(View.VISIBLE);
+                toolTip.setVisibility(View.INVISIBLE);
                 FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
                 fragmentTransaction.hide(createMemoryMapView);
                 fragmentTransaction.commit();
@@ -559,12 +567,12 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 pageIndicatorView.setVisibility(View.VISIBLE);
                 mediaFilesLayout.setVisibility(View.VISIBLE);
                 optionsTab.setVisibility(View.VISIBLE);
+                toolTip.setVisibility(View.INVISIBLE);
                 FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
                 fragmentTransaction.hide(createMemoryMapView);
                 fragmentTransaction.commit();
                 mapMediaToggle.setChecked(true);
             }
-
         }
     }
 
@@ -578,16 +586,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         }
         else if (memoryDescription.getEditText().getText().length()==0){
             Toast.makeText(getApplicationContext(),"Please enter a description",Toast.LENGTH_SHORT).show();
-        }
-        else if ((chosenDay>currentDay & chosenMonth==currentMonth & currentYear==chosenYear)
-                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
-                |(chosenDay==currentDay & currentMonth==chosenMonth & chosenYear>currentYear)
-                |(chosenDay==currentDay & chosenMonth>currentMonth & chosenYear>currentYear)
-                |(chosenDay>currentDay & chosenMonth>currentMonth & chosenYear==currentYear)
-                |(chosenDay>currentDay & chosenMonth<=currentMonth & chosenYear>currentYear)
-                |(chosenDay>currentDay & chosenMonth>currentMonth & chosenYear>currentYear))
-        {
-            Toast.makeText(getApplicationContext(),"Please choose another date",Toast.LENGTH_SHORT).show();
         }
         else if(chosenViewsArrayList.size()==0){
             Toast.makeText(getApplicationContext(),"Please choose an image or a video",Toast.LENGTH_SHORT).show();

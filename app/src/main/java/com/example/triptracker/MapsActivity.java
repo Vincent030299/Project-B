@@ -43,6 +43,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
@@ -135,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Check if user has given permissions for FINE_LOCATION and COARSE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return; }
+            return;}
 
         // get initial user location
         Location currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -170,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        createMemoryButton = findViewById(R.id.createMemoryButton);
+
     }
 
 
@@ -206,6 +207,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         requestLocationPermission();
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean useDarkTheme = preferences.getBoolean(PREF_DARK_THEME, false);
+        if(useDarkTheme) {
+            boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources()
+                    .getString(R.string.style_json)));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        }
+
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
@@ -219,17 +232,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+        createMemoryButton = findViewById(R.id.createMemoryButton);
         createMemoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),  String.valueOf(userLocation), Toast.LENGTH_SHORT).show();
                 if(userLocation == null) {
-                    Toast.makeText(getApplicationContext(), "No known location, try turning on GPS", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No known location, try turning on GPS or restarting the application", Toast.LENGTH_SHORT).show();
                 } else {
                     openMemoryActivity(userLocation);
                     Toast.makeText(getApplicationContext(), "Placed marker on current location", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         final DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         Cursor markers = databaseHelper.getData();
@@ -316,6 +332,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerId = dbMarkerInfo.getInt(0);
             Cursor allImagesForMemory = mDataBaseHelper.getImages(markerId);
             Cursor allVideosForMemory = mDataBaseHelper.getVideos(markerId);
+
+            memoryImages.clear();
+            memoryVideos.clear();
+
             while(allImagesForMemory.moveToNext()){
                 String singleImage = allImagesForMemory.getString(1);
                 memoryImages.add(singleImage);

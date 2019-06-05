@@ -154,7 +154,6 @@
             android:adjustViewBounds="true"/>
     </android.support.constraint.ConstraintLayout>
 
-
     <LinearLayout
         android:id="@+id/inputAndDateLayout"
         android:layout_width="wrap_content"
@@ -172,22 +171,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/optionsTab"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/vpi__background_holo_dark"
-                android:gravity="end">
-
-                <android.support.v7.widget.AppCompatImageButton
-                    android:id="@+id/deleteMediaBtn"
-                    android:layout_width="25dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="end"
-                    android:background="#00000000"
-                    android:src="@drawable/trash_btn" />
-            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/memoryTitle"
@@ -290,7 +273,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:padding="8dp"
+        android:padding="3dp"
         app:layout_constraintBottom_toTopOf="@+id/mediaFilesLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -302,7 +285,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:background="#00000000"
-            android:maxHeight="25dp"
+            android:maxHeight="40dp"
             android:scaleType="fitCenter"
             android:src="@drawable/backbutton"
             app:layout_constraintStart_toStartOf="parent"
@@ -317,7 +300,7 @@
                 android:maxHeight="25dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/custom_marker_btn"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -327,23 +310,9 @@
         android:id="@+id/toolTipButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/ic_info_outline_black_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TopBar" />
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.018" />
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="start|center"-->
-        <!--android:text="Create Memory"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="24sp"-->
-        <!--android:textStyle="bold" />-->
 </android.support.constraint.ConstraintLayout>

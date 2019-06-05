@@ -136,10 +136,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         closeViewMemory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openDashboard = new Intent(getApplicationContext(),DashboardActivity.class);
-                openDashboard.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish();
-                startActivity(openDashboard);
             }
         });
 
@@ -442,7 +439,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                         shareWhatsapp.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
                         shareWhatsapp.setType("video/*");
                     }
-                    whatsAppShareString = memoryTitle + "," + memoryDescription;
+                    String whatsAppShareString = memoryTitle + "," + memoryDescription;
                     shareWhatsapp.putExtra(Intent.EXTRA_TEXT, whatsAppShareString);
                     shareWhatsapp.setType("text/plain");
 

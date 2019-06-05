@@ -19,7 +19,10 @@
     <string name="share_on_instagram">Deel op Instagram</string>
     <string name="share_on_gmail">Deel op GMail</string>
     <string name="share_on_facebook">Deel op Facebook</string>
-    <string name="searchHint">Voer Adress, Stad of Postcode in</string>
     <string name="title_dashboard">Herinneringen</string>
+    <string name="searchHint">Vul een adres, stad, of postcode in</string>
     <string name="custom_marker_name">Marker naam</string>
+    <string name="other_settings_hint">Overige instellingen</string>
+    <string name="create_marker_hint">Creëer aangepaste marker</string>
+    <string name="my_markers_hint">Mijn markers</string>
 </resources>

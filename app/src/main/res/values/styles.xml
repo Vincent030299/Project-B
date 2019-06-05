@@ -11,6 +11,10 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="counterTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/blueapp</item>
+    </style>
+
     <style name="memoriesTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/white</item>

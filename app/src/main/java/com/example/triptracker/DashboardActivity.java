@@ -101,18 +101,21 @@ public class DashboardActivity extends AppCompatActivity {
                                 sortName.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 sortName.putExtra("name","name");
                                 getApplicationContext().startActivity(sortName);
+                                finish();
                                 break;
                             case R.id.date:
                                 Intent sortDate = new Intent(getApplicationContext(), DashboardActivity.class);
                                 sortDate.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 sortDate.putExtra("date","date");
                                 getApplicationContext().startActivity(sortDate);
+                                finish();
                                 break;
                             case R.id.description:
                                 Intent sortDescription = new Intent(getApplicationContext(), DashboardActivity.class);
                                 sortDescription.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 sortDescription.putExtra("description","description");
                                 getApplicationContext().startActivity(sortDescription);
+                                finish();
                                 break;
                         }
                         return false;
@@ -158,4 +161,5 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
 }

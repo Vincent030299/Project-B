@@ -46,6 +46,7 @@
     <style name="datePickerStyleDark" parent="android:Widget.DatePicker">
         <item name="android:textColorPrimary">@color/white</item>
     </style>
+
     <style name="AppThemeNight" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
@@ -64,7 +65,7 @@
     </style>
 
 
-    <style name="ListviewStyle" parent="android:style/Widget.Material.Light.ListView">    </style>
+    <style name="ListviewStyle" parent="android:style/Widget.Material.Light.ListView"></style>
 
 
     <style name="ListItems" parent="Theme.AppCompat">
@@ -82,5 +83,14 @@
         <item name="colorPrimary">@color/white</item>
 
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -218,4 +218,5 @@
     }
   ]
   </string>
+    <string name="title_activity_edit_marker">EditMarkerActivity</string>
 </resources>

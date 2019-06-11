@@ -32,6 +32,29 @@ public class EditMarkerActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "prefs";
     private static final String PREF_DARK_THEME = "dark_theme";
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    openActivity(MapsActivity.class);
+                    return true;
+                case R.id.navigation_dashboard:
+                    openActivity(DashboardActivity.class);
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    public void openActivity(Class className) {
+        Intent intent = new Intent(this, className);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +64,8 @@ public class EditMarkerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         markerId = intent.getIntExtra("markerId", 0);
 
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         final TextInputLayout markerName = findViewById(R.id.custom_marker_name);
 

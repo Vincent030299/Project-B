@@ -79,9 +79,9 @@
         android:id="@+id/saveMarkerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="56dp"
         android:background="#00000000"
-        android:src="@drawable/add_btn"
+        android:src="@drawable/savememoryiconblue"
         app:layout_constraintStart_toEndOf="@+id/hueBar"
         app:layout_constraintTop_toTopOf="parent" />
 

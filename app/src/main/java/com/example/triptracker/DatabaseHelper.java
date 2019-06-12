@@ -250,7 +250,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public boolean updateMarker(String newName, int id, int newColor){
+    public boolean updateMarker(String newName, int id, Integer newColor){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + CUSTOM_MARKER_TABLE_NAME + " SET " + CUSTOM_MARKER_NAME +
                 " = '" + newName + "'," + CUSTOM_MARKER_COLOR + " = '"+ newColor +

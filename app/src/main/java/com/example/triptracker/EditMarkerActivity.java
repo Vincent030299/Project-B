@@ -79,6 +79,7 @@ public class EditMarkerActivity extends AppCompatActivity {
         while(markers.moveToNext()){
             markerName.getEditText().setText(markers.getString(1));
             Integer color = markers.getInt(2);
+            markerColor = color;
             hueBar.setProgress(color);
             float hsv[] = new float[] {color,100,100};
             int hsvToColor = Color.HSVToColor(hsv);

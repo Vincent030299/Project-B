@@ -202,9 +202,11 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         int year = Integer.parseInt(dates[2]);
 
         memoryTitle.getEditText().setText(title);
-        memoryDescription.getEditText().setText(description);
         memoryDate.updateDate(year,month,day);
-        feelingEmojiBtn.setImageResource(feelingsEmojis[emoji]);
+        memoryDescription.getEditText().setText(description);
+        if(emoji != 1000) {
+            feelingEmojiBtn.setImageResource(feelingsEmojis[emoji]);
+        }
         memoryImages = getIntent().getStringArrayListExtra("images");
         memoryVideos = getIntent().getStringArrayListExtra("videos");
 

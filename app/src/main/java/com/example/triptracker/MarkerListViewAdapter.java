@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -29,13 +30,12 @@ public class MarkerListViewAdapter extends BaseAdapter {
     private static final String PREF_DARK_THEME = "dark_theme";
     ArrayList<String> markerNames;
     private TextView markerName, markerColorView;
-    private ImageButton deleteMarkerBtn;
     private ArrayList<Integer> markerColors;
     private ArrayList<Integer> markerIds;
     private Context context;
     private FragmentManager fragmentManager;
     private float displayWidth;
-    private ImageButton deleteMemoryBtn;
+    private ImageButton deleteMarkerBtn, editMarkerBtn;
 
     public MarkerListViewAdapter(Context context, ArrayList<String> markerNames, ArrayList<Integer> markerColors, ArrayList<Integer> markerIds, FragmentManager fragmentManager) {
         this.markerNames = markerNames;
@@ -90,14 +90,27 @@ public class MarkerListViewAdapter extends BaseAdapter {
         int color = Color.HSVToColor(hsv);
         markerColorView.setBackgroundColor(color);
         markerName.setText(markerNames.get(position));
-        deleteMemoryBtn = singleMarker.findViewById(R.id.delete);
+        deleteMarkerBtn = singleMarker.findViewById(R.id.delete);
 
-        deleteMemoryBtn.setOnClickListener(new View.OnClickListener() {
+        deleteMarkerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDeleteDialog(markerIds.get(position));
             }
         });
+
+        editMarkerBtn = singleMarker.findViewById(R.id.edit);
+
+        editMarkerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context.getApplicationContext(), EditMarkerActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("markerId", markerIds.get(position));
+                context.getApplicationContext().startActivity(intent);
+            }
+        });
+
 
         return singleMarker;
     }

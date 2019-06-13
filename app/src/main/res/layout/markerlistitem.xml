@@ -50,6 +50,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="#00000000"
+            android:maxHeight="42dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/edit_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/delete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="15dp"/>
+
+        <ImageButton
             android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

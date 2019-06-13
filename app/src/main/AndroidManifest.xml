@@ -19,12 +19,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".EditMarkerActivity"
+            android:label="@string/title_activity_edit_marker"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
             android:name=".DashboardActivity"
             android:label="@string/title_activity_dashboard" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".CreateMemoryActivity"
             android:theme="@style/AppTheme.PopUpTheme" />
@@ -54,8 +58,9 @@
         </activity>
         <activity android:name=".ViewMemoryActivity" />
         <activity android:name=".StreetViewActivity" />
-        <activity android:name=".FullSizeMediaFiles"
-            android:theme="@style/AppTheme.PopUpTheme"/>
+        <activity
+            android:name=".FullSizeMediaFiles"
+            android:theme="@style/AppTheme.PopUpTheme" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

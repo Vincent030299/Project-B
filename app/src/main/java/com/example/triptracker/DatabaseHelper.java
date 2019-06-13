@@ -156,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getDataOrderDate(){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_MEMORY_DATE + " ASC";
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_MEMORY_DATE + " DESC";
         Cursor data = db.rawQuery(query, null);
         return data;
     }

@@ -612,6 +612,10 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 resultIntent.putExtra("title", currentMemoryTitle);
                 resultIntent.putExtra("color", color);
                 setResult(RESULT_OK, resultIntent);
+                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();

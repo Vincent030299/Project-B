@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
@@ -124,10 +125,10 @@ public class EditMarkerActivity extends AppCompatActivity {
                 } else {
                     if (customMarkerDatabase.updateMarker(markerName.getEditText().getText().toString(),markerId ,markerColor)) {
                         Toast.makeText(getApplicationContext(), "Marker succesfully saved", Toast.LENGTH_SHORT).show();
+                        Intent openSettings = new Intent(getApplicationContext(), SettingsActivity.class);
+                        openSettings.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(openSettings);
                         finish();
-                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(), "Marker unsuccesfully saved", Toast.LENGTH_SHORT).show();
                     }

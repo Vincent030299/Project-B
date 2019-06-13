@@ -202,9 +202,11 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         int year = Integer.parseInt(dates[2]);
 
         memoryTitle.getEditText().setText(title);
-        memoryDescription.getEditText().setText(description);
         memoryDate.updateDate(year,month,day);
-        feelingEmojiBtn.setImageResource(feelingsEmojis[emoji]);
+        memoryDescription.getEditText().setText(description);
+        if(emoji != 1000) {
+            feelingEmojiBtn.setImageResource(feelingsEmojis[emoji]);
+        }
         memoryImages = getIntent().getStringArrayListExtra("images");
         memoryVideos = getIntent().getStringArrayListExtra("videos");
 
@@ -612,6 +614,10 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 resultIntent.putExtra("title", currentMemoryTitle);
                 resultIntent.putExtra("color", color);
                 setResult(RESULT_OK, resultIntent);
+                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();
@@ -647,14 +653,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
     }
     //starts the activity of taking a pic
     private void takePic(){
-//        ContentValues takenPicInfo = new ContentValues();
-//        takenPicInfo.put(MediaStore.Images.Media.TITLE, "New picture");
-//        takenPicInfo.put(MediaStore.Images.Media.DESCRIPTION, "From camera");
-//        takenPictureUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,takenPicInfo);
-//        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-//        StrictMode.setVmPolicy(builder.build());
-//        takenPictureUri = Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-//                "TripTracker" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
         Intent openCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (openCamera.resolveActivity(getPackageManager()) != null){
             File takenPictureFile = null;
@@ -774,24 +772,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             chosenViewsArrayList.add(chosenImageFragment);
             chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
             createMemorySlider.setAdapter(chosenViewsAdapter);
-
-//            if(data.getExtras()==null){
-//                Toast.makeText(getApplicationContext(),"Please take a picture",Toast.LENGTH_SHORT).show();
-//            }
-//            else{
-//                optionsTab.setVisibility(View.VISIBLE);
-//                imageBitmaps.add((Bitmap) data.getExtras().get("data"));
-//                Bundle args=new Bundle();
-//                ByteArrayOutputStream takenImageOutputStream= new ByteArrayOutputStream();
-//                imageBitmaps.get(imageBitmaps.size()-1).compress(Bitmap.CompressFormat.JPEG,100,takenImageOutputStream);
-//                byte[] takenImageByteArray= takenImageOutputStream.toByteArray();
-//                args.putString("the cam", Base64.encodeToString(takenImageByteArray,Base64.DEFAULT));
-//                CapImageFragment capturedImageFragment= new CapImageFragment();
-//                capturedImageFragment.setArguments(args);
-//                chosenViewsArrayList.add(capturedImageFragment);
-//                chosenViewsAdapter =new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
-//                createMemorySlider.setAdapter(chosenViewsAdapter);
-//            }
         }
         else if (requestCode==RECORD_VIDEO_CODE && resultCode== Activity.RESULT_OK){
             if (data.getData() ==null){

@@ -143,6 +143,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
         memoryListAdapter = new ListViewAdapter(getApplicationContext(),memoryTitles, memoryDates, memoryIds,memoryDiscriptions,memoryFeelingsDescription,memoryFeelings,getSupportFragmentManager());
         memoriesList.setAdapter(memoryListAdapter);
+        memoryListAdapter.notifyDataSetChanged();
     }
 
     public void openActivity(Class className) {

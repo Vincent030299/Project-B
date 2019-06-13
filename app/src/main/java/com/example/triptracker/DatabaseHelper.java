@@ -5,14 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.ContactsContract;
-import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -161,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getDataOrderDate(){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_MEMORY_DATE + " ASC";
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_MEMORY_DATE + " DESC";
         Cursor data = db.rawQuery(query, null);
         return data;
     }
@@ -191,6 +186,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + CUSTOM_MARKER_TABLE_NAME + " WHERE " + CUSTOM_MARKER_NAME + " =?";
         Cursor data = db.rawQuery(query, new String[] {markerName});
+        return data;
+    }
+
+    public Cursor getMarker(Integer id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + CUSTOM_MARKER_TABLE_NAME + " WHERE ID = " + id;
+        Cursor data = db.rawQuery(query, null);
         return data;
     }
 
@@ -246,6 +248,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "' WHERE id = '" + id + "'";
         Log.d(TAG, "updateName: Setting name to " + newName);
         db.execSQL(query);
+    }
+
+    public boolean updateMarker(String newName, int id, Integer newColor){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + CUSTOM_MARKER_TABLE_NAME + " SET " + CUSTOM_MARKER_NAME +
+                " = '" + newName + "'," + CUSTOM_MARKER_COLOR + " = '"+ newColor +
+                "' WHERE id = '" + id + "'";
+        Log.d(TAG, "updateName: Setting name to " + newName);
+        db.execSQL(query);
+        return true;
     }
 
     /**

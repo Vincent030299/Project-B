@@ -18,9 +18,9 @@ public class DeleteMarkerDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("Delete")
-        .setMessage("Are you sure you want to delete this marker?")
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.delete)
+        .setMessage(R.string.delete_marker_sure)
+        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseHelper databaseHelper = new DatabaseHelper(getContext().getApplicationContext());
@@ -32,7 +32,7 @@ public class DeleteMarkerDialog extends AppCompatDialogFragment {
                 getContext().startActivity(openSettings);
             }
         })
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

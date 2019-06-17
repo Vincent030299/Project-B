@@ -145,7 +145,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
         viewMemoryDescription.setText(memoryDescription);
         if(getIntent().getIntExtra("feelingimage", 1000)!= 1000){
             feelingImageView.setImageResource(feelingsEmojis[getIntent().getIntExtra("feelingimage", 1000)]);
-            viewMemoryFeelingDescription.setText("Was feeling " + getIntent().getStringExtra("feelingdesc") + " - ");
+            viewMemoryFeelingDescription.setText(getString(R.string.was_feeling) + " " + getIntent().getStringExtra("feelingdesc") + " - ");
         }
 
         memoryImages = getIntent().getStringArrayListExtra("images");
@@ -257,7 +257,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 }
                 else{
                     viewMemoryMapVisibility(true);
-                    viewMemoryMediaSwitch.setText("Media files");
+                    viewMemoryMediaSwitch.setText(getString(R.string.media_files));
                 }
             }
         });
@@ -344,7 +344,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
                     startActivity(twitter);
                 } catch (PackageManager.NameNotFoundException e) {
-                    Toast.makeText(getApplicationContext(), "You don't have twitter installed on your device.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_twitter), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case "email":
@@ -369,7 +369,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
                     startActivity(shareEmail);
                 } catch (PackageManager.NameNotFoundException e) {
-                    Toast.makeText(getApplicationContext(), "You don't have gmail installed on your device.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_gmail), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case "facebook":
@@ -381,7 +381,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("title + description", memoryTitle + " \n" + memoryDescription);
                     clipboard.setPrimaryClip(clip);
-                    Toast.makeText(getApplicationContext(), "Title and description added to clipboard", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.title_discription_clipboard), Toast.LENGTH_LONG).show();
 
                     if (!memoryImages.isEmpty()) {
                         shareFacebook.putParcelableArrayListExtra(Intent.EXTRA_STREAM, memoryImagesUris);
@@ -395,7 +395,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
                     startActivity(shareFacebook);
                 } catch (PackageManager.NameNotFoundException e) {
-                    Toast.makeText(getApplicationContext(), "You don't have Facebook installed on your device.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_facebook), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case "instagram":
@@ -407,7 +407,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("title + description", memoryTitle + " \n" + memoryDescription);
                     clipboard.setPrimaryClip(clip);
-                    Toast.makeText(getApplicationContext(), "Title and description added to clipboard", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.title_discription_clipboard), Toast.LENGTH_LONG).show();
                     if (!memoryImages.isEmpty()) {
                         shareInstagram.putExtra(Intent.EXTRA_STREAM, memoryImagesUris.get(0));
                         shareInstagram.setType("image/jpeg");
@@ -420,7 +420,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
                     startActivity(shareInstagram);
                 } catch (PackageManager.NameNotFoundException e) {
-                    Toast.makeText(getApplicationContext(), "You don't have Instagram installed on your device.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_instagram), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case "whatsapp":
@@ -445,7 +445,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
                     startActivity(shareWhatsapp);
                 } catch (PackageManager.NameNotFoundException e) {
-                    Toast.makeText(getApplicationContext(), "You don't have whatsapp installed on your device.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_whatsapp), Toast.LENGTH_SHORT).show();
                 }
                 break;
 

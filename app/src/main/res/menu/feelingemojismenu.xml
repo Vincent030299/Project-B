@@ -2,92 +2,92 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="Feeling"
+        android:title="@string/feeling"
         app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/happyEmoji"
-                android:title="Happy"
+                android:title="@string/feeling_happy"
                 android:icon="@drawable/happy_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/blessedEmoji"
-                android:title="Blessed"
+                android:title="@string/feeling_blessed"
                 android:icon="@drawable/blessed_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/lovedEmoji"
-                android:title="Loved"
+                android:title="@string/feeling_loved"
                 android:icon="@drawable/loved_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/hopefulEmoji"
-                android:title="Hopeful"
+                android:title="@string/feeling_hopeful"
                 android:icon="@drawable/hopeful_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/fantasticEmoji"
-                android:title="Fantastic"
+                android:title="@string/feeling_fantastic"
                 android:icon="@drawable/fantastic_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/crazyEmoji"
-                android:title="Crazy"
+                android:title="@string/feeling_crazy"
                 android:icon="@drawable/crazy_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/relaxedEmoji"
-                android:title="Relaxed"
+                android:title="@string/feeling_relaxed"
                 android:icon="@drawable/relaxed_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/sadEmoji"
-                android:title="Sad"
+                android:title="@string/feeling_sad"
                 android:icon="@drawable/sad_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/thankfulEmoji"
-                android:title="Thankful"
+                android:title="@string/feeling_thankful"
                 android:icon="@drawable/thankful_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/tiredEmoji"
-                android:title="Tired"
+                android:title="@string/feeling_tired"
                 android:icon="@drawable/tired_emoji"
                 app:showAsAction="always"
                 />
             <item
                 android:id="@+id/peacefulEmoji"
-                android:title="Peaceful"
+                android:title="@string/feeling_peaceful"
                 android:icon="@drawable/peaceful_emoji"
                 app:showAsAction="always"/>
             <item
                 android:id="@+id/disappointedEmoji"
-                android:title="Disappointed"
+                android:title="@string/feeling_disappointed"
                 android:icon="@drawable/disappointed_emoji"
                 app:showAsAction="always"/>
             <item
                 android:id="@+id/lostEmoji"
-                android:title="Lost"
+                android:title="@string/feeling_lost"
                 android:icon="@drawable/lost_emoji"
                 app:showAsAction="always"/>
             <item
                 android:id="@+id/inspiredEmoji"
-                android:title="Inspired"
+                android:title="@string/feeling_inspired"
                 android:icon="@drawable/inspired_emoji"
                 app:showAsAction="always" />
             <item
                 android:id="@+id/optimisticEmoji"
-                android:title="Optimistic"
+                android:title="@string/feeling_optimistic"
                 android:icon="@drawable/optimistic_emoji"
                 app:showAsAction="always"/>
         </menu>

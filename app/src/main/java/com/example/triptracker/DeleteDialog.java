@@ -16,9 +16,9 @@ public class DeleteDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("Delete")
-        .setMessage("Are you sure you want to delete this memory")
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.delete)
+        .setMessage(R.string.are_you_sure_memory)
+        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseHelper databaseHelper = new DatabaseHelper(getContext().getApplicationContext());
@@ -30,7 +30,7 @@ public class DeleteDialog extends AppCompatDialogFragment {
                 getContext().startActivity(openDashBoard);
             }
         })
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

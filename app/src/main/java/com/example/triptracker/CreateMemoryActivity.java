@@ -475,7 +475,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
     private void createToolTip(View v) {
         Button btn = (Button)v;
         toolTipBuilder = new Tooltip.Builder(btn)
-                .setText("To move the marker simply long-press the marker and drag it to the location you wish.")
+                .setText(R.string.move_marker_tooltip)
                 .setTextColor(Color.BLACK)
                 .setGravity(Gravity.BOTTOM)
                 .setCornerRadius(8f)
@@ -493,7 +493,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 chosenViewsArrayList.remove(position);
                 chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
                 createMemorySlider.setAdapter(chosenViewsAdapter);
-                Toast.makeText(getApplicationContext(), "Chosen media file deleted successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.chosen_media_deleted), Toast.LENGTH_SHORT).show();
                 if (chosenViewsArrayList.isEmpty()){
                     mapViewVisibility(true);
                 }
@@ -543,16 +543,16 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         int chosenMonth= memoryDate.getMonth();
         int chosenYear=memoryDate.getYear();
         if (memoryTitle.getEditText().getText().length()==0 ){
-            Toast.makeText(getApplicationContext(),"Please enter a title",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.please_enter_a_title),Toast.LENGTH_SHORT).show();
         }
         else if (memoryDescription.getEditText().getText().length()==0){
-            Toast.makeText(getApplicationContext(),"Please enter a description",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.please_enter_a_description),Toast.LENGTH_SHORT).show();
         }
         else if(chosenViewsArrayList.size()==0){
-            Toast.makeText(getApplicationContext(),"Please choose an image or a video",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.please_choos_an_image_or_a_video),Toast.LENGTH_SHORT).show();
         }
         else if (memoryTitle.getEditText().getText().length()>20){
-            Toast.makeText(getApplicationContext(), "The title is too long, try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.title_too_long), Toast.LENGTH_SHORT).show();
         }
         else {
             String currentMemoryTitle=memoryTitle.getEditText().getText().toString();
@@ -563,7 +563,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 feelingDescription= "";
             }
             if(memoryDatabase.addData(currentMemoryTitle, currentMemoryDate, currentMemoryDescription, imageUri, recordedVideoUri,point.latitude, point.longitude, color,feeling,feelingDescription)){
-                Toast.makeText(getApplicationContext(), "Memory saved successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.memory_saved), Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("location", point);
                 resultIntent.putExtra("title", currentMemoryTitle);
@@ -573,7 +573,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
             }
             else{
-                Toast.makeText(getApplicationContext(), "Failed to save memory", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.failed_memory), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -613,7 +613,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 takenPictureFile = createTakenPictureFile();
             }
             catch (IOException ex){
-                Toast.makeText(getApplicationContext(), "Failed creating an image file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.failed_image_file), Toast.LENGTH_SHORT).show();
             }
             if (takenPictureFile != null){
                 takenPictureUri = FileProvider.getUriForFile(getApplicationContext(), "com.example.android.fileprovider", takenPictureFile);
@@ -680,7 +680,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
 
             }
             else{
-                Toast.makeText(getApplicationContext(),"please choose an image",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.choose_image),Toast.LENGTH_LONG).show();
             }
         }
 
@@ -710,7 +710,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
                 createMemorySlider.setAdapter(chosenViewsAdapter);
 
             } else {
-                Toast.makeText(getApplicationContext(), "please choose a video", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.choose_video), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -728,7 +728,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
         }
         else if (requestCode==RECORD_VIDEO_CODE && resultCode== Activity.RESULT_OK){
             if (data.getData() ==null){
-                Toast.makeText(getApplicationContext(),"please choose a video",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.choose_video),Toast.LENGTH_LONG).show();
             }
             else{
                 optionsTab.setVisibility(View.VISIBLE);
@@ -743,7 +743,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             }
         }
         else {
-            Toast.makeText(getApplicationContext(),"please choose a video or an image",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.choose_video_or_image),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -776,7 +776,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 point = marker.getPosition();
-                Toast.makeText(getApplicationContext(), "Updated memory location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.updated_memory_location), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -797,7 +797,7 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             takePic();
         }
         else{
-            Toast.makeText(getApplicationContext(), "Permission denied... cannot open the camera", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), getString(R.string.pemission_denied_camera), Toast.LENGTH_LONG);
         }
     }
 }

@@ -237,10 +237,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),  String.valueOf(userLocation), Toast.LENGTH_SHORT).show();
                 if(userLocation == null) {
-                    Toast.makeText(getApplicationContext(), "No known location, try turning on GPS or restarting the application", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_known_location), Toast.LENGTH_SHORT).show();
                 } else {
                     openMemoryActivity(userLocation);
-                    Toast.makeText(getApplicationContext(), "Placed marker on current location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.placed_marker_current_location), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -285,7 +285,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     dbMemoryId = dbMarker.getInt(0);
                     if(dbMarker.getInt(7) != 1000){
                         feelingImage.setImageResource(feelingsEmojis[dbMarker.getInt(7)]);
-                        feelingDescription.setText(" - Was feeling " + dbMarker.getString(8));
+                        feelingDescription.setText(getString(R.string.was_feeling) + " " + dbMarker.getString(8));
                     }
                     Cursor dbImage = databaseHelper.getImage(dbMemoryId);
                     while (dbImage.moveToNext()){

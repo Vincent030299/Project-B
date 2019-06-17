@@ -86,4 +86,7 @@
     <string name="give_marker_name">Geef de marker een naam</string>
     <string name="marker_changed">Marker succesvol opgeslagen</string>
     <string name="marker_not_changed">Marker niet succesvol opgeslagen</string>
+
+
+
 </resources>

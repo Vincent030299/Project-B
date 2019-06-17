@@ -34,7 +34,7 @@
     <string name="updated_memory_location">Updated memory location</string>
     <string name="placed_marker_current_location">Placed marker on current location</string>
     <string name="no_known_location">No known location, try turning on GPS or restarting the application</string>
-    <string name="was_feeling">- Was feeling</string>
+    <string name="was_feeling">Was feeling</string>
     <string name="feeling_happy">Happy</string>
     <string name="feeling">Feeling</string>
     <string name="feeling_blessed">Blessed</string>

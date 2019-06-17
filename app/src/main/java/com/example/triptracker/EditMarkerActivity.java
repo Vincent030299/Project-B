@@ -127,6 +127,7 @@ public class EditMarkerActivity extends FragmentActivity {
                     if (customMarkerDatabase.updateMarker(markerName.getEditText().getText().toString(),markerId ,markerColor)) {
                         Intent openSettings = new Intent(getApplicationContext(), SettingsActivity.class);
                         openSettings.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                        openSettings.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(openSettings);
                         Toast.makeText(getApplicationContext(), getString(R.string.marker_changed), Toast.LENGTH_SHORT).show();
                         finish();

@@ -278,5 +278,6 @@
     }
   ]
   </string>
+    <string name="edit_marker_header">Edit Marker</string>
 
 </resources>

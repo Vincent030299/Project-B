@@ -7,6 +7,26 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryDark"
     tools:context=".EditMarkerActivity">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="?attr/colorPrimary"
+        android:padding="5dp"
+        android:id="@+id/editMarkerActionBar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_marker_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -34,7 +54,7 @@
         app:counterEnabled="true"
         app:counterMaxLength="16"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editMarkerActionBar"
         app:counterTextAppearance="@style/counterTextAppearance"
         android:theme="@style/AppThemeBlue">
 
@@ -54,7 +74,7 @@
         android:layout_marginTop="92dp"
         android:src="@drawable/default_marker"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editMarkerActionBar" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -64,7 +84,7 @@
         android:layout_marginTop="92dp"
         android:src="@drawable/default_marker_overlay"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editMarkerActionBar" />
 
     <SeekBar
         android:id="@+id/hueBar"
@@ -76,7 +96,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/hueValue"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editMarkerActionBar"
         android:secondaryProgressTint="@color/blueapp"
         android:progressTint="@color/blueapp"
         android:progressBackgroundTint="@color/blueapp"
@@ -90,7 +110,7 @@
         android:background="#00000000"
         android:src="@drawable/savememoryiconblue"
         app:layout_constraintStart_toEndOf="@+id/hueBar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editMarkerActionBar" />
 
 
 

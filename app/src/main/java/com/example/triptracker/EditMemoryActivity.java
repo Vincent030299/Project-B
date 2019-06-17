@@ -595,9 +595,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         else if (memoryTitle.getEditText().getText().length()>20){
             Toast.makeText(getApplicationContext(), getString(R.string.title_too_long), Toast.LENGTH_SHORT).show();
         }
-        else if (feeling == 1000){
-            Toast.makeText(getApplicationContext(), getString(R.string.please_choose_a_feeling), Toast.LENGTH_LONG).show();
-        }
         else {
             String currentMemoryTitle=memoryTitle.getEditText().getText().toString();
             String currentMemoryDescription= memoryDescription.getEditText().getText().toString();
@@ -605,6 +602,9 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             DatabaseHelper memoryDatabase=new DatabaseHelper(getApplicationContext());
             Intent singleMemory = getIntent();
             Integer id = singleMemory.getIntExtra("id", 0);
+            if (feeling==1000){
+                feelingDescription="";
+            }
             try{
                 memoryDatabase.updateName(currentMemoryTitle,id, currentMemoryDate, currentMemoryDescription,point.latitude, point.longitude, color,feeling,feelingDescription);
                 memoryDatabase.updateMediaFiles(id,imageUri,recordedVideoUri);

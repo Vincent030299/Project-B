@@ -77,7 +77,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng userLocation;
     private ArrayList<String> memoryImages = new ArrayList<>();
     private ArrayList<String> memoryVideos = new ArrayList<>();
-    private ArrayList<String> memoryBitmaps = new ArrayList<>();
     private static final String TAG = "MapsActivity";
     private String dbMarkerTitle,dbMarkerDesc;
     private Integer dbMemoryId;
@@ -348,7 +347,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Intent openMemory = new Intent(getApplicationContext(), ViewMemoryActivity.class);
             openMemory.addFlags(FLAG_ACTIVITY_NEW_TASK);
             openMemory.putStringArrayListExtra("images", memoryImages);
-            openMemory.putStringArrayListExtra("bitmaps", memoryBitmaps);
             openMemory.putStringArrayListExtra("videos", memoryVideos);
             openMemory.putExtra("description", dbMarkerInfo.getString(2));
             openMemory.putExtra("title", dbMarkerInfo.getString(1));

@@ -88,9 +88,6 @@ public class ListViewAdapter extends BaseAdapter {
             singleMemory = layoutInflater.inflate(R.layout.memorylistitemnight, parent, false);
 
         }  else {
-            if(displayWidth==480.0f){
-
-            }
             singleMemory = layoutInflater.inflate(R.layout.memorylistitem, parent, false);
         }
         openMemoryBtn = singleMemory.findViewById(R.id.open);

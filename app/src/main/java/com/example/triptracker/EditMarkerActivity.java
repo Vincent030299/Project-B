@@ -11,6 +11,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,10 +23,11 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public class EditMarkerActivity extends AppCompatActivity {
+public class EditMarkerActivity extends FragmentActivity {
 
     private Integer markerId;
     private Integer markerColor;
@@ -123,11 +125,11 @@ public class EditMarkerActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), getString(R.string.give_marker_name), Toast.LENGTH_SHORT).show();
                 } else {
                     if (customMarkerDatabase.updateMarker(markerName.getEditText().getText().toString(),markerId ,markerColor)) {
+                        Intent openSettings = new Intent(getApplicationContext(), SettingsActivity.class);
+                        openSettings.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(openSettings);
                         Toast.makeText(getApplicationContext(), getString(R.string.marker_changed), Toast.LENGTH_SHORT).show();
                         finish();
-                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.marker_not_changed), Toast.LENGTH_SHORT).show();
                     }

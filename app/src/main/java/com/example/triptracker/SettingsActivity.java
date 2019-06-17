@@ -129,6 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
         markerListViewAdapter = new MarkerListViewAdapter(getApplicationContext(),markerNames,markerColors,markerIds,getSupportFragmentManager());
         markerList.setAdapter(markerListViewAdapter);
+        markerListViewAdapter.notifyDataSetChanged();
 
         ViewGroup.LayoutParams params = markerList.getLayoutParams();
 

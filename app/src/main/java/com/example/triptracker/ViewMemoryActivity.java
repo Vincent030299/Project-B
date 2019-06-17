@@ -479,7 +479,7 @@ public class ViewMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
     //open a given activity
     public void openActivity(Class className) {
-        Intent intent = new Intent(this, className);
+        Intent intent = new Intent(getApplicationContext(), className);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         overridePendingTransition(0, 0);
         finish();

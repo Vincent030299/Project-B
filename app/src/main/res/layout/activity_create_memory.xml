@@ -76,8 +76,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 android:text="@string/add_media_files"
-                android:textColor="?attr/colorAccent"
-                android:textColorLink="?attr/colorAccent"
+                android:textColor="@color/blueapp"
+                android:textColorLink="@color/blueapp"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -209,7 +209,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textMultiLine"
-                    android:textColor="?attr/colorAccent"
+                    android:textColor="@color/blueapp"
                     />
 
             </android.support.design.widget.TextInputLayout>

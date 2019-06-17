@@ -39,7 +39,7 @@ public class StreetViewActivity extends FragmentActivity implements OnStreetView
             public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
                 if(streetViewPanoramaLocation==null){
                     finish();
-                    Toast.makeText(getApplicationContext(), "This feature is not available in this location", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.feature_not_available), Toast.LENGTH_LONG).show();
                 }
             }
         });

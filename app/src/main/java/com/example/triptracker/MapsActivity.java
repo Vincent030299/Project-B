@@ -277,7 +277,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 dataBaseHelper = new DatabaseHelper(getApplicationContext());
                 LatLng markerPos = marker.getPosition();
-
                 Cursor dbMarker = databaseHelper.getItem(markerPos.latitude,markerPos.longitude);
                 while(dbMarker.moveToNext()){
                     dbMarkerTitle = dbMarker.getString(1);

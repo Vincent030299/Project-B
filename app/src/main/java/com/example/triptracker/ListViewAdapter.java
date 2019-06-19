@@ -103,6 +103,7 @@ public class ListViewAdapter extends BaseAdapter {
                 DatabaseHelper mDataBaseHelper = new DatabaseHelper(context.getApplicationContext());
                 Cursor allImagesForMemory = mDataBaseHelper.getImages(memoryIds.get(position));
                 Cursor allVideosForMemory = mDataBaseHelper.getVideos(memoryIds.get(position));
+                Cursor singleMemoryInfos = mDataBaseHelper.getSingleMemoryData(memoryIds.get(position));
                 memoryImages.clear();
                 memoryVideos.clear();
                 while(allImagesForMemory.moveToNext()){
@@ -122,10 +123,12 @@ public class ListViewAdapter extends BaseAdapter {
                 openMemory.putExtra("date", memoryDates.get(position));
                 openMemory.putExtra("feelingdesc", feelingDescriptions.get(position));
                 openMemory.putExtra("feelingimage", feelingImages.get(position));
-                Cursor singleMemoryInfos = mDataBaseHelper.getSingleMemoryData(memoryIds.get(position));
+
                 if (singleMemoryInfos.moveToFirst()) {
                     Double lat = singleMemoryInfos.getDouble(4);
                     Double lng = singleMemoryInfos.getDouble(5);
+                    Integer color = singleMemoryInfos.getInt(6);
+                    openMemory.putExtra("color", color);
                     openMemory.putExtra("lat", lat);
                     openMemory.putExtra("lng", lng);
                 }

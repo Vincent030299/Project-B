@@ -61,7 +61,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.tooltip.Tooltip;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
@@ -96,7 +95,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
     private final int TAKE_PIC_CODE=12;
     private final int RECORD_VIDEO_CODE=13;
     private final int PERMISSION_REQUEST_CODE = 14;
-    private Button toolTip;
     private ImageButton closePopup,saveMemoryButton,deleteMediaBtn,feelingEmojiBtn,chooseMarkerMenuBtn;
     private TextInputLayout memoryTitle,memoryDescription;
     private DatePicker memoryDate;
@@ -149,7 +147,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             setTheme(R.style.AppThemeNight);
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_memory);
+        setContentView(R.layout.activity_update_memory);
         takenPictureUri = null;
         //Get the screen size
         DisplayMetrics dm = new DisplayMetrics();
@@ -159,15 +157,14 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
 
-        final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragView);
+        final SupportMapFragment spmf=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.editMapFragView);
         Objects.requireNonNull(spmf).getMapAsync(this);
 
         //initialize the adapter for the chosen media files
         chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
 
         //initialize the used components in the layout file
-        toolTip = findViewById(R.id.toolTipButton);
-        createMemorySlider =findViewById(R.id.createMemorySlider);
+        createMemorySlider =findViewById(R.id.editMemorySlider);
         mapMediaToggle =findViewById(R.id.mediaSwitch);
         uploadMediaFilesMenu=findViewById(R.id.uploadBtns);
         saveMemoryButton=findViewById(R.id.saveMemoryBtn);
@@ -252,12 +249,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
         //all of the click listeners in the layout
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        toolTip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createToolTip(v);
-            }
-        });
         closePopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -321,7 +312,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
 
         //setting up the map fragment
         createMemoryFragmentManager = getSupportFragmentManager();
-        createMemoryMapView = createMemoryFragmentManager.findFragmentById(R.id.mapFragView);
+        createMemoryMapView = createMemoryFragmentManager.findFragmentById(R.id.editMapFragView);
 
         //toggling on and off between the map and the media files
         mapMediaToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -495,20 +486,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         }
 
     }
-
-    private void createToolTip(View v) {
-        Button btn = (Button)v;
-        Tooltip tooltip = new Tooltip.Builder(btn)
-                .setText(R.string.move_marker_tooltip)
-                .setTextColor(Color.BLACK)
-                .setGravity(Gravity.BOTTOM)
-                .setCornerRadius(8f)
-                .setDismissOnClick(true)
-                .setCancelable(true)
-                .show();
-
-    }
-
     private File createTakenPictureFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -548,7 +525,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
             pageIndicatorView.setVisibility(View.INVISIBLE);
             mediaFilesLayout.setVisibility(View.INVISIBLE);
             optionsTab.setVisibility(View.INVISIBLE);
-            toolTip.setVisibility(View.VISIBLE);
             FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
             fragmentTransaction.show(createMemoryMapView);
             fragmentTransaction.commit();
@@ -559,7 +535,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 optionsTab.setVisibility(View.INVISIBLE);
                 pageIndicatorView.setVisibility(View.VISIBLE);
                 mediaFilesLayout.setVisibility(View.VISIBLE);
-                toolTip.setVisibility(View.INVISIBLE);
                 FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
                 fragmentTransaction.hide(createMemoryMapView);
                 fragmentTransaction.commit();
@@ -569,7 +544,6 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
                 pageIndicatorView.setVisibility(View.VISIBLE);
                 mediaFilesLayout.setVisibility(View.VISIBLE);
                 optionsTab.setVisibility(View.VISIBLE);
-                toolTip.setVisibility(View.INVISIBLE);
                 FragmentTransaction fragmentTransaction = createMemoryFragmentManager.beginTransaction();
                 fragmentTransaction.hide(createMemoryMapView);
                 fragmentTransaction.commit();
@@ -804,7 +778,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         point = intent.getParcelableExtra("location");
         mMap.addMarker(new MarkerOptions()
                 .position(point)
-                .draggable(true)
+                .draggable(false)
                 .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
 
         //Create camera zoom to show marker close
@@ -837,7 +811,7 @@ public class EditMemoryActivity extends FragmentActivity implements OnMapReadyCa
         color = markerColor;
         mMap.addMarker(new MarkerOptions()
                 .position(point)
-                .draggable(true)
+                .draggable(false)
                 .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
 
     }

@@ -491,6 +491,12 @@ public class CreateMemoryActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View v) {
                 chosenViewsArrayList.remove(position);
+                if(chosenViewsArrayList.get(position).getArguments().getString("the image")!=null){
+                    imageUri.remove(position);
+                }
+                else{
+                    recordedVideoUri.remove(position);
+                }
                 chosenViewsAdapter = new SwipeAdapter(getSupportFragmentManager(), chosenViewsArrayList);
                 createMemorySlider.setAdapter(chosenViewsAdapter);
                 Toast.makeText(getApplicationContext(), getString(R.string.chosen_media_deleted), Toast.LENGTH_SHORT).show();
